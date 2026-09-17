@@ -7,6 +7,7 @@ import { Img } from "@/components/Img";
 import { Ornament } from "@/components/decor";
 import { IconChevronDown, IconClock, IconPhone, IconPin } from "@/components/icons";
 import { ContactForm } from "@/components/ContactForm";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -29,7 +30,9 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   ].filter((c) => c.value || showMissing);
 
   return (
-    <div className="contact">
+    <>
+    <Frame className="frame--contact">
+    <div className="contact frame__fill">
       <section className="contact__hero" aria-labelledby="contact-title">
         <Img id="ritual-still-life" alt="" priority sizes="(max-width: 1100px) 100vw, 60vw" />
         <div className="contact__copy">
@@ -48,6 +51,10 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         <ContactForm locale={locale} />
       </section>
 
+    </div>
+    </Frame>
+    <Frame className="frame--contact frame--contact-2">
+    <div className="contact contact--more frame__fill">
       <div className="info-cards">
         {cards.map(({ key, icon: Icon, title, value, href }) => (
           <div key={key} className="card info-card">
@@ -104,5 +111,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         </div>
       </section>
     </div>
+    </Frame>
+    </>
   );
 }

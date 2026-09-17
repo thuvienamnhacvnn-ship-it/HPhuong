@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { pageContext } from "@/lib/page";
 import { OrderStatus } from "@/components/OrderStatus";
+import { Frame } from "@/components/Frame";
 
 export const metadata: Metadata = { title: "Bestellung", robots: { index: false } };
 
@@ -8,8 +9,10 @@ export default async function OrderPage({ params }: { params: Promise<{ locale: 
   const { locale } = await pageContext(params);
   const { token } = await params;
   return (
-    <div className="page narrow">
+    <Frame className="frame--center">
+    <div className="page narrow frame__fill">
       <OrderStatus locale={locale} token={token} />
     </div>
+    </Frame>
   );
 }

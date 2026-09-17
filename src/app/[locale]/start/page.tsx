@@ -6,7 +6,8 @@ import { Img } from "@/components/Img";
 import { Ornament, PetalFrame } from "@/components/decor";
 import { IconArrow, IconCalendar } from "@/components/icons";
 import { CATEGORY_IMAGE } from "@/components/categories";
-import { FloatingPetals, LilyLineArt, SoftWave } from "@/components/SoftDecor";
+import { FloatingPetals, SoftWave } from "@/components/SoftDecor";
+import { Frame } from "@/components/Frame";
 
 export const metadata: Metadata = { title: { absolute: "HPHUONG Cosmetic & Spa" } };
 
@@ -18,12 +19,11 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
   const categories = ["gesicht", "massage", "head-spa", "pflege"].filter((c) => services.some((s) => s.category === c));
 
   return (
-    <div className="home">
+    <Frame className="frame--home">
+    <div className="home frame__fill">
       <FloatingPetals count={9} />
       <section className="home__stage" aria-labelledby="home-title">
         <div className="home__emblem">
-          <span className="home__emblem-ring" aria-hidden />
-          <LilyLineArt />
           <Img id="logo-emblem" alt={`HPHUONG ${t.brand.descriptor}`} priority sizes="(max-width: 900px) 58vw, (max-width: 1280px) 210px, 470px" />
         </div>
         <div className="home__copy">
@@ -102,5 +102,6 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
         </div>
       </nav>
     </div>
+    </Frame>
   );
 }

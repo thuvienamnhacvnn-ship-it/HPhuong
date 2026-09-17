@@ -4,6 +4,7 @@ import { pageContext } from "@/lib/page";
 import { Img } from "@/components/Img";
 import { Lily, Ornament } from "@/components/decor";
 import { IconArrow } from "@/components/icons";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -19,7 +20,8 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
     { id: "ritual-still-life", label: t.studio.tiles[2], pos: "80% 60%" },
   ];
   return (
-    <div className="studio">
+    <Frame className="frame--studio">
+    <div className="studio frame__fill">
       <div className="studio__visual">
         <Img id="studio-interior" alt={t.studio.visualisation} priority sizes="(max-width: 1000px) 100vw, 52vw" imgStyle={{ objectPosition: "55% 50%" }} />
         <div className="studio__overlay">
@@ -34,7 +36,7 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
       <section className="studio__body">
         <Lily position="tr-sm" />
         <div className="above-decor stack" style={{ justifyItems: "center", textAlign: "center", width: "100%" }}>
-          <img src="/media/logo-medallion-320.webp" srcSet="/media/logo-medallion-320.webp 1x, /media/logo-medallion-640.webp 2x" alt="HPHUONG" width={150} height={150} />
+          <img src="/media/logo-emblem-240.webp" srcSet="/media/logo-emblem-240.webp 1x, /media/logo-emblem-480.webp 2x" alt="HPHUONG" width={132} height={150} style={{ objectFit: "contain" }} />
           <p className="eyebrow">HPHUONG · {t.brand.descriptor}</p>
           <Ornament className="ornament--center" />
         </div>
@@ -53,5 +55,6 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
         </Link>
       </section>
     </div>
+    </Frame>
   );
 }

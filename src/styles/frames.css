@@ -1,0 +1,1049 @@
+/* Full-screen frames with scroll snapping.
+   Desktop/tablet landscape: each .frame = exactly one viewport; header and demo
+   bar are fixed overlays, the footer sits inside the last frame.
+   Small screens: frames are at least one screen high and snap softly, content
+   keeps its natural height (a phone booking form cannot fit one screen). */
+
+:root {
+  --demo-h: 0px;
+  --footer-h: 46px;
+  --chrome-h: calc(var(--header) + var(--demo-h));
+}
+:root:has(.demo-bar) {
+  --demo-h: 26px;
+}
+
+.frame {
+  position: relative;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Panels allowed to scroll internally when a frame is dense. */
+.frame-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+@media (min-width: 901px) and (min-height: 560px) {
+  html {
+    scroll-snap-type: y mandatory;
+    font-size: clamp(13.5px, 1.65vh, 16px);
+  }
+  body {
+    overflow-x: hidden;
+  }
+  .demo-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 41;
+    height: var(--demo-h);
+    min-height: 0;
+    padding-block: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .header {
+    position: fixed;
+    top: var(--demo-h);
+    left: 0;
+    right: 0;
+    z-index: 40;
+  }
+  .main {
+    position: relative;
+  }
+  .content {
+    padding-bottom: 0;
+  }
+  .frame {
+    height: 100vh;
+    height: 100dvh;
+    padding-top: var(--chrome-h);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .frame > * {
+    flex-shrink: 0;
+  }
+  .frame > .frame__fill {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .content > .frame:last-child,
+  .content > * > .frame:last-child {
+    padding-bottom: var(--footer-h);
+  }
+  .site-footer {
+    position: absolute;
+    left: clamp(16px, 3vw, 40px);
+    right: clamp(16px, 3vw, 40px);
+    bottom: 0;
+    margin: 0;
+    height: var(--footer-h);
+    padding: 0;
+    z-index: 5;
+  }
+
+  /* Pages must not re-add their own viewport heights inside a frame. */
+  .home,
+  .treatment,
+  .studio {
+    height: auto;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 900px), (max-height: 559px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  .frame {
+    min-height: 100dvh;
+  }
+  .frame-scroll {
+    overflow: visible;
+  }
+}
+
+/* ================================================================ layouts
+   Per-page frame layouts (desktop). Heights come from the frame, never from
+   the content: the middle area fills, cards shrink their images. */
+@media (min-width: 901px) and (min-height: 560px) {
+  /* shared: compact page bands */
+  .frame .band {
+    padding-block: clamp(10px, 2.2vh, 28px) clamp(6px, 1.2vh, 16px);
+  }
+  .frame .band .display--md {
+    font-size: clamp(2rem, 5.4vh, 3.8rem);
+  }
+  .frame .band .ornament {
+    margin: 0.6vh 0;
+  }
+  .frame .page {
+    padding-top: clamp(8px, 1.4vh, 18px);
+    padding-bottom: clamp(8px, 1.6vh, 20px);
+  }
+
+  /* ------------------------------------------------------------ catalog */
+  .catalog-page {
+    display: flex;
+    flex-direction: column;
+  }
+  .catalog-toolbar {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px 20px;
+  }
+  .catalog-toolbar .tabs {
+    flex-wrap: nowrap;
+  }
+  .catalog-toolbar .chip {
+    min-height: 40px;
+    padding: 6px 16px;
+    font-size: 1.05rem;
+  }
+  .catalog-toolbar .filters {
+    margin: 0;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .catalog-toolbar .filters .field {
+    min-width: 0;
+    gap: 2px;
+  }
+  .catalog-toolbar .filters .field > label {
+    font-size: 0.75rem;
+  }
+  .catalog-toolbar .filters .grow {
+    flex: 0 1 230px;
+  }
+  .catalog-toolbar .input,
+  .catalog-toolbar .select {
+    min-height: 40px;
+    padding-block: 7px;
+  }
+  .catalog-toolbar .check {
+    min-height: 40px;
+    padding: 0;
+    align-items: center;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .frame--catalog .catalog {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: clamp(8px, 1.4vh, 16px);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .frame--catalog .service-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 100%;
+    height: 100%;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+  }
+  .frame--catalog .service-card {
+    height: 100%;
+    min-height: 0;
+    scroll-snap-align: start;
+  }
+  .frame--catalog .service-card__img {
+    aspect-ratio: auto;
+    flex: 1 1 auto;
+    min-height: 90px;
+  }
+  .frame--catalog .service-card__body {
+    flex: 0 0 auto;
+    gap: 0.6vh;
+    padding-top: 1vh;
+  }
+  .frame--catalog .service-card__title {
+    font-size: clamp(1.2rem, 2.7vh, 1.55rem);
+  }
+  .frame--catalog .price {
+    font-size: clamp(1.25rem, 2.9vh, 1.7rem);
+  }
+  .frame--catalog .service-card__teaser {
+    font-size: 0.88rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .frame--catalog .service-card__actions {
+    margin-top: 0.6vh;
+  }
+  .frame--catalog .preview-panel {
+    position: static;
+    height: 100%;
+    overflow-y: auto;
+    align-content: start;
+    gap: 1vh;
+  }
+  .frame--catalog .preview-panel__img {
+    aspect-ratio: auto;
+    height: 20vh;
+    flex: none;
+  }
+  .frame--catalog .trust-row {
+    margin-top: clamp(8px, 1.4vh, 16px);
+    padding: clamp(6px, 1.2vh, 14px) 0 0;
+  }
+  .frame--catalog .trust-row__item {
+    font-size: clamp(1rem, 2.2vh, 1.25rem);
+  }
+  .frame--catalog .trust-row .icon-ring {
+    width: clamp(38px, 5vh, 58px);
+    height: clamp(38px, 5vh, 58px);
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  /* images inside flexible boxes must not push the box with their intrinsic height */
+  .frame .service-card__img .pic,
+  .frame .preview-panel__img .pic,
+  .frame .rec-card__img .pic,
+  .frame .appt-card__img .pic,
+  .frame .package__img .pic {
+    position: absolute;
+    inset: 0;
+  }
+  .frame .preview-panel__img,
+  .frame .rec-card__img,
+  .frame .appt-card__img,
+  .frame .package__img {
+    position: relative;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  /* ----------------------------------------------------------- treatment */
+  .frame--treatment .treatment {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .frame--treatment .treatment__visual {
+    min-height: 0;
+  }
+  .frame--treatment .treatment__body {
+    gap: clamp(8px, 1.7vh, 18px);
+    padding-block: clamp(14px, 3vh, 36px) clamp(10px, 2vh, 24px);
+    align-content: center;
+  }
+  .frame--treatment .display--md {
+    font-size: clamp(2.2rem, 6.5vh, 4rem);
+  }
+  .frame--treatment .lead {
+    font-size: clamp(1.1rem, 2.6vh, 1.5rem);
+  }
+  .frame--treatment .treatment__facts {
+    font-size: clamp(1.5rem, 4vh, 2.3rem);
+  }
+  .frame--treatment .ornament {
+    margin: 0;
+  }
+  .frame--treatment .info-col .h3 {
+    font-size: clamp(1.1rem, 2.5vh, 1.35rem);
+    margin-bottom: 0.4vh;
+  }
+  .frame--treatment .info-col ul {
+    font-size: 0.92rem;
+    gap: 2px;
+  }
+  .frame--treatment .variant {
+    min-height: clamp(48px, 6.6vh, 64px);
+  }
+
+  /* center frames: one card in the middle of the screen */
+  .frame--center > .frame__fill {
+    display: grid;
+    align-content: center;
+    overflow-y: auto;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  /* ------------------------------------------------------------- booking */
+  .frame--booking .band .lead {
+    font-size: clamp(1rem, 2.2vh, 1.3rem);
+  }
+  .booking-frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .booking-frame .booking-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .booking-frame .stepper {
+    margin: clamp(4px, 1vh, 12px) 0;
+  }
+  .booking-frame .stepper__num {
+    width: clamp(32px, 4.4vh, 44px);
+    height: clamp(32px, 4.4vh, 44px);
+  }
+  .booking-frame .booking {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: stretch;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .booking-frame .booking__col {
+    height: 100%;
+    padding: clamp(12px, 2vh, 20px);
+    gap: clamp(8px, 1.4vh, 14px);
+    align-content: start;
+  }
+  .booking-frame .booking__col h2 {
+    font-size: clamp(1.35rem, 3vh, 2rem);
+  }
+  .booking-frame .service-pick {
+    grid-template-columns: clamp(60px, 8vh, 84px) minmax(0, 1fr) auto;
+    padding: 6px;
+  }
+  .booking-frame .service-pick__img {
+    width: clamp(60px, 8vh, 84px);
+    height: clamp(50px, 6.6vh, 70px);
+  }
+  .booking-frame .cal__day {
+    min-height: 0;
+    max-height: clamp(30px, 4.6vh, 48px);
+    font-size: 0.95rem;
+  }
+  .booking-frame .cal__dow {
+    padding: 2px 0;
+  }
+  .booking-frame .slot {
+    min-height: clamp(36px, 4.6vh, 48px);
+    font-size: 1.1rem;
+  }
+  .booking-frame .input,
+  .booking-frame .select {
+    min-height: clamp(40px, 5vh, 48px);
+    padding-block: 8px;
+  }
+  .booking-frame .textarea {
+    min-height: 56px !important;
+  }
+  .booking-frame .content-pad-bar {
+    display: none;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--booking .band .lead,
+  .frame--booking .band .ornament {
+    display: none;
+  }
+  .frame--booking .band .display--md {
+    font-size: clamp(1.8rem, 4.6vh, 3.2rem);
+  }
+  .frame--booking .decor-lily--tr {
+    width: clamp(140px, 16vh, 220px);
+    top: -12px;
+  }
+  .booking-frame .booking-form {
+    gap: clamp(6px, 1.1vh, 12px);
+  }
+  .booking-frame .booking-form .h3 {
+    font-size: clamp(1.1rem, 2.4vh, 1.4rem);
+  }
+  .booking-frame .field {
+    gap: 3px;
+  }
+  .booking-frame .field > label {
+    font-size: 0.8rem;
+  }
+  .booking-frame .booking-form__hint {
+    display: none;
+  }
+  .booking-frame .booking-form .btn--lg {
+    min-height: clamp(42px, 5.4vh, 56px);
+    font-size: 1.2rem;
+  }
+  .booking-frame .booking-summary {
+    grid-template-columns: auto auto;
+    justify-content: start;
+    column-gap: 18px;
+    padding-top: 8px;
+  }
+  .booking-frame .booking-summary > :nth-child(n + 3) {
+    grid-column: 1 / -1;
+  }
+  .booking-frame .booking__col--time .cal {
+    padding: 6px 8px;
+  }
+  .booking-frame .booking__col--time .cal__grid {
+    row-gap: 0;
+  }
+  .booking-frame .booking__col--time .cal__day {
+    max-height: clamp(26px, 3.8vh, 44px);
+    aspect-ratio: auto;
+    height: clamp(26px, 3.8vh, 44px);
+  }
+  .booking-frame .slots {
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    gap: 6px;
+  }
+  .booking-frame .slot {
+    min-height: clamp(32px, 4vh, 44px);
+    font-size: 1rem;
+  }
+  .booking-frame .booking__col--time .h3 {
+    font-size: clamp(1.1rem, 2.4vh, 1.4rem);
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  /* -------------------------------------------------------------- offers */
+  .frame--offers .offers {
+    padding-block: clamp(10px, 2vh, 28px) clamp(6px, 1vh, 12px);
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .frame--offers .offers__hero {
+    min-height: 0;
+    height: 100%;
+  }
+  .frame--offers .offers__copy {
+    gap: clamp(6px, 1.3vh, 14px);
+    padding-block: 1vh;
+  }
+  .frame--offers .offers__copy .display {
+    font-size: clamp(2.4rem, 8vh, 5rem);
+  }
+  .frame--offers .offers__copy .lead {
+    font-size: clamp(1rem, 2.3vh, 1.35rem);
+  }
+  .frame--offers .voucher-card {
+    padding: clamp(12px, 2vh, 22px);
+    gap: clamp(6px, 1.2vh, 14px);
+  }
+  .frame--offers .amount {
+    min-height: clamp(44px, 6vh, 60px);
+  }
+  .frame--offers .offers > .stack {
+    min-height: 0;
+    height: 100%;
+  }
+  .frame--offers .package {
+    height: 100%;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .frame--offers .package__body {
+    padding: clamp(10px, 1.8vh, 20px) 22px;
+    gap: clamp(6px, 1.1vh, 12px);
+  }
+  .frame--offers .feature-row {
+    padding-block: clamp(4px, 1vh, 12px);
+  }
+  .frame--offers .feature .icon-ring {
+    width: clamp(44px, 6vh, 72px) !important;
+    height: clamp(44px, 6vh, 72px) !important;
+  }
+
+  /* ----------------------------------------------- voucher & checkout */
+  .frame--voucher > .frame__fill,
+  .frame--checkout > .frame__fill {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: clamp(10px, 2vh, 24px);
+  }
+  .frame--voucher .checkout,
+  .frame--checkout .checkout {
+    align-items: center;
+    max-height: 100%;
+    min-height: 0;
+  }
+  .frame--checkout .checkout {
+    align-items: stretch;
+    grid-template-rows: minmax(0, 1fr);
+    height: 100%;
+  }
+  .frame--checkout .checkout > .stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1.2vh, 16px);
+    min-height: 0;
+  }
+  .frame--checkout .display {
+    font-size: clamp(2rem, 6.2vh, 4rem);
+  }
+  .frame--checkout .lead {
+    font-size: clamp(1rem, 2.2vh, 1.3rem);
+  }
+  .frame--checkout .checkout__form {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: clamp(12px, 2vh, 24px);
+    gap: clamp(8px, 1.6vh, 20px);
+    align-content: start;
+  }
+  .frame--checkout .form-step h2 {
+    font-size: clamp(1.1rem, 2.5vh, 1.5rem);
+    margin-bottom: 0.6vh;
+  }
+  .frame--checkout .form-step__num {
+    width: clamp(30px, 4.2vh, 40px);
+    height: clamp(30px, 4.2vh, 40px);
+  }
+  .frame--checkout .input,
+  .frame--checkout .select {
+    min-height: clamp(40px, 5vh, 48px);
+    padding-block: 7px;
+  }
+  .frame--checkout .textarea {
+    min-height: clamp(52px, 8vh, 110px);
+  }
+  .frame--checkout .checkout__aside {
+    position: static;
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(12px, 2vh, 22px);
+    gap: clamp(6px, 1.2vh, 16px);
+    align-content: start;
+  }
+  .frame--checkout .gift {
+    height: clamp(120px, 24vh, 280px);
+    aspect-ratio: auto;
+  }
+  .frame--checkout .pay-option {
+    min-height: clamp(44px, 6vh, 60px);
+    padding-block: 4px;
+  }
+  .frame--checkout .amount {
+    min-height: clamp(40px, 5vh, 56px);
+  }
+
+  /* -------------------------------------------------------------- studio */
+  .frame--studio .studio {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .frame--studio .studio__visual {
+    min-height: 0;
+  }
+  .frame--studio .studio__body {
+    padding-block: clamp(12px, 2.4vh, 36px);
+    gap: clamp(8px, 1.6vh, 18px);
+  }
+  .frame--studio .studio__body img[alt="HPHUONG"] {
+    width: clamp(80px, 13vh, 150px);
+    height: auto;
+  }
+  .frame--studio .display--md {
+    font-size: clamp(2rem, 5.6vh, 3.8rem);
+  }
+  .frame--studio .tile .pic {
+    aspect-ratio: auto;
+    height: clamp(90px, 18vh, 220px);
+  }
+
+  /* ------------------------------------------------------------- contact */
+  .frame--contact .contact {
+    grid-template-rows: minmax(0, 1fr);
+    padding-block: clamp(10px, 2vh, 28px);
+  }
+  .frame--contact .contact__hero {
+    min-height: 0;
+  }
+  .frame--contact .contact--more {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: stretch;
+  }
+  .frame--contact .contact--more .location-card {
+    min-height: 0;
+  }
+  .frame--contact .contact--more .faq {
+    overflow-y: auto;
+  }
+
+  /* ----------------------------------------------------------- assistant */
+  .frame--assistant .assistant-page {
+    display: flex;
+    flex-direction: column;
+    padding-block: clamp(10px, 2vh, 28px);
+  }
+  .frame--assistant .display--md {
+    font-size: clamp(1.9rem, 5vh, 3.4rem);
+  }
+  .frame--assistant .assistant-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: clamp(8px, 1.6vh, 20px);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .frame--assistant .chat {
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .frame--assistant .chat > .stack {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .frame--assistant .chat__log,
+  .frame--assistant .chooser {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+  }
+  .frame--assistant .assistant-grid > section:last-child {
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* ------------------------------------------------------------- account */
+  .frame--account > .frame__fill {
+    display: flex;
+    flex-direction: column;
+  }
+  .frame--account .display {
+    font-size: clamp(2.2rem, 7vh, 4.6rem);
+  }
+  .frame--account .account-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: clamp(8px, 1.6vh, 20px);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .frame--account .account-grid > .card {
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .frame--account .above-decor.card {
+    margin-top: clamp(8px, 1.4vh, 18px) !important;
+    padding-block: clamp(8px, 1.4vh, 18px);
+  }
+
+  /* -------------------------------------------------------------- center */
+  .frame--center > .frame__fill {
+    padding-block: clamp(12px, 2.4vh, 32px);
+    min-height: 0 !important;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--checkout .gift {
+    height: clamp(110px, 23vh, 280px);
+    width: auto;
+    aspect-ratio: 1.5;
+    justify-self: center;
+  }
+  .frame--checkout .checkout__aside > .ornament {
+    display: none;
+  }
+  .frame--checkout .checkout__aside .summary {
+    padding: 8px 14px;
+    gap: 4px;
+  }
+  .frame--checkout .checkout__aside .summary__row--total {
+    padding-top: 4px;
+  }
+  .frame--checkout .checkout__aside .pay-option svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--contact .contact > .card.stack {
+    align-content: center;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--assistant .assistant-grid > section:last-child {
+    align-content: start;
+  }
+  .frame--assistant .rec-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  }
+  .frame--assistant .rec-card__img {
+    aspect-ratio: auto;
+    height: clamp(90px, 20vh, 220px);
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--checkout .checkout__aside .package__img {
+    aspect-ratio: auto !important;
+    height: clamp(120px, 30vh, 340px);
+    border-radius: 160px 160px 16px 16px;
+    border-bottom: 1px solid var(--gold-soft);
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--center .gift {
+    height: min(300px, 30vh);
+    width: auto;
+    justify-self: center;
+  }
+  .frame--center .display--md {
+    font-size: clamp(2rem, 5.6vh, 3.6rem);
+  }
+}
+
+/* ======================================================= short screens
+   Laptops (≈ 650–760 px of viewport height): same frames, denser type and
+   controls so nothing is cut off. */
+@media (min-width: 901px) and (min-height: 560px) and (max-height: 780px) {
+  html {
+    font-size: 12.5px;
+  }
+  :root {
+    --header: 56px;
+    --footer-h: 36px;
+  }
+  .brand__emblem {
+    width: 34px;
+    height: 40px;
+  }
+  .header__link {
+    font-size: 1.15rem;
+  }
+  .frame .card--pad {
+    padding: 12px 14px;
+  }
+  .frame .stack {
+    gap: 10px;
+  }
+  .frame .btn--lg {
+    min-height: 42px;
+    font-size: 1.15rem;
+    padding-inline: 22px;
+  }
+  .frame .btn {
+    min-height: 38px;
+  }
+  .frame .input,
+  .frame .select {
+    min-height: 36px !important;
+    padding-block: 5px !important;
+    font-size: 14px;
+  }
+  .frame .textarea {
+    min-height: 40px !important;
+    height: 40px;
+    padding-block: 6px;
+    font-size: 14px;
+  }
+  .frame .field > label {
+    font-size: 0.8rem;
+  }
+  .frame .display {
+    font-size: clamp(2rem, 7vh, 3.4rem) !important;
+  }
+  .frame .display--md {
+    font-size: clamp(1.7rem, 5vh, 2.6rem) !important;
+  }
+  .frame .lead {
+    font-size: 1.1rem;
+  }
+  .frame .ornament {
+    margin: 4px 0;
+  }
+  .frame .counter,
+  .frame .hint {
+    font-size: 0.75rem;
+  }
+
+  /* booking */
+  .booking-frame .service-pick__img {
+    height: 42px;
+    width: 54px;
+  }
+  .booking-frame .service-pick {
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+  .booking-frame .service-pick__name {
+    font-size: 1.1rem;
+  }
+  .booking-frame .booking__col--time .cal__day {
+    height: 24px;
+    max-height: 24px;
+    font-size: 0.85rem;
+  }
+  .booking-frame .booking__col--time .cal__day.has-slots::after {
+    bottom: 1px;
+  }
+  .booking-frame .slot {
+    min-height: 28px;
+    font-size: 0.95rem;
+  }
+  .booking-frame .slots {
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 4px;
+  }
+  .booking-frame .stepper {
+    margin: 2px 0;
+  }
+  .booking-frame .variant-mini .chip {
+    min-height: 32px;
+    padding: 2px 12px;
+    font-size: 0.95rem;
+  }
+
+  /* checkout / voucher / offer detail */
+  .frame--checkout .checkout__form {
+    gap: 6px;
+  }
+  .frame--checkout .form-step {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .frame--checkout .form-step h2 {
+    margin-bottom: 2px;
+  }
+  .frame--checkout .pay-option {
+    min-height: 38px;
+  }
+  .frame--checkout .gift {
+    height: 17vh;
+  }
+  .frame--checkout .checkout__aside .package__img {
+    height: 22vh;
+  }
+  .frame--voucher .gift {
+    max-height: 40vh;
+    width: auto;
+    aspect-ratio: 1.5;
+  }
+  .frame--voucher .amount {
+    min-height: 40px;
+  }
+
+  /* studio / contact / account */
+  .frame--studio .tile .pic {
+    height: 14vh;
+  }
+  .frame--studio .studio__body img[alt="HPHUONG"] {
+    width: 70px;
+  }
+  .frame--contact .faq summary {
+    min-height: 40px;
+    font-size: 1.1rem;
+  }
+  .frame--contact .faq details p {
+    padding-bottom: 8px;
+  }
+  .frame--account .appt-card {
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+  .frame--account .panel-title {
+    margin-bottom: 8px;
+  }
+  .frame--account .panel-title .icon-ring {
+    width: 38px;
+    height: 38px;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) and (max-height: 780px) {
+  .frame--treatment .treatment__body {
+    gap: 6px;
+    padding-block: 10px;
+  }
+  .frame--treatment .info-col ul {
+    font-size: 0.85rem;
+  }
+  .frame--treatment .treatment__facts {
+    font-size: 1.5rem;
+  }
+  .frame--treatment .variant {
+    min-height: 40px;
+    min-width: 100px;
+    padding-block: 2px;
+    font-size: 1rem;
+  }
+  .frame--treatment .notice {
+    padding-block: 6px;
+  }
+  .booking-frame .booking-note-wa {
+    display: none;
+  }
+  .booking-frame .booking__col--contact > h2 {
+    font-size: 1.3rem;
+  }
+  .booking-frame .booking-form .h3 {
+    display: none;
+  }
+  .frame--assistant .chooser {
+    gap: 8px;
+  }
+  .frame--assistant .chooser .chip {
+    min-height: 34px;
+    padding: 4px 14px;
+    font-size: 1rem;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) and (max-height: 780px) {
+  .frame--catalog .preview-panel__img {
+    height: 12vh;
+  }
+  .frame--catalog .preview-panel .checklist,
+  .frame--catalog .preview-panel .h3,
+  .frame--catalog .preview-panel .ornament {
+    display: none;
+  }
+  .frame--catalog .preview-panel > p {
+    font-size: 0.9rem;
+  }
+  .booking-frame .booking__col--time {
+    gap: 6px;
+  }
+  .booking-frame .booking__col--time .cal__head .icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+  .booking-frame .booking__col--time .cal__month {
+    font-size: 1.1rem;
+  }
+  .booking-frame .booking__col--time .cal__day {
+    height: 21px;
+    max-height: 21px;
+  }
+  .booking-frame .booking__col--time .cal__dow {
+    font-size: 0.75rem;
+    padding: 0;
+  }
+  .booking-frame .booking__col--time .field > label {
+    display: none;
+  }
+  .frame--assistant .chooser legend {
+    margin-bottom: 2px;
+  }
+  .frame--assistant .chooser fieldset {
+    gap: 4px;
+  }
+  .frame--account .above-decor .eyebrow,
+  .frame--account .above-decor .lead,
+  .frame--account .above-decor .ornament,
+  .frame--account .frame__fill > .card:last-child {
+    display: none;
+  }
+  .frame--account .appt-card__img {
+    aspect-ratio: auto;
+    height: 90px;
+  }
+  .frame--account .account-grid .h3 {
+    font-size: 1.2rem;
+  }
+  .frame--account .account-grid .check {
+    min-height: 0;
+    padding: 2px 0;
+  }
+  .frame--account .account-grid .notice {
+    padding: 6px 10px;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) and (max-height: 780px) {
+  .frame--catalog .preview-panel {
+    gap: 4px;
+    padding-block: 10px;
+  }
+  .frame--assistant .chooser > p:first-child {
+    display: none;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) {
+  /* preview panel: the photo absorbs whatever height is left */
+  .frame--catalog .preview-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .frame--catalog .preview-panel > * {
+    flex: 0 0 auto;
+  }
+  .frame--catalog .preview-panel .preview-panel__img {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 60px;
+  }
+  .frame--catalog .preview-panel > .btn {
+    margin-top: auto;
+  }
+}
+/* mid-height screens (≈ 780–920 px) */
+@media (min-width: 901px) and (min-height: 781px) and (max-height: 920px) {
+  .booking-frame .booking__col--time .cal__day {
+    height: 3.2vh;
+    max-height: 3.2vh;
+  }
+  .booking-frame .slot {
+    min-height: 3.8vh;
+  }
+  .frame--account .above-decor .lead,
+  .frame--account .above-decor .ornament,
+  .frame--account .frame__fill > .card:last-child {
+    display: none;
+  }
+  .frame--account .appt-card {
+    grid-template-columns: 130px minmax(0, 1fr);
+  }
+  .frame--account .appt-card__img {
+    aspect-ratio: auto;
+    height: 120px;
+  }
+  .frame--account .account-grid .check {
+    min-height: 0;
+    padding: 4px 0;
+  }
+}
+@media (min-width: 901px) and (min-height: 781px) and (max-height: 920px) {
+  .frame--catalog .preview-panel .ornament {
+    display: none;
+  }
+  .frame--catalog .preview-panel {
+    gap: 6px;
+  }
+}

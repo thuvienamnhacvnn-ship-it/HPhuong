@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageContext } from "@/lib/page";
 import { Lily, Ornament } from "@/components/decor";
 import { AssistantWorkspace } from "@/components/AssistantWorkspace";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -11,7 +12,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function AdvicePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale, t } = await pageContext(params);
   return (
-    <div className="assistant-page">
+    <Frame className="frame--assistant">
+    <div className="assistant-page frame__fill">
       <Lily position="tr" />
       <div className="above-decor stack-sm">
         <h1 className="display display--md">
@@ -24,5 +26,6 @@ export default async function AdvicePage({ params }: { params: Promise<{ locale:
       </div>
       <AssistantWorkspace locale={locale} />
     </div>
+    </Frame>
   );
 }

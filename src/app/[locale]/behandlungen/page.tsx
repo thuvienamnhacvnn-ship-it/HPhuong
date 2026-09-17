@@ -8,6 +8,7 @@ import { Img } from "@/components/Img";
 import { Lily, Ornament } from "@/components/decor";
 import { IconArrow, IconCheck, IconClock, IconDrop, IconFlower, IconHeart, IconLeaf, IconLotus, IconStones } from "@/components/icons";
 import { CatalogFilters } from "@/components/CatalogFilters";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -50,7 +51,7 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
   };
 
   return (
-    <>
+    <Frame className="frame--catalog" label={t.nav.behandlungen}>
       <section className="band">
         <Lily position="tr" />
         <div className="band__inner above-decor">
@@ -66,7 +67,8 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
         </div>
       </section>
 
-      <div className="page" style={{ paddingTop: 12 }}>
+      <div className="page frame__fill catalog-page">
+        <div className="catalog-toolbar">
         <nav className="tabs" aria-label={t.catalog.filters}>
           {["alle", ...CATEGORIES].map((c) => {
             const Icon = TAB_ICONS[c];
@@ -80,7 +82,8 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
         <Suspense>
           <CatalogFilters locale={locale} />
         </Suspense>
-        <p className="small muted" role="status" aria-live="polite">
+        </div>
+        <p className="sr-only" role="status" aria-live="polite">
           {t.catalog.results(services.length)}
         </p>
 
@@ -170,6 +173,6 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
           ))}
         </div>
       </div>
-    </>
+    </Frame>
   );
 }

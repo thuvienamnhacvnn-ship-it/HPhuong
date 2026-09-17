@@ -4,6 +4,7 @@ import { one, pageContext } from "@/lib/page";
 import { currentCustomer } from "@/lib/auth";
 import { Lily, Ornament } from "@/components/decor";
 import { MagicLinkForm } from "@/components/MagicLinkForm";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -15,7 +16,8 @@ export default async function LoginPage({ params, searchParams }: { params: Prom
   if (await currentCustomer()) redirect(`/${locale}/konto`);
   const expired = one((await searchParams).error) === "expired";
   return (
-    <div className="page" style={{ position: "relative", overflow: "hidden", minHeight: "70vh" }}>
+    <Frame className="frame--center">
+    <div className="page frame__fill" style={{ position: "relative", overflow: "hidden" }}>
       <Lily position="tr" />
       <div className="narrow stack above-decor">
         <h1 className="display display--md">{t.login.title}</h1>
@@ -27,5 +29,6 @@ export default async function LoginPage({ params, searchParams }: { params: Prom
         </div>
       </div>
     </div>
+    </Frame>
   );
 }

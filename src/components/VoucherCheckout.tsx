@@ -178,10 +178,9 @@ export function VoucherCheckout({ locale, amounts, initialAmount, maxMessage, sa
         </button>
         {sandbox && (
           <p className="small muted row" style={{ gap: 8, margin: 0 }}>
-            <IconLock width={18} height={18} /> {t.voucher.testNote}
+            <IconLock width={18} height={18} /> {t.voucher.testNote} {t.voucher.noCardStored}
           </p>
         )}
-        <p className="small muted" style={{ margin: 0 }}>{t.voucher.noCardStored}</p>
       </aside>
     </form>
   );

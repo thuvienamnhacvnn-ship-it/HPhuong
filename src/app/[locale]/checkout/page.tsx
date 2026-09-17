@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { one, pageContext } from "@/lib/page";
 import { getSettings } from "@/lib/catalog";
 import { VoucherCheckout } from "@/components/VoucherCheckout";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -14,7 +15,8 @@ export default async function CheckoutPage({ params, searchParams }: { params: P
   const requested = Number(one((await searchParams).amount));
   const amounts = settings.voucherDenominationsCents;
   return (
-    <div className="page">
+    <Frame className="frame--checkout">
+    <div className="page frame__fill">
       <VoucherCheckout
         locale={locale}
         amounts={amounts}
@@ -23,5 +25,6 @@ export default async function CheckoutPage({ params, searchParams }: { params: P
         sandbox={settings.paymentMode === "sandbox"}
       />
     </div>
+    </Frame>
   );
 }

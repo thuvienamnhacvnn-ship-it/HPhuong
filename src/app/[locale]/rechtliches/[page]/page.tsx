@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { pageContext } from "@/lib/page";
 import { schema } from "@/lib/db";
 import { Ornament } from "@/components/decor";
+import { Frame } from "@/components/Frame";
 
 type Props = { params: Promise<{ locale: string; page: string }> };
 
@@ -19,11 +20,13 @@ export default async function LegalPage({ params }: Props) {
   const [page] = await db.select().from(schema.contentPages).where(eq(schema.contentPages.id, (await params).page));
   if (!page) notFound();
   return (
-    <div className="page narrow stack">
+    <Frame className="frame--center">
+    <div className="page narrow stack frame__fill">
       <h1 className="display display--md">{page.title[locale]}</h1>
       <Ornament />
       {!page.approved && <p className="notice notice--warn">{t.footer.draft}</p>}
       <div style={{ whiteSpace: "pre-wrap" }}>{page.body[locale]}</div>
     </div>
+    </Frame>
   );
 }

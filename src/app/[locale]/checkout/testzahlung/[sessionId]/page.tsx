@@ -6,6 +6,7 @@ import { findPaymentBySession } from "@/lib/payments";
 import { formatAmount } from "@/lib/money";
 import { unseal } from "@/lib/ids";
 import { SandboxButtons } from "@/components/SandboxButtons";
+import { Frame } from "@/components/Frame";
 
 export const metadata: Metadata = { title: "Testkasse", robots: { index: false } };
 
@@ -17,18 +18,21 @@ export default async function SandboxCheckout({ params }: { params: Promise<{ lo
   const found = settings.paymentMode === "sandbox" ? await findPaymentBySession(db, sessionId) : null;
   if (!found) {
     return (
-      <div className="page narrow">
+      <Frame className="frame--center">
+      <div className="page narrow frame__fill">
         <div className="card card--pad empty">
           <p className="lead">{t.order.notFound}</p>
           <Link className="btn" href={`/${locale}/gutschein`}>{t.offers.voucherCta}</Link>
         </div>
       </div>
+      </Frame>
     );
   }
   const { payment, order } = found;
   const orderToken = order.publicTokenSealed ? unseal(order.publicTokenSealed) : null;
   return (
-    <div className="page narrow stack">
+    <Frame className="frame--center">
+    <div className="page narrow stack frame__fill">
       <p className="sandbox-banner" role="note">{t.sandbox.banner}</p>
       <section className="card card--pad stack">
         <h1 className="h2">{t.sandbox.title}</h1>
@@ -53,5 +57,6 @@ export default async function SandboxCheckout({ params }: { params: Promise<{ lo
         )}
       </section>
     </div>
+    </Frame>
   );
 }

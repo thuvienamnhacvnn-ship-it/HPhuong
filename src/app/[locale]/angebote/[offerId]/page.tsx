@@ -7,6 +7,7 @@ import { Img } from "@/components/Img";
 import { Ornament } from "@/components/decor";
 import { IconCheck } from "@/components/icons";
 import { ComboRequestForm } from "@/components/ComboRequestForm";
+import { Frame } from "@/components/Frame";
 
 type Props = { params: Promise<{ locale: string; offerId: string }> };
 
@@ -21,17 +22,20 @@ export default async function OfferPage({ params }: Props) {
   const found = await getOffer(db, (await params).offerId);
   if (!found || !found.current) {
     return (
-      <div className="page narrow">
+      <Frame className="frame--center">
+      <div className="page narrow frame__fill">
         <div className="card card--pad empty">
           <p className="lead">{t.offers.expired}</p>
           <Link className="btn" href={`/${locale}/angebote`}>{t.nav.angebote}</Link>
         </div>
       </div>
+      </Frame>
     );
   }
   const { offer, components, image } = found;
   return (
-    <div className="page">
+    <Frame className="frame--checkout">
+    <div className="page frame__fill">
       <div className="checkout">
         <section className="card checkout__form">
           <div className="stack-sm">
@@ -69,5 +73,6 @@ export default async function OfferPage({ params }: Props) {
         </aside>
       </div>
     </div>
+    </Frame>
   );
 }

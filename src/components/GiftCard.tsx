@@ -10,7 +10,7 @@ export function GiftCard({ locale, amountCents, recipient }: { locale: Locale; a
       <Img id="gift-card-blank" alt="" sizes="(max-width: 1000px) 90vw, 480px" />
       <div className="gift__overlay" aria-hidden>
         <div className="gift__logo">
-          <img src="/media/logo-medallion-192.webp" alt="" width={120} height={120} />
+          <img src="/media/logo-emblem-240.webp" alt="" width={105} height={120} style={{ objectFit: "contain" }} />
           <span>HPHUONG</span>
           <small>{t.brand.descriptor}</small>
         </div>

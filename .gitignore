@@ -9,3 +9,5 @@ public/media/
 test-results/
 public/_mobile.html
 .next-build/
+public/_fc.js
+public/_frame-test.html

@@ -9,6 +9,7 @@ import { Ornament } from "@/components/decor";
 import { IconCalendar, IconClock, IconHourglass, IconCheck, IconInfo } from "@/components/icons";
 import { CancelAppointment } from "@/components/CancelAppointment";
 import { MEDIA } from "@/lib/media-config";
+import { Frame } from "@/components/Frame";
 
 export const metadata: Metadata = { title: "Termin", robots: { index: false } };
 
@@ -28,12 +29,14 @@ export default async function AppointmentPage({ params, searchParams }: { params
 
   if (!appointment || !appointmentTokenValid(appointment)) {
     return (
-      <div className="page narrow">
+      <Frame className="frame--center">
+      <div className="page narrow frame__fill">
         <div className="card card--pad empty">
           <p className="lead">{t.appointment.linkExpired}</p>
           <Link className="btn" href={`/${locale}/termin`}>{t.appointment.bookAgain}</Link>
         </div>
       </div>
+      </Frame>
     );
   }
 
@@ -43,7 +46,8 @@ export default async function AppointmentPage({ params, searchParams }: { params
   const StatusIcon = status === "confirmed" ? IconCheck : IconHourglass;
 
   return (
-    <div className="page narrow stack">
+    <Frame className="frame--center">
+    <div className="page narrow stack frame__fill">
       <div className="stack-sm">
         <p className="eyebrow">{t.appointment.title}</p>
         <h1 className="display display--md">{s.segments.map((seg) => seg.name[locale]).join(" + ")}</h1>
@@ -90,5 +94,6 @@ export default async function AppointmentPage({ params, searchParams }: { params
         </div>
       </section>
     </div>
+    </Frame>
   );
 }

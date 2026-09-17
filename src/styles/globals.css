@@ -1143,9 +1143,7 @@ h3,
   grid-template-rows: minmax(0, 1fr) auto;
   min-height: calc(100dvh - var(--header));
   overflow: hidden;
-  background:
-    radial-gradient(1200px 700px at 12% 30%, var(--orb-ring), transparent 60%),
-    linear-gradient(180deg, var(--bg-a), var(--bg-b));
+  background: linear-gradient(180deg, var(--bg-a), var(--bg-b));
 }
 .home__stage {
   position: relative;
@@ -3145,5 +3143,22 @@ p.row > svg {
   .booking-bar {
     padding: 10px 12px;
     gap: 6px 12px;
+  }
+}
+
+.booking-summary {
+  display: grid;
+  gap: 6px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 10px;
+}
+.booking-form__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 1180px) and (min-width: 901px), (max-width: 480px) {
+  .booking-form__pair {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

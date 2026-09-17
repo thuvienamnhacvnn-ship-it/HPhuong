@@ -4,9 +4,10 @@ import { pageContext } from "@/lib/page";
 import { getOffer, getSettings, listOffers } from "@/lib/catalog";
 import { formatPrice } from "@/lib/money";
 import { Img } from "@/components/Img";
-import { Lily, Ornament } from "@/components/decor";
+import { Ornament } from "@/components/decor";
 import { IconArrow, IconFlower, IconGift, IconHeart, IconLeaf, IconStones } from "@/components/icons";
 import { VoucherQuickPick } from "@/components/VoucherQuickPick";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -20,8 +21,8 @@ export default async function OffersPage({ params }: { params: Promise<{ locale:
   const details = (await Promise.all(offers.map((o) => getOffer(db, o.id)))).filter((d) => d !== null);
 
   return (
-    <>
-      <div className="offers">
+    <Frame className="frame--offers" label={t.nav.angebote}>
+      <div className="offers frame__fill">
         <section className="offers__hero" aria-labelledby="offers-title">
           <div className="offers__hero-img">
             <Img id="ritual-still-life" alt="" priority sizes="(max-width: 1100px) 100vw, 60vw" />
@@ -87,9 +88,6 @@ export default async function OffersPage({ params }: { params: Promise<{ locale:
           </div>
         ))}
       </div>
-      <div style={{ position: "relative", height: 0 }}>
-        <Lily position="bl" />
-      </div>
-    </>
+    </Frame>
   );
 }

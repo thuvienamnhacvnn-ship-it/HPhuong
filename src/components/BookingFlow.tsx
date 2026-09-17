@@ -324,7 +324,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
 
       <div className="booking" data-step={step}>
         {/* 1 — treatment */}
-        <section className="card booking__col booking__col--services" aria-labelledby="b-services">
+        <section className="card booking__col booking__col--services frame-scroll" aria-labelledby="b-services">
           <h2 id="b-services">{t.booking.chooseTreatment}</h2>
           <div className="stack-sm">
             {services.map((s) => {
@@ -376,7 +376,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
         </section>
 
         {/* 2 — date, time, staff */}
-        <section className="card booking__col booking__col--time" aria-labelledby="b-time">
+        <section className="card booking__col booking__col--time frame-scroll" aria-labelledby="b-time">
           {service && variant && (
             <button type="button" className="service-pick show-mobile-flex" onClick={() => setStep(1)} aria-label={`${t.booking.change}: ${service.name[locale]}`}>
               <span className="service-pick__img"><Img id={service.imageAssetId} alt="" sizes="84px" /></span>
@@ -467,7 +467,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
         </section>
 
         {/* 3 — summary & contact */}
-        <section className="card booking__col booking__col--contact" aria-labelledby="b-choice">
+        <section className="card booking__col booking__col--contact frame-scroll" aria-labelledby="b-choice">
           <h2 id="b-choice">{t.booking.yourChoice}</h2>
           {service && variant ? (
             <div className="service-pick" style={{ cursor: "default" }}>
@@ -481,15 +481,16 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
           ) : (
             <p className="muted">{t.booking.chooseTreatment}</p>
           )}
-          <div className="stack-sm" style={{ borderTop: "1px solid var(--line-soft)", paddingTop: 12 }}>
+          <div className="booking-summary">
             <p className="summary-line" style={{ margin: 0 }}><IconCalendar /> {dateLabel ?? "—"}</p>
             <p className="summary-line" style={{ margin: 0 }}><IconClock /> {time ? `${time} ${t.booking.uhr}` : "—"} <span className="small muted">({timezone})</span></p>
             {hold && !holdExpired && <p className="small muted" style={{ margin: 0 }}>{t.booking.holdActive(holdLeftMin)}</p>}
             {holdExpired && <p className="small notice notice--warn" style={{ margin: 0 }}>{t.booking.holdExpired}</p>}
           </div>
 
-          <form className="stack" onSubmit={submit} noValidate>
+          <form className="stack booking-form" onSubmit={submit} noValidate>
             <h2 className="h3">{t.booking.contact}</h2>
+            <div className="booking-form__pair">
             <div className="field">
               <label htmlFor="b-name">{t.booking.name} *</label>
               <div className="input-icon"><IconUser /><input id="b-name" className="input" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} aria-invalid={fieldErrors.name || undefined} required maxLength={120} /></div>
@@ -498,10 +499,17 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
               <label htmlFor="b-email">{t.booking.email} *</label>
               <div className="input-icon"><IconMail /><input id="b-email" className="input" type="email" autoComplete="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={fieldErrors.email || undefined} required maxLength={200} /></div>
             </div>
+            </div>
+            <div className="booking-form__pair">
             <div className="field">
               <label htmlFor="b-phone">{t.booking.phone} ({t.common.optional})</label>
               <div className="input-icon"><IconPhone /><input id="b-phone" className="input" type="tel" autoComplete="tel" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} aria-invalid={fieldErrors.phone || undefined} aria-describedby="b-phone-hint" maxLength={30} /></div>
-              <span id="b-phone-hint" className="hint">{t.booking.phoneHint}</span>
+              <span id="b-phone-hint" className="hint booking-form__hint">{t.booking.phoneHint}</span>
+            </div>
+            <div className="field">
+              <label htmlFor="b-note">{t.booking.note} ({t.common.optional})</label>
+              <input id="b-note" className="input" value={note} onChange={(e) => setNote(e.target.value)} maxLength={500} placeholder={t.booking.notePlaceholder} />
+            </div>
             </div>
             {whatsappAvailable ? (
               <label className="check">
@@ -512,18 +520,13 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
                 </span>
               </label>
             ) : (
-              <p className="small muted row" style={{ gap: 8, margin: 0 }}><IconInfo width={18} height={18} /> {t.booking.whatsappUnavailable}</p>
+              <p className="small muted row booking-note-wa" style={{ gap: 8, margin: 0 }}><IconInfo width={18} height={18} /> {t.booking.whatsappUnavailable}</p>
             )}
-            <div className="field">
-              <label htmlFor="b-note">{t.booking.note} ({t.common.optional})</label>
-              <textarea id="b-note" className="textarea" value={note} onChange={(e) => setNote(e.target.value)} maxLength={500} placeholder={t.booking.notePlaceholder} style={{ minHeight: 80 }} />
-            </div>
             {formError && <p className="notice notice--danger" role="alert">{formError}</p>}
             <button className="btn btn--lg btn--block" type="submit" disabled={submitting}>
               {submitting && <span className="spin" />} {t.booking.submit} <IconArrow />
             </button>
-            <p className="small muted" style={{ textAlign: "center", margin: 0 }}>{t.booking.confirmHint}</p>
-            <p className="small muted" style={{ textAlign: "center", margin: 0 }}>{t.booking.privacy}</p>
+            <p className="small muted" style={{ textAlign: "center", margin: 0 }}>{t.booking.confirmHint} {t.booking.privacy}</p>
           </form>
         </section>
       </div>

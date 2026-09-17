@@ -5,6 +5,7 @@ import { Lily, Ornament } from "@/components/decor";
 import { GiftCard } from "@/components/GiftCard";
 import { VoucherQuickPick } from "@/components/VoucherQuickPick";
 import { IconInfo } from "@/components/icons";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -15,7 +16,8 @@ export default async function VoucherPage({ params }: { params: Promise<{ locale
   const { locale, t, db } = await pageContext(params);
   const settings = await getSettings(db);
   return (
-    <div className="page" style={{ position: "relative", overflow: "hidden" }}>
+    <Frame className="frame--voucher">
+    <div className="page frame__fill" style={{ position: "relative", overflow: "hidden" }}>
       <Lily position="tr-sm" />
       <div className="checkout above-decor">
         <section className="stack">
@@ -41,5 +43,6 @@ export default async function VoucherPage({ params }: { params: Promise<{ locale
         </aside>
       </div>
     </div>
+    </Frame>
   );
 }

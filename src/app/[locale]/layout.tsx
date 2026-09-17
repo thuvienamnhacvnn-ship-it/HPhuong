@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import "@/styles/globals.css";
 import "@/styles/theme.css";
 import "@/styles/decor.css";
+import "@/styles/frames.css";
 import { cookies } from "next/headers";
 import { getDict, isLocale, LOCALES } from "@/i18n";
 import { Chrome } from "@/components/Chrome";

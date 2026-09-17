@@ -7,8 +7,13 @@
   không dùng screenshot làm giao diện.
 - Theo yêu cầu thêm của chủ dự án (17/09): **bỏ thanh menu dọc**, header ngang có logo; **logo tách nền cỡ lớn** bên trái banner Home
   (`assets/brand/logo-emblem.png`, bản raster dẫn xuất — đối chiếu logo gốc trước khi in); **giao diện tối** graphite + hồng đậm
-  (nút mặt trăng/mặt trời, nhớ bằng cookie); **hoạ tiết mềm**: nền hoa ly mờ, mảng màu loang, sóng viền vàng, cánh hoa bay nhẹ
+  (nút mặt trăng/mặt trời, nhớ bằng cookie); **hoạ tiết mềm**: sóng viền vàng, cánh hoa bay nhẹ, hoạ tiết góc thẻ
   (tắt khi người dùng chọn giảm chuyển động).
+- **Khung toàn màn hình (yêu cầu 17/09):** trên máy tính (rộng > 900px, cao ≥ 560px) mỗi trang là 1 hoặc nhiều khung cao đúng 1 màn hình,
+  cuộn dừng khít từng khung (`scroll-snap`). Header cố định, footer nằm trong khung cuối. Kontakt = 2 khung, các trang khác = 1 khung.
+  Đã đo tự động ở 1920×1080, 1440×900, 1536×864, 1366×768, 1366×657: không phần nào bị cắt, không khung nào cuộn bên trong.
+  Màn thấp (≤ 780px) tự chuyển chế độ gọn. Điện thoại giữ cuộn tự nhiên (form đặt lịch không thể nằm trong 1 màn điện thoại).
+  Code: `src/components/Frame.tsx`, `src/styles/frames.css`.
 - Bộ máy đặt lịch có tài nguyên, buffer, giữ chỗ TTL, pending → duyệt, tự hết hạn, đổi lịch nguyên tử, combo theo chuỗi.
 - Voucher: sandbox checkout, webhook HMAC idempotent, cấp 1 lần, ledger, redeem đồng thời an toàn, refund/void có quyền.
 - Thông báo: hàng đợi có dedupe, nhắc 24 h, huỷ lịch huỷ nhắc, WhatsApp chỉ khi opt-in + có số, fallback e-mail.

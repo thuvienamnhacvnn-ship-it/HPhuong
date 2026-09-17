@@ -13,6 +13,7 @@ import { Lily, Ornament } from "@/components/decor";
 import { IconBell, IconCalendar, IconClock, IconGift, IconHourglass, IconCheck, IconLotus } from "@/components/icons";
 import { AccountPreferences } from "@/components/AccountPreferences";
 import { CATEGORY_IMAGE } from "@/components/categories";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -40,7 +41,8 @@ export default async function AccountPage({ params }: { params: Promise<{ locale
   const tokenOf = (sealed: string | null) => (sealed ? unseal(sealed) : null);
 
   return (
-    <div className="page" style={{ position: "relative", overflow: "hidden" }}>
+    <Frame className="frame--account">
+    <div className="page frame__fill" style={{ position: "relative", overflow: "hidden" }}>
       <Lily position="tr" />
       <div className="above-decor stack-sm">
         <p className="eyebrow">{t.account.eyebrow}</p>
@@ -152,5 +154,6 @@ export default async function AccountPage({ params }: { params: Promise<{ locale
         <span className="side-quote">{t.brand.tagline}</span>
       </div>
     </div>
+    </Frame>
   );
 }

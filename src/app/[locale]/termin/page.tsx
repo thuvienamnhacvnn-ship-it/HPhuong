@@ -7,6 +7,7 @@ import { addDays } from "@/lib/time";
 import { whatsappConfigured } from "@/lib/notifications/adapters";
 import { BookingFlow } from "@/components/BookingFlow";
 import { Lily, Ornament } from "@/components/decor";
+import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { t } = await pageContext(params);
@@ -22,7 +23,7 @@ export default async function BookingPage({ params, searchParams }: { params: Pr
   const today = todayLocal(settings.timezone);
 
   return (
-    <>
+    <Frame className="frame--booking" label={t.booking.title}>
       <section className="band">
         <Lily position="tr" />
         <div className="above-decor stack-sm">
@@ -34,7 +35,7 @@ export default async function BookingPage({ params, searchParams }: { params: Pr
           <Ornament />
         </div>
       </section>
-      <div className="page" style={{ paddingTop: 0 }}>
+      <div className="page frame__fill booking-frame" style={{ paddingTop: 0 }}>
         <BookingFlow
           locale={locale}
           services={services.map((s) => ({ id: s.id, name: s.name, imageAssetId: s.imageAssetId, variants: s.variants.map((v) => ({ id: v.id, minutes: v.minutes, priceCents: v.priceCents })) }))}
@@ -45,6 +46,6 @@ export default async function BookingPage({ params, searchParams }: { params: Pr
           initial={{ service: one(sp.service), variant: one(sp.variant), date: one(sp.date), time: one(sp.time), staff: one(sp.staff) }}
         />
       </div>
-    </>
+    </Frame>
   );
 }

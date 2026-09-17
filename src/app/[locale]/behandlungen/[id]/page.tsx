@@ -4,6 +4,7 @@ import { one, pageContext } from "@/lib/page";
 import { getService } from "@/lib/catalog";
 import { formatPrice } from "@/lib/money";
 import { Ornament, PetalFrame } from "@/components/decor";
+import { Frame } from "@/components/Frame";
 import { IconArrow, IconBack, IconDoc, IconInfo, IconLeaf, IconPlay } from "@/components/icons";
 
 type Props = { params: Promise<{ locale: string; id: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -20,19 +21,22 @@ export default async function TreatmentPage({ params, searchParams }: Props) {
   const service = await getService(db, id);
   if (!service || service.variants.length === 0) {
     return (
-      <div className="page">
+      <Frame className="frame--center">
+      <div className="page frame__fill">
         <div className="card empty">
           <p className="lead">{t.treatment.notFound}</p>
           <Link className="btn" href={`/${locale}/behandlungen`}>{t.treatment.backToList}</Link>
         </div>
       </div>
+      </Frame>
     );
   }
   const sp = await searchParams;
   const variant = service.variants.find((v) => v.id === one(sp.variant)) ?? service.variants[0];
 
   return (
-    <div className="treatment">
+    <Frame className="frame--treatment">
+    <div className="treatment frame__fill">
       <div className="treatment__visual">
         <Link className="treatment__back" href={`/${locale}/behandlungen?category=${service.category}`}>
           <IconBack /> {t.treatment.backToList}
@@ -40,7 +44,7 @@ export default async function TreatmentPage({ params, searchParams }: Props) {
         <PetalFrame imageId={service.imageAssetId ?? ""} alt={service.image?.alt[locale] ?? service.name[locale]} priority sizes="(max-width: 1000px) 100vw, 48vw" imgClassName="treatment__img" />
       </div>
 
-      <article className="treatment__body">
+      <article className="treatment__body frame-scroll">
         <div className="row row--between" style={{ alignItems: "flex-start" }}>
           <div className="stack-sm">
             <p className="eyebrow">{t.treatment.eyebrow}</p>
@@ -125,5 +129,6 @@ export default async function TreatmentPage({ params, searchParams }: Props) {
         )}
       </article>
     </div>
+    </Frame>
   );
 }
