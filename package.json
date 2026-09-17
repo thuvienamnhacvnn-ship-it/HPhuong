@@ -1,0 +1,46 @@
+{
+  "name": "hphuong-spa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3035",
+    "build": "next build",
+    "start": "next start -p 3035",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "tsx scripts/db-push.ts",
+    "seed": "tsx scripts/seed.ts",
+    "setup": "npm run db:push && npm run seed && npm run assets",
+    "assets": "tsx scripts/assets.ts",
+    "worker": "tsx scripts/worker.ts",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.124.0",
+    "@electric-sql/pglite": "0.5.8",
+    "drizzle-orm": "0.45.2",
+    "next": "16.3.4",
+    "pg": "8.23.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "0.0.1",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "26.5.0",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "drizzle-kit": "0.31.10",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.4",
+    "sharp": "0.35.4",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3"
+  }
+}

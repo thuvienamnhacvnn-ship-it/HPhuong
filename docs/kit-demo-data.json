@@ -1,0 +1,104 @@
+{
+  "demo": true,
+  "brand": "HPHUONG Cosmetic & Spa",
+  "currency": "EUR",
+  "timezone": "Europe/Berlin",
+  "defaultLocale": "de",
+  "locales": [
+    "de",
+    "en"
+  ],
+  "bookingMode": "manual_confirmation",
+  "appointmentPayment": "pay_at_studio",
+  "business": {
+    "address": null,
+    "phone": null,
+    "email": null,
+    "openingHours": null,
+    "socialLinks": {}
+  },
+  "services": [
+    {
+      "id": "gesichtspflege",
+      "category": "gesicht",
+      "name": "Gesichtspflege",
+      "image": "assets/images/service-facial.png",
+      "variants": [
+        {
+          "id": "60",
+          "minutes": 60,
+          "priceCents": 6900
+        },
+        {
+          "id": "90",
+          "minutes": 90,
+          "priceCents": 9900
+        }
+      ]
+    },
+    {
+      "id": "aroma-massage",
+      "category": "massage",
+      "name": "Aroma Massage",
+      "image": "assets/images/service-massage.png",
+      "variants": [
+        {
+          "id": "60",
+          "minutes": 60,
+          "priceCents": 7500
+        }
+      ]
+    },
+    {
+      "id": "head-spa",
+      "category": "head-spa",
+      "name": "Head Spa",
+      "image": "assets/images/service-headspa.png",
+      "variants": [
+        {
+          "id": "45",
+          "minutes": 45,
+          "priceCents": 5900
+        }
+      ]
+    },
+    {
+      "id": "wellness-fusspflege",
+      "category": "pflege",
+      "name": "Wellness Fußpflege",
+      "image": "assets/images/service-footcare.png",
+      "variants": [
+        {
+          "id": "40",
+          "minutes": 40,
+          "priceCents": 4500
+        }
+      ]
+    }
+  ],
+  "offer": {
+    "id": "pflege-ruhe",
+    "priceCents": 12900,
+    "treatmentMinutes": 120,
+    "components": [
+      {
+        "serviceId": "gesichtspflege",
+        "variantId": "60"
+      },
+      {
+        "serviceId": "aroma-massage",
+        "variantId": "60"
+      }
+    ],
+    "bookingMode": "staff_scheduling_request"
+  },
+  "voucherDenominationsCents": [
+    5000,
+    10000,
+    15000
+  ],
+  "videoUrl": null,
+  "paymentMode": "sandbox",
+  "whatsappEnabled": false,
+  "publicLaunchEnabled": false
+}

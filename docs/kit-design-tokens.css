@@ -1,0 +1,8 @@
+:root {
+  --ivory:#FFF9F3; --blush:#F8EEE8; --petal:#E8C5BD;
+  --rose:#874953; --ink:#49352F; --gold:#B58A55; --line:#DEC8B8;
+  --font-heading:"Cormorant Garamond",Georgia,serif;
+  --font-body:Inter,Arial,sans-serif; --radius:16px; --control-min:44px;
+  --rail:136px; --header:68px; --gap:24px;
+}
+/* Starting tokens only; verify contrast and layout in the running app. */
