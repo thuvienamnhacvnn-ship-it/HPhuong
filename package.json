@@ -14,6 +14,7 @@
     "seed": "tsx scripts/seed.ts",
     "setup": "npm run db:push && npm run seed && npm run assets",
     "assets": "tsx scripts/assets.ts",
+    "logo:cutout": "tsx scripts/logo-cutout.ts",
     "worker": "tsx scripts/worker.ts",
     "test": "tsx --test tests/*.test.ts"
   },

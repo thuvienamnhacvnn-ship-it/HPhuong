@@ -235,7 +235,7 @@ const en: Dict = {
     pending: "Checking payment …",
     pendingHint: "As soon as the payment provider confirms the payment, we send the voucher. This page updates automatically.",
     paid: "Payment confirmed",
-    paidHint: "Your voucher has been issued and sent to your e-mail address.",
+    paidHint: "Your voucher has been issued. We are sending it to your e-mail address.",
     failed: "Payment failed",
     failedHint: "Nothing was charged. You can try again.",
     cancelled: "Payment cancelled",

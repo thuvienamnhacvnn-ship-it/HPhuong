@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import type { Db } from "./db";
 import { getDb, schema } from "./db";
@@ -130,4 +131,15 @@ export async function logout(kind: "customer" | "staff") {
     await db.delete(schema.sessions).where(eq(schema.sessions.tokenHash, sha256(token)));
   }
   jar.delete(name);
+}
+
+/**
+ * For admin pages. Layout and page render in parallel, so every page checks the
+ * session itself instead of trusting the layout's redirect.
+ */
+export async function pageStaff(minRole: Role = "therapist"): Promise<StaffUser> {
+  const user = await currentStaff();
+  if (!user) redirect("/admin/login");
+  if (RANK[user.role as Role] < RANK[minRole]) redirect("/admin");
+  return user;
 }

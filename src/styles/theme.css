@@ -1,0 +1,92 @@
+/* Theme tokens. Light = the KIT's Spa Atelier palette. Dark = graphite with
+   deep rose ("Nacht"). Components only use these variables, never raw colours. */
+
+:root {
+  color-scheme: light;
+  --surface: rgb(255 253 251 / 88%);
+  --glass: rgb(252 244 240 / 92%);
+  --glass-strong: rgb(255 252 249 / 95%);
+  --orb-hi: #fffaf6;
+  --orb-ring: rgb(255 255 255 / 65%);
+  --bg-a: #fbefea;
+  --bg-b: #f8e8e2;
+  --media-bg: #f4e1da;
+  --on-accent: #ffffff;
+  --selected: #f8e6e3;
+  --disabled: #b09d95;
+  --fade: 250 238 232;
+  --bubble-user: #b9767f;
+  --placeholder: #86736b;
+  --warn-strong: #5f3e0c;
+  --rose-text: #874953;
+  --demo-bg: #49352f;
+  --demo-fg: #fff7f1;
+  --glow: rgb(255 255 255 / 70%);
+  --blob-a: rgb(232 197 189 / 55%);
+  --blob-b: rgb(217 191 152 / 28%);
+  --pattern: rgb(181 138 85 / 9%);
+  --emblem-glow: rgb(255 255 255 / 85%);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ivory: #242127;
+  --blush: #19171b;
+  --petal: #5a3440;
+  --petal-soft: #3a2830;
+  --rose: #a85d6d; /* fill with white text: 4.8:1 */
+  --rose-deep: #8f4b5a;
+  --rose-tint: #33242b;
+  --rose-text: #e3a7b4; /* text on graphite: 8:1 */
+  --ink: #e6dcd7;
+  --ink-strong: #f6eeea;
+  --ink-soft: #b8aba5;
+  --gold: #c9a36b;
+  --gold-soft: #7c6446;
+  --line: #4a4148;
+  --line-soft: #362f35;
+  --white: #2a262c;
+  --ok: #8fd1ae;
+  --ok-tint: #1f3329;
+  --warn: #e7c07e;
+  --warn-tint: #3a2f1c;
+  --warn-strong: #f1d39c;
+  --danger: #f0a1a1;
+  --danger-tint: #3d2224;
+
+  --surface: rgb(40 36 42 / 88%);
+  --glass: rgb(28 26 31 / 90%);
+  --glass-strong: rgb(36 33 39 / 96%);
+  --orb-hi: #4a3139;
+  --orb-ring: rgb(255 255 255 / 6%);
+  --bg-a: #1d1b20;
+  --bg-b: #221b22;
+  --media-bg: #2b2328;
+  --selected: #3d2a33;
+  --disabled: #6f6469;
+  --fade: 29 27 32;
+  --bubble-user: #8f4b5a;
+  --placeholder: #9a8d88;
+  --demo-bg: #3a2830;
+  --demo-fg: #f6eeea;
+  --glow: rgb(168 93 109 / 18%);
+  --blob-a: rgb(143 75 90 / 30%);
+  --blob-b: rgb(58 74 110 / 22%);
+  --pattern: rgb(201 163 107 / 7%);
+  --emblem-glow: rgb(246 226 206 / 30%);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 35%), 0 2px 8px rgb(0 0 0 / 25%);
+  --shadow: 0 2px 6px rgb(0 0 0 / 35%), 0 14px 36px rgb(0 0 0 / 35%);
+  --focus: 0 0 0 3px #19171b, 0 0 0 5px #e3a7b4;
+}
+
+:root[data-theme="dark"] .notice {
+  color: var(--ink-strong);
+}
+/* The logo lettering is dark brown: lift it a little and give it a warm halo on graphite. */
+:root[data-theme="dark"] .home__emblem img,
+:root[data-theme="dark"] .brand__emblem {
+  filter: brightness(1.18) saturate(1.05) drop-shadow(0 0 18px rgb(246 226 206 / 18%));
+}
+:root[data-theme="dark"] .home__emblem::before {
+  inset: 18% 6% 0;
+}

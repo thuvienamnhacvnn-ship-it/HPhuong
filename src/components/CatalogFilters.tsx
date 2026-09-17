@@ -19,7 +19,13 @@ export function CatalogFilters({ locale }: { locale: Locale }) {
     if (params.get("focus") === "search") inputRef.current?.focus();
   }, [params]);
 
-  useEffect(() => setQ(params.get("q") ?? ""), [params]);
+  // Back/Forward changes the URL query: adopt it (state derived from props during render).
+  const urlQ = params.get("q") ?? "";
+  const [lastUrlQ, setLastUrlQ] = useState(urlQ);
+  if (urlQ !== lastUrlQ) {
+    setLastUrlQ(urlQ);
+    setQ(urlQ);
+  }
 
   function update(key: string, value: string | null) {
     const next = new URLSearchParams(params.toString());

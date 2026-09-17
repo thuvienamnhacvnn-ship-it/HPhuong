@@ -246,7 +246,7 @@ const de = {
     pending: "Zahlung wird geprüft …",
     pendingHint: "Sobald der Zahlungsanbieter die Zahlung bestätigt, senden wir den Gutschein. Die Seite aktualisiert sich automatisch.",
     paid: "Zahlung bestätigt",
-    paidHint: "Dein Gutschein ist ausgestellt und wurde an deine E-Mail-Adresse gesendet.",
+    paidHint: "Dein Gutschein ist ausgestellt. Wir senden ihn an deine E-Mail-Adresse.",
     failed: "Zahlung fehlgeschlagen",
     failedHint: "Es wurde nichts abgebucht. Du kannst es erneut versuchen.",
     cancelled: "Zahlung abgebrochen",

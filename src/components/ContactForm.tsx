@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getDict, type Locale } from "@/i18n";
 import { api, errorText } from "./api";
 import { IconArrow, IconCheck } from "./icons";
@@ -8,12 +8,14 @@ import { IconArrow, IconCheck } from "./icons";
 export function ContactForm({ locale }: { locale: Locale }) {
   const t = getDict(locale);
   const [f, setF] = useState({ name: "", email: "", message: "", website: "" });
-  const [startedAt, setStartedAt] = useState(0);
+  const startedAt = useRef(0);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => setStartedAt(Date.now()), []);
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   if (sent) {
     return (
@@ -34,7 +36,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
         setBusy(true);
         setError(null);
         try {
-          await api("/api/contact", { body: { ...f, locale, startedAt } });
+          await api("/api/contact", { body: { ...f, locale, startedAt: startedAt.current } });
           setSent(true);
         } catch (err) {
           setError(errorText(t.errors, t.common.genericError, t.common.offline, err));

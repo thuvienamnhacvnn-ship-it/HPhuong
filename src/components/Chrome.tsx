@@ -19,12 +19,14 @@ import {
   IconYoutube,
 } from "./icons";
 import { AssistantChat } from "./AssistantChat";
+import { ThemeToggle, type Theme } from "./ThemeToggle";
 
 type Props = {
   locale: Locale;
   socialLinks: Record<string, string>;
   demo: boolean;
   signedIn: boolean;
+  theme: Theme;
   children: React.ReactNode;
 };
 
@@ -37,12 +39,17 @@ const SOCIAL_ICONS: Record<string, (p: React.SVGProps<SVGSVGElement>) => React.R
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function Chrome({ locale, socialLinks, demo, signedIn, children }: Props) {
+export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }: Props) {
   const t = getDict(locale);
   const pathname = usePathname();
   const router = useRouter();
-  const [assistantOpen, setAssistantOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  // Overlays remember the path they were opened on, so navigating closes them without an effect.
+  const [assistantAt, setAssistantAt] = useState<string | null>(null);
+  const [menuAt, setMenuAt] = useState<string | null>(null);
+  const assistantOpen = assistantAt === pathname;
+  const menuOpen = menuAt === pathname;
+  const setAssistantOpen = (v: boolean) => setAssistantAt(v ? pathname : null);
+  const setMenuOpen = (v: boolean) => setMenuAt(v ? pathname : null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
   const section = pathname.split("/")[2] ?? "start";
@@ -71,16 +78,11 @@ export function Chrome({ locale, socialLinks, demo, signedIn, children }: Props)
   }, []);
 
   const close = useCallback(() => {
-    setAssistantOpen(false);
-    setMenuOpen(false);
+    setAssistantAt(null);
+    setMenuAt(null);
     requestAnimationFrame(() => triggerRef.current?.focus());
   }, []);
 
-  // Close overlays on navigation.
-  useEffect(() => {
-    setAssistantOpen(false);
-    setMenuOpen(false);
-  }, [pathname]);
 
   const socials = Object.entries(socialLinks).filter(([k, v]) => SOCIAL_ICONS[k] && /^https:\/\//.test(v));
   const onAssistantPage = is("beratung");
@@ -89,56 +91,16 @@ export function Chrome({ locale, socialLinks, demo, signedIn, children }: Props)
     <>
       <a className="skip-link" href="#inhalt">{t.nav.skip}</a>
       <div className="shell" inert={assistantOpen || menuOpen ? true : undefined}>
-        <aside className="rail" aria-label={t.nav.quickNav}>
-          <Link href={`/${locale}/start`} className="rail__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
-            <img className="rail__logo" src="/media/logo-medallion-192.webp" srcSet="/media/logo-medallion-192.webp 1x, /media/logo-medallion-320.webp 2x" width={104} height={104} alt="" />
-            <span className="rail__name">HPHUONG</span>
-            <span className="rail__descriptor">{t.brand.descriptor}</span>
-          </Link>
-          <span className="rail__divider" aria-hidden />
-          <nav className="rail__nav" aria-label={t.nav.quickNav}>
-            <Link className="rail__icon" href={`/${locale}/start`} aria-current={current("start")} title={t.nav.home}>
-              <IconHome />
-              <span className="sr-only">{t.nav.home}</span>
-            </Link>
-            <Link className="rail__icon" href={`/${locale}/termin`} aria-current={current("termin")} title={t.nav.book}>
-              <IconCalendar />
-              <span className="sr-only">{t.nav.book}</span>
-            </Link>
-            <Link className="rail__icon" href={signedIn ? `/${locale}/konto` : `/${locale}/login`} aria-current={current("konto", "login")} title={t.nav.account}>
-              <IconUser />
-              <span className="sr-only">{t.nav.account}</span>
-            </Link>
-          </nav>
-          {socials.length > 0 && (
-            <>
-              <span className="rail__divider" aria-hidden />
-              <nav className="rail__nav" aria-label={t.nav.social}>
-                {socials.map(([key, href]) => {
-                  const Icon = SOCIAL_ICONS[key];
-                  return (
-                    <a key={key} className="rail__icon" href={href} target="_blank" rel="noopener noreferrer" title={key}>
-                      <Icon />
-                      <span className="sr-only">{key}</span>
-                    </a>
-                  );
-                })}
-              </nav>
-            </>
-          )}
-          <span className="rail__divider" aria-hidden />
-          <span className="rail__spacer" />
-          {!onAssistantPage && (
-            <button type="button" className="ai-launch" onClick={() => open(setAssistantOpen)} aria-haspopup="dialog">
-              <span className="ai-launch__orb"><IconLotus /></span>
-              <span className="ai-launch__label">{t.nav.assistant}</span>
-            </button>
-          )}
-        </aside>
-
         <div className="main">
           {demo && <div className="demo-bar" role="note">{t.common.demoNotice}</div>}
           <header className="header">
+            <Link href={`/${locale}/start`} className="brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
+              <img className="brand__emblem" src="/media/logo-emblem-120.webp" srcSet="/media/logo-emblem-120.webp 1x, /media/logo-emblem-240.webp 2x" width={42} height={48} alt="" />
+              <span>
+                <span className="brand__name">HPHUONG</span>
+                <span className="brand__descriptor">{t.brand.descriptor}</span>
+              </span>
+            </Link>
             <nav className="header__nav" aria-label={t.nav.mainNav}>
               {nav.map((n) => (
                 <Link key={n.key} href={n.href} className="header__link" aria-current={current(...n.match)}>
@@ -156,22 +118,32 @@ export function Chrome({ locale, socialLinks, demo, signedIn, children }: Props)
                 <IconSearch />
                 <span className="sr-only">{t.nav.search}</span>
               </Link>
-              <Link className="icon-btn icon-btn--ring" href={signedIn ? `/${locale}/konto` : `/${locale}/login`} title={t.nav.account} aria-current={current("konto", "login")}>
+              <ThemeToggle initial={theme} locale={locale} />
+              <Link className="icon-btn" href={signedIn ? `/${locale}/konto` : `/${locale}/login`} title={t.nav.account} aria-current={current("konto", "login")}>
                 <IconUser />
                 <span className="sr-only">{t.nav.account}</span>
+              </Link>
+              {!onAssistantPage && (
+                <button type="button" className="ai-pill" onClick={() => open(setAssistantOpen)} aria-haspopup="dialog">
+                  <IconLotus /> <span>{t.nav.assistantShort}</span>
+                </button>
+              )}
+              <Link className="btn btn--sm header__cta" href={`/${locale}/termin`} aria-current={current("termin")}>
+                <IconCalendar width={18} height={18} /> {t.nav.book}
               </Link>
             </div>
           </header>
 
           <header className="m-header">
             <Link href={`/${locale}/start`} className="m-header__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
-              <img src="/media/logo-medallion-96.webp" srcSet="/media/logo-medallion-96.webp 1x, /media/logo-medallion-192.webp 2x" width={46} height={46} alt="" />
+              <img src="/media/logo-emblem-120.webp" srcSet="/media/logo-emblem-120.webp 1x, /media/logo-emblem-240.webp 2x" width={40} height={46} alt="" />
               <span>
                 <span className="m-header__name">HPHUONG</span>
                 <span className="m-header__descriptor">{t.brand.descriptor}</span>
               </span>
             </Link>
             <div className="m-header__tools">
+              <ThemeToggle initial={theme} locale={locale} />
               <Link className="icon-btn" onClick={keepQuery(otherLocale)} href={switchHref(otherLocale)} hrefLang={otherLocale} title={t.nav.language}>
                 <span style={{ fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.08em" }}>{otherLocale.toUpperCase()}</span>
               </Link>
@@ -259,6 +231,7 @@ export function Chrome({ locale, socialLinks, demo, signedIn, children }: Props)
             ))}
           </ul>
           <div className="row" style={{ marginTop: 16 }}>
+            <ThemeToggle initial={theme} locale={locale} withLabel />
             <Link className="chip" onClick={keepQuery("de")} href={switchHref("de")} aria-current={locale === "de" ? "true" : undefined}>Deutsch</Link>
             <Link className="chip" onClick={keepQuery("en")} href={switchHref("en")} aria-current={locale === "en" ? "true" : undefined}>English</Link>
           </div>

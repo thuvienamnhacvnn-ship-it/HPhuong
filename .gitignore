@@ -7,3 +7,5 @@ data/
 next-env.d.ts
 public/media/
 test-results/
+public/_mobile.html
+.next-build/

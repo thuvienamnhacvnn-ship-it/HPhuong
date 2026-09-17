@@ -8,7 +8,7 @@ import nextTypescript from "eslint-config-next/typescript";
 const config = [
   ...nextCoreWebVitals,
   ...nextTypescript,
-  { ignores: [".next/**", "node_modules/**", "data/**", "drizzle/**", "public/**"] },
+  { ignores: [".next/**", ".next-build/**", "node_modules/**", "data/**", "drizzle/**", "public/**"] },
 ];
 
 export default config;

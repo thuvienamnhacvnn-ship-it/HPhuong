@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import "@/styles/globals.css";
+import "@/styles/theme.css";
+import "@/styles/decor.css";
+import { cookies } from "next/headers";
 import { getDict, isLocale, LOCALES } from "@/i18n";
 import { Chrome } from "@/components/Chrome";
 import { PetalDefs } from "@/components/decor";
@@ -40,11 +43,12 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const db = await getDb();
   const settings = await getSettings(db);
   const customer = await currentCustomer();
+  const theme = (await cookies()).get("hp-theme")?.value === "dark" ? "dark" : "light";
   return (
-    <html lang={locale} className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang={locale} data-theme={theme} className={`${cormorant.variable} ${inter.variable}`}>
       <body>
         <PetalDefs />
-        <Chrome locale={locale} socialLinks={settings.socialLinks} demo={settings.isDemo} signedIn={!!customer}>
+        <Chrome locale={locale} socialLinks={settings.socialLinks} demo={settings.isDemo} signedIn={!!customer} theme={theme}>
           {children}
         </Chrome>
       </body>

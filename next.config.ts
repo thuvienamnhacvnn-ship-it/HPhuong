@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   agentRules: false,
   devIndicators: false,
   poweredByHeader: false,
+  // Lets a production build run next to a running dev server (NEXT_DIST_DIR=.next-build).
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
   serverExternalPackages: ["@electric-sql/pglite", "sharp"],
   images: { unoptimized: true },
   async headers() {

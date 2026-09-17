@@ -41,7 +41,10 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
   const hrefWith = (patch: Record<string, string | null>) => {
     const next = new URLSearchParams();
     for (const [k, v] of Object.entries(sp)) if (typeof v === "string" && k !== "focus") next.set(k, v);
-    for (const [k, v] of Object.entries(patch)) (v === null ? next.delete(k) : next.set(k, v));
+    for (const [k, v] of Object.entries(patch)) {
+      if (v === null) next.delete(k);
+      else next.set(k, v);
+    }
     const s = next.toString();
     return `/${locale}/behandlungen${s ? `?${s}` : ""}`;
   };
@@ -125,7 +128,7 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
           )}
 
           {preview && (
-            <aside className="card preview-panel" aria-label={preview.name[locale]}>
+            <aside className="card card--flourish preview-panel" aria-label={preview.name[locale]}>
               <div className="preview-panel__img">
                 <Img id={preview.imageAssetId} alt="" sizes="320px" />
               </div>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { getDict, type Locale } from "@/i18n";
 import { formatPrice } from "@/lib/money";
 import { api, ApiError, errorText } from "./api";
@@ -82,18 +82,24 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
   const [isMobile, setIsMobile] = useState(false);
   const [availError, setAvailError] = useState<string | null>(null);
 
+  const holdRef = useRef<Hold | null>(null);
   const [hold, setHoldState] = useState<Hold | null>(null);
   // Restore an active hold after reload (token is not personal data; contact fields are never stored).
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem("hp-hold");
       const h = raw ? (JSON.parse(raw) as Hold) : null;
-      if (h && h.expiresAt > Date.now()) setHoldState(h);
+      if (h && h.expiresAt > Date.now()) {
+        holdRef.current = h;
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time restore from sessionStorage (external system)
+        setHoldState(h);
+      }
     } catch {
       /* storage unavailable */
     }
   }, []);
   const setHold = useCallback((h: Hold | null) => {
+    holdRef.current = h;
     setHoldState(h);
     try {
       if (h) sessionStorage.setItem("hp-hold", JSON.stringify(h));
@@ -116,8 +122,6 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
 
   const service = services.find((s) => s.id === serviceId) ?? null;
   const variant = service?.variants.find((v) => v.id === variantId) ?? null;
-  const holdRef = useRef<Hold | null>(null);
-  holdRef.current = hold;
 
   const err = useCallback((e: unknown) => errorText(t.errors, t.common.genericError, t.common.offline, e), [t]);
 
@@ -136,13 +140,11 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
 
   /* Load availability for the visible month. */
   useEffect(() => {
-    if (!serviceId || !variantId) {
-      setAvail(null);
-      return;
-    }
+    if (!serviceId || !variantId) return;
     const from = month === monthOf(today) ? today : `${month}-01`;
     const days = daysInMonth(month) - Number(from.slice(8)) + 1;
     const controller = new AbortController();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading flag for the fetch started right here
     setLoadingAvail(true);
     setAvailError(null);
     api<Availability>(`/api/availability?service=${serviceId}&variant=${variantId}&from=${from}&days=${days}${staffId ? `&staff=${staffId}` : ""}`, { signal: controller.signal, headers: ownHoldHeader(holdRef.current) })
@@ -190,17 +192,6 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
   // One in-flight hold request per selection (StrictMode double effects, double clicks).
   const inflight = useRef<{ key: string; promise: Promise<Hold | null> } | null>(null);
 
-  const placeHold = useCallback((): Promise<Hold | null> => {
-    if (!selectionKey) return Promise.resolve(null);
-    if (inflight.current?.key === selectionKey) return inflight.current.promise;
-    const promise = placeHoldNow().finally(() => {
-      if (inflight.current?.promise === promise) inflight.current = null;
-    });
-    inflight.current = { key: selectionKey, promise };
-    return promise;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectionKey, serviceId, variantId, date, time, staffId]);
-
   async function placeHoldNow(): Promise<Hold | null> {
     if (!selectionKey || !serviceId || !variantId || !date || !time) return null;
     const current = holdRef.current ?? storedHold();
@@ -230,10 +221,24 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
     }
   }
 
+  function placeHold(): Promise<Hold | null> {
+    if (!selectionKey) return Promise.resolve(null);
+    if (inflight.current?.key === selectionKey) return inflight.current.promise;
+    const promise = placeHoldNow().finally(() => {
+      if (inflight.current?.promise === promise) inflight.current = null;
+    });
+    inflight.current = { key: selectionKey, promise };
+    return promise;
+  }
+
+  const onSelectionChange = useEffectEvent(() => {
+    void placeHold();
+  });
+
   // Hold as soon as a time is chosen.
   useEffect(() => {
-    if (selectionKey) void placeHold();
-  }, [selectionKey, placeHold]);
+    if (selectionKey) onSelectionChange();
+  }, [selectionKey]);
 
   // No release on page leave: a reload must keep the hold. Holds expire on their own (TTL) and
   // every new selection releases the previous one server-side.
