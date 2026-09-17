@@ -309,7 +309,7 @@ function slotsForDay(ctx: Context, plan: BookingPlan, date: string, staffId?: st
 
 export async function getAvailability(
   db: DbOrTx,
-  input: PlanInput & { from: string; days?: number; staffId?: string | null },
+  input: PlanInput & { from: string; days?: number; staffId?: string | null; ownHoldToken?: string | null },
   now = new Date(),
 ): Promise<{ plan: BookingPlan; days: DayAvailability[]; staff: { id: string; name: string }[] }> {
   if (!isValidDateString(input.from)) throw new DomainError("invalid_date");
@@ -318,7 +318,13 @@ export async function getAvailability(
   const settings = await getSettings(db);
   const start = dayBounds(input.from, settings.timezone).from;
   const end = dayBounds(addDays(input.from, days - 1), settings.timezone).to;
-  const ctx = await loadContext(db, start, end, { now });
+  // The guest's own active hold must not hide their chosen slot (e.g. after a reload).
+  let excludeHoldId: string | undefined;
+  if (input.ownHoldToken) {
+    const [own] = await db.select({ id: schema.bookingHolds.id }).from(schema.bookingHolds).where(eq(schema.bookingHolds.tokenHash, sha256(input.ownHoldToken)));
+    excludeHoldId = own?.id;
+  }
+  const ctx = await loadContext(db, start, end, { now, excludeHoldId });
   const result: DayAvailability[] = [];
   for (let i = 0; i < days; i++) result.push(slotsForDay(ctx, plan, addDays(input.from, i), input.staffId));
 
