@@ -2,6 +2,11 @@
    Tokens from the KIT (design-tokens.css), extended. Gold is decoration only:
    lines, borders, ornaments — never small text on light backgrounds. */
 
+/* Base layer: theme/decor/frames/admin stay unlayered, so they always override
+   this file no matter which CSS chunk production loads first (Turbopack put
+   globals after decor and the old rail column came back). */
+@layer base {
+
 :root {
   --ivory: #fff9f3;
   --blush: #f8eee8;
@@ -3162,3 +3167,5 @@ p.row > svg {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+} /* @layer base */
