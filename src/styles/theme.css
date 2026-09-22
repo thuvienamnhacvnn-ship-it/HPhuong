@@ -26,6 +26,8 @@
   --blob-b: rgb(217 191 152 / 28%);
   --pattern: rgb(181 138 85 / 9%);
   --emblem-glow: rgb(255 255 255 / 85%);
+  /* Metallic gold sheen for the wordmark type, tuned to the emblem's gold. */
+  --gold-metal: linear-gradient(176deg, #f2ddb6 0%, #d8b073 38%, #b88d52 60%, #ecd39f 100%);
 }
 
 :root[data-theme="dark"] {
@@ -86,7 +88,4 @@
 :root[data-theme="dark"] .home__emblem img,
 :root[data-theme="dark"] .brand__emblem {
   filter: brightness(1.18) saturate(1.05) drop-shadow(0 0 18px rgb(246 226 206 / 18%));
-}
-:root[data-theme="dark"] .home__emblem::before {
-  inset: 18% 6% 0;
 }

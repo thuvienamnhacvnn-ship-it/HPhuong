@@ -204,18 +204,84 @@ body {
   grid-area: emblem;
   position: relative;
   display: grid;
-  place-items: center;
+  justify-items: center;
+  align-content: center;
   align-self: center;
+  gap: clamp(6px, 1.4vw, 18px);
   z-index: 2;
+  container-type: inline-size;
 }
-.home__emblem img {
+.home__mark {
   width: 100%;
   height: auto;
-  max-height: min(64vh, 560px);
+  max-height: min(52vh, 460px);
   object-fit: contain;
 }
 .home__emblem .pic {
-  width: min(100%, 470px);
+  width: min(100%, 360px);
+}
+
+/* Wordmark set in type (Cormorant) to match the emblem's gold — correctly spelled. */
+.wordmark {
+  display: grid;
+  justify-items: center;
+  gap: clamp(4px, 1.6cqw, 12px);
+  width: min(100%, 340px);
+  text-align: center;
+}
+.wordmark__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding-left: 0.14em;
+  line-height: 1;
+  font-size: clamp(1.5rem, 20cqw, 3rem);
+  background: var(--gold-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* 3D extruded gold: warm bevel below, bright top edge, soft cast shadow. */
+  text-shadow:
+    0 1px 0 #c99a56,
+    0 2px 0 #a97e42,
+    0 3px 0 #8a6534,
+    0 4px 1px #6f5029,
+    0 5px 7px rgba(58, 30, 4, 0.42),
+    0 -1px 1px rgba(255, 246, 220, 0.55);
+}
+.wordmark__rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+.wordmark__rule::before,
+.wordmark__rule::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+}
+.wordmark__rule::before {
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.wordmark__rule::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.wordmark__rule .ornament {
+  margin: 0;
+  color: var(--gold);
+}
+.wordmark__arc {
+  display: block;
+  width: min(100%, 330px);
+  height: auto;
+  overflow: visible;
+  margin-top: -4px;
+}
+.wordmark__arc text {
+  font-family: var(--font-heading);
 }
 .home__copy {
   grid-area: copy;

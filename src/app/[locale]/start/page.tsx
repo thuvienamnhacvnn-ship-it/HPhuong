@@ -24,7 +24,27 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
       <FloatingPetals count={9} />
       <section className="home__stage" aria-labelledby="home-title">
         <div className="home__emblem">
-          <Img id="logo-emblem" alt={`HPHUONG ${t.brand.descriptor}`} priority sizes="(max-width: 900px) 58vw, (max-width: 1280px) 210px, 470px" />
+          <Img id="logo-mark" className="home__mark" alt={`HPHUONG ${t.brand.descriptor}`} priority sizes="(max-width: 900px) 52vw, (max-width: 1280px) 190px, 380px" />
+          <div className="wordmark" aria-hidden>
+            <span className="wordmark__name" data-text="HPHUONG">HPHUONG</span>
+            <span className="wordmark__rule">
+              <Ornament className="ornament--sm ornament--center" />
+            </span>
+            <svg className="wordmark__arc" viewBox="0 0 340 78" focusable={false} aria-hidden>
+              <defs>
+                <linearGradient id="wm-gold" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#f4e0ba" />
+                  <stop offset="0.42" stopColor="#d8b073" />
+                  <stop offset="0.62" stopColor="#b58a52" />
+                  <stop offset="1" stopColor="#eccf97" />
+                </linearGradient>
+                <path id="wm-arc" d="M 22 20 Q 170 92 318 20" fill="none" />
+              </defs>
+              <text fill="url(#wm-gold)" fontSize="18" letterSpacing="3.4" textAnchor="middle" style={{ fontFamily: "var(--font-heading)", fontWeight: 600 }}>
+                <textPath href="#wm-arc" startOffset="50%">COSMETIC &amp; SPA</textPath>
+              </text>
+            </svg>
+          </div>
         </div>
         <div className="home__copy">
           <p className="eyebrow home__eyebrow">
