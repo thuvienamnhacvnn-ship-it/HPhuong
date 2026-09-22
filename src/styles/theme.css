@@ -19,6 +19,10 @@
   --placeholder: #86736b;
   --warn-strong: #5f3e0c;
   --rose-text: #874953;
+  /* Text: gold instead of near-black (Sep 22). Large type = standard deep gold (4:1 on
+     ivory, fine ≥ 1.3rem); small type = dark gold (6:1) so body copy stays readable. */
+  --tx-lg: #9e7440;
+  --tx-sm: #7a5626;
   --demo-bg: #49352f;
   --demo-fg: #fff7f1;
   --glow: rgb(255 255 255 / 70%);
@@ -43,6 +47,8 @@
   --ink: #e6dcd7;
   --ink-strong: #f6eeea;
   --ink-soft: #b8aba5;
+  --tx-lg: #f6eeea;
+  --tx-sm: #e6dcd7;
   --gold: #c9a36b;
   --gold-soft: #7c6446;
   --line: #4a4148;
@@ -82,7 +88,7 @@
 }
 
 :root[data-theme="dark"] .notice {
-  color: var(--ink-strong);
+  color: var(--tx-lg);
 }
 /* The logo lettering is dark brown: lift it a little and give it a warm halo on graphite. */
 :root[data-theme="dark"] .home__emblem img,
