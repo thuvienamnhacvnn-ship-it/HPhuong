@@ -11,3 +11,7 @@ public/_mobile.html
 .next-build/
 public/_fc.js
 public/_frame-test.html
+
+.vercel
+.env*
+!.env.example
