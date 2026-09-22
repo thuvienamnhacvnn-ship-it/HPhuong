@@ -21,7 +21,7 @@
   --rose-text: #874953;
   /* Text: gold instead of near-black (Sep 22). Large type = standard deep gold (4:1 on
      ivory, fine ≥ 1.3rem); small type = dark gold (6:1) so body copy stays readable. */
-  --tx-lg: #9e7440;
+  --tx-lg: #86602e;
   --tx-sm: #7a5626;
   --demo-bg: #49352f;
   --demo-fg: #fff7f1;
