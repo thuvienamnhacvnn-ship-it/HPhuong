@@ -11,6 +11,8 @@ type Props = {
   imgClassName?: string;
   /** Art direction: a separate crop for small screens (≤ 900px), not the desktop image shrunk. */
   mobile?: { id: string; sizes: string };
+  /** data-* attributes for the <picture> (motion hooks: data-mo-depth, data-mo-drift). */
+  data?: Record<`data-${string}`, string | number | undefined>;
 };
 
 const srcset = (id: string, ext: string) => {
@@ -22,13 +24,13 @@ const srcset = (id: string, ext: string) => {
  * <picture> with AVIF/WebP srcsets from the build pipeline, explicit
  * width/height against layout shift, lazy unless `priority`.
  */
-export function Img({ id, alt, sizes = "100vw", className, priority, style, imgStyle, imgClassName, mobile }: Props) {
+export function Img({ id, alt, sizes = "100vw", className, priority, style, imgStyle, imgClassName, mobile, data }: Props) {
   if (!isMediaId(id)) return null;
   const m = MEDIA[id];
   const fallback = `/media/${id}-${m.widths[Math.min(1, m.widths.length - 1)]}.webp`;
   const mq = "(max-width: 900px)";
   return (
-    <picture className={className ? `pic ${className}` : "pic"} style={style}>
+    <picture className={className ? `pic ${className}` : "pic"} style={style} {...data}>
       {mobile && isMediaId(mobile.id) && (
         <>
           <source media={mq} type="image/avif" srcSet={srcset(mobile.id, "avif")} sizes={mobile.sizes} />

@@ -1,5 +1,5 @@
 /**
- * Data model — HPHUONG Cosmetic & Spa.
+ * Data model — HPHUONG Kosmetik & Spa.
  *
  * Money is always integer cents, durations integer minutes, instants are
  * timestamptz (UTC) and the business zone lives in business_settings.
@@ -29,8 +29,11 @@ export const businessSettings = pgTable("business_settings", {
   timezone: text("timezone").notNull().default("Europe/Berlin"),
   currency: text("currency").notNull().default("EUR"),
   address: text("address"),
-  phone: text("phone"),
+  phone: text("phone"), // landline
+  mobilePhone: text("mobile_phone"), // mobile; also the WhatsApp number guests can write to
   email: text("email"),
+  // Weekdays without opening rules that are not simply "closed", by ISO weekday: { "6": { de: "nach Vereinbarung", … } }
+  hoursNotes: jsonb("hours_notes").$type<Record<string, I18nText>>().notNull().default({}),
   socialLinks: jsonb("social_links").$type<Record<string, string>>().notNull().default({}),
   mapUrl: text("map_url"),
   bookingMode: text("booking_mode").notNull().default("manual_confirmation"),
@@ -64,7 +67,7 @@ export const assets = pgTable("assets", {
 
 export const services = pgTable("services", {
   id: text("id").primaryKey(),
-  category: text("category").notNull(), // gesicht | massage | head-spa | pflege
+  category: text("category").notNull(), // one of CATEGORIES in src/lib/categories.ts
   name: jsonb("name").$type<I18nText>().notNull(),
   teaser: jsonb("teaser").$type<I18nText>().notNull(),
   description: jsonb("description").$type<I18nText>().notNull(),
@@ -78,6 +81,8 @@ export const services = pgTable("services", {
   roomTypes: jsonb("room_types").$type<string[]>().notNull(),
   equipmentTypes: jsonb("equipment_types").$type<string[]>().notNull().default([]),
   bookable: boolean("bookable").notNull().default(true),
+  // Add-on to the treatments of its category ("Extras"): listed with a price, never booked on its own.
+  isAddon: boolean("is_addon").notNull().default(false),
   visible: boolean("visible").notNull().default(true),
   sortOrder: integer("sort_order").notNull().default(0),
   isDemo: boolean("is_demo").notNull().default(false),
@@ -87,9 +92,15 @@ export const serviceVariants = pgTable(
   "service_variants",
   {
     serviceId: text("service_id").notNull().references(() => services.id),
-    id: text("id").notNull(), // "60"
-    minutes: integer("minutes").notNull(),
+    id: text("id").notNull(), // "60", "std", "gesicht-dekollete"
+    // Row name when one treatment has several price rows ("Gesicht & Dekolleté"); null = the service name is the row.
+    label: jsonb("label").$type<I18nText>(),
+    // null = the studio publishes no duration: price-list row only, appointment by phone/WhatsApp, never online.
+    minutes: integer("minutes"),
     priceCents: integer("price_cents").notNull(),
+    // "ab 25,00 €": the price is a starting price.
+    priceFrom: boolean("price_from").notNull().default(false),
+    sortOrder: integer("sort_order").notNull().default(0),
     active: boolean("active").notNull().default(true),
   },
   (t) => [primaryKey({ columns: [t.serviceId, t.id] })],
@@ -206,6 +217,8 @@ export type AppointmentSnapshot = {
     name: I18nText;
     minutes: number;
     priceCents: number;
+    /** Starting price ("ab") at booking time. Absent on appointments booked before the flag existed. */
+    priceFrom?: boolean;
     bufferBeforeMinutes: number;
     bufferAfterMinutes: number;
     startsAt?: string;

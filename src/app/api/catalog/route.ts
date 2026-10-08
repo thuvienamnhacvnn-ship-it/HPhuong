@@ -1,5 +1,5 @@
 import { route } from "@/lib/http";
-import { listOffers, listServices } from "@/lib/catalog";
+import { isTimed, listOffers, listServices } from "@/lib/catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,9 @@ export const GET = route(async (request, db) => {
       teaser: s.teaser,
       imageAssetId: s.imageAssetId,
       bookable: s.bookable,
-      variants: s.variants.map((v) => ({ id: v.id, minutes: v.minutes, priceCents: v.priceCents })),
+      isAddon: s.isAddon,
+      // minutes null = no published duration; bookable = this row can be booked online
+      variants: s.variants.map((v) => ({ id: v.id, label: v.label, minutes: v.minutes, priceCents: v.priceCents, priceFrom: v.priceFrom, bookable: s.bookable && !s.isAddon && isTimed(v) })),
     })),
     offers: offers.map((o) => ({ id: o.id, name: o.name, priceCents: o.priceCents, treatmentMinutes: o.treatmentMinutes, bookingMode: o.bookingMode })),
   };

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api";
 import { adminError } from "./ActionButton";
 
-type Service = { id: string; name: string; variants: { id: string; minutes: number; priceCents: number }[] };
+type Service = { id: string; name: string; variants: { id: string; label: string | null; minutes: number; priceCents: number; priceFrom: boolean }[] };
 
 export function ManualBookingForm({ today, services, staff }: { today: string; services: Service[]; staff: { id: string; name: string }[] }) {
   const router = useRouter();
@@ -62,9 +62,9 @@ export function ManualBookingForm({ today, services, staff }: { today: string; s
           </select>
         </div>
         <div className="field">
-          <label htmlFor="mb-v">Dauer</label>
+          <label htmlFor="mb-v">Variante / Dauer</label>
           <select id="mb-v" className="select" value={variantId} onChange={(e) => { setVariantId(e.target.value); setTime(""); }}>
-            {service?.variants.map((v) => <option key={v.id} value={v.id}>{v.minutes} Min. · {(v.priceCents / 100).toFixed(0)} €</option>)}
+            {service?.variants.map((v) => <option key={v.id} value={v.id}>{v.label ? `${v.label} · ` : ""}{v.minutes} Min. · {v.priceFrom ? "ab " : ""}{(v.priceCents / 100).toFixed(2).replace(".", ",")} €</option>)}
           </select>
         </div>
         <div className="field">

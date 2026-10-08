@@ -2,23 +2,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { one, pageContext } from "@/lib/page";
 import { appointmentTokenValid, findAppointmentByToken } from "@/lib/scheduling";
-import { formatPrice } from "@/lib/money";
+import { formatSnapshotPrice } from "@/lib/money";
+import { getService } from "@/lib/catalog";
+import { categoryImage } from "@/components/categories";
 import { formatLocalDate, formatLocalTime } from "@/lib/time";
 import { Img } from "@/components/Img";
 import { Ornament } from "@/components/decor";
 import { IconCalendar, IconClock, IconHourglass, IconCheck, IconInfo } from "@/components/icons";
 import { CancelAppointment } from "@/components/CancelAppointment";
-import { MEDIA } from "@/lib/media-config";
 import { Frame } from "@/components/Frame";
 
 export const metadata: Metadata = { title: "Termin", robots: { index: false } };
-
-const IMAGE_FOR: Record<string, keyof typeof MEDIA> = {
-  gesichtspflege: "service-facial",
-  "aroma-massage": "service-massage",
-  "head-spa": "service-headspa",
-  "wellness-fusspflege": "service-footcare",
-};
 
 /** Guest view of one appointment, reached by the unguessable link from the e-mail. */
 export default async function AppointmentPage({ params, searchParams }: { params: Promise<{ locale: string; token: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -42,6 +36,9 @@ export default async function AppointmentPage({ params, searchParams }: { params
 
   const s = appointment.snapshot;
   const status = appointment.status;
+  // Picture of the booked treatment, else of its group; groups without a fitting photo show none.
+  const booked = await getService(db, s.segments[0].serviceId, { includeHidden: true });
+  const imageId = booked?.imageAssetId ?? categoryImage(booked?.category);
   const cancellable = ["pending", "confirmed", "requested"].includes(status) && (!appointment.startsAt || appointment.startsAt > new Date());
   const StatusIcon = status === "confirmed" ? IconCheck : IconHourglass;
 
@@ -60,9 +57,11 @@ export default async function AppointmentPage({ params, searchParams }: { params
       )}
       <section className="card card--pad stack">
         <div className="appt-card" style={{ border: 0, padding: 0 }}>
-          <div className="appt-card__img">
-            <Img id={IMAGE_FOR[s.segments[0].serviceId]} alt="" sizes="160px" />
-          </div>
+          {imageId && (
+            <div className="appt-card__img">
+              <Img id={imageId} alt="" sizes="160px" />
+            </div>
+          )}
           <div className="stack-sm">
             <span className={`status status--${status}`} style={{ justifySelf: "start" }}>
               <StatusIcon /> {t.appointment.status[status] ?? status}
@@ -78,7 +77,7 @@ export default async function AppointmentPage({ params, searchParams }: { params
             ) : (
               <p className="muted" style={{ margin: 0 }}>{String(appointment.requestPreferences?.preferredDates ?? "")}</p>
             )}
-            <p className="price" style={{ margin: 0 }}>{formatPrice(s.totalCents, locale, s.currency)}</p>
+            <p className="price" style={{ margin: 0 }}>{formatSnapshotPrice(s, locale)}</p>
           </div>
         </div>
         <p style={{ margin: 0 }}>{t.appointment.statusText[status]}</p>

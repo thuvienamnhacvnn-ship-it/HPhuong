@@ -18,7 +18,7 @@ import { and, eq, gt, inArray, isNull, lt, ne, or, sql } from "drizzle-orm";
 import type { Db, DbOrTx, Tx } from "./db";
 import { schema } from "./db";
 import { DomainError } from "./errors";
-import { getOffer, getSettings, resolveVariant, type Settings } from "./catalog";
+import { getOffer, getService, getSettings, isTimed, resolveVariant, variantName, type Settings } from "./catalog";
 import {
   addDays,
   addMinutes,
@@ -43,6 +43,8 @@ export type PlanSegment = {
   name: I18nText;
   minutes: number;
   priceCents: number;
+  /** The price is a starting price ("ab"). */
+  priceFrom: boolean;
   bufferBeforeMinutes: number;
   bufferAfterMinutes: number;
   roomTypes: string[];
@@ -61,8 +63,17 @@ export type BookingPlan = {
 
 export type PlanInput = { serviceId?: string; variantId?: string; offerId?: string };
 
-async function segmentFor(db: DbOrTx, serviceId: string, variantId: string): Promise<PlanSegment> {
-  const { service, variant } = await resolveVariant(db, serviceId, variantId);
+/**
+ * `existing` = re-reading the resource needs of an appointment that already exists: the service may
+ * have been hidden since, which must not block rescheduling it.
+ */
+async function segmentFor(db: DbOrTx, serviceId: string, variantId: string, opts: { existing?: boolean } = {}): Promise<PlanSegment> {
+  const service = await getService(db, serviceId, { includeHidden: opts.existing });
+  if (!service) throw new DomainError("service_not_found", 404);
+  const variant = service.variants.find((v) => v.id === variantId);
+  if (!variant) throw new DomainError("variant_not_found", 404);
+  // A price row without a published duration cannot be scheduled — it is arranged by phone.
+  if (!isTimed(variant) || service.isAddon) throw new DomainError("service_not_bookable", 409);
   const skills = await db
     .select({ staffId: schema.staffSkills.staffId })
     .from(schema.staffSkills)
@@ -71,9 +82,10 @@ async function segmentFor(db: DbOrTx, serviceId: string, variantId: string): Pro
   return {
     serviceId,
     variantId,
-    name: service.name,
+    name: variantName(service, variant),
     minutes: variant.minutes,
     priceCents: variant.priceCents,
+    priceFrom: variant.priceFrom,
     bufferBeforeMinutes: service.bufferBeforeMinutes,
     bufferAfterMinutes: service.bufferAfterMinutes,
     roomTypes: service.roomTypes,
@@ -471,6 +483,7 @@ function snapshotOf(plan: BookingPlan, assignment: Assignment | null, settings: 
         name: seg.name,
         minutes: seg.minutes,
         priceCents: seg.priceCents,
+        ...(seg.priceFrom ? { priceFrom: true } : {}),
         bufferBeforeMinutes: seg.bufferBeforeMinutes,
         bufferAfterMinutes: seg.bufferAfterMinutes,
         startsAt: a?.startsAt.toISOString(),
@@ -757,7 +770,7 @@ export async function rescheduleAppointment(
 /** Snapshots keep prices; skills, rooms and equipment are read fresh (staff may have changed). */
 async function refreshResourceNeeds(db: DbOrTx, plan: BookingPlan) {
   for (const seg of plan.segments) {
-    const fresh = await segmentFor(db, seg.serviceId, seg.variantId);
+    const fresh = await segmentFor(db, seg.serviceId, seg.variantId, { existing: true });
     Object.assign(seg, { staffIds: fresh.staffIds, roomTypes: fresh.roomTypes, equipmentTypes: fresh.equipmentTypes });
   }
 }
@@ -770,6 +783,7 @@ function planFromSnapshot(snapshot: AppointmentSnapshot, settings: Settings): Bo
       name: s.name,
       minutes: s.minutes,
       priceCents: s.priceCents,
+      priceFrom: !!s.priceFrom,
       bufferBeforeMinutes: s.bufferBeforeMinutes,
       bufferAfterMinutes: s.bufferAfterMinutes,
       roomTypes: [],

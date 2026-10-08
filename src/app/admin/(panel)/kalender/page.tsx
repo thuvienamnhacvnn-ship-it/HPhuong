@@ -2,7 +2,7 @@ import Link from "next/link";
 import { and, asc, gt, inArray, lt, eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { hasRole, pageStaff } from "@/lib/auth";
-import { getSettings, listServices } from "@/lib/catalog";
+import { bookableVariants, getSettings, listServices } from "@/lib/catalog";
 import { dayBounds, todayLocal } from "@/lib/scheduling";
 import { addDays, isoWeekday, isValidDateString, toLocalParts, formatLocalDate, formatLocalTime } from "@/lib/time";
 import { one } from "@/lib/page";
@@ -97,7 +97,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
             <p className="small muted" style={{ margin: 0 }}>Wird sofort bestätigt. Freie Zeiten werden wie online geprüft (Mitarbeitende, Raum, Geräte, Puffer).</p>
             <ManualBookingForm
               today={today}
-              services={services.map((s) => ({ id: s.id, name: s.name.de, variants: s.variants.map((v) => ({ id: v.id, minutes: v.minutes, priceCents: v.priceCents })) }))}
+              services={services.map((s) => ({ id: s.id, name: s.name.de, variants: bookableVariants(s).map((v) => ({ id: v.id, label: v.label?.de ?? null, minutes: v.minutes, priceCents: v.priceCents, priceFrom: v.priceFrom })) }))}
               staff={staffRows.map((s) => ({ id: s.id, name: s.displayName }))}
             />
           </section>

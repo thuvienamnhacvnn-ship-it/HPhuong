@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getDict, type Locale } from "@/i18n";
-import { formatPrice } from "@/lib/money";
+import { formatServicePrice } from "@/lib/money";
 import { Img } from "./Img";
 import { IconArrow, IconClock } from "./icons";
 
@@ -10,6 +10,7 @@ export type RecCardData = {
   name: { de: string; en: string };
   minutes: number;
   priceCents: number;
+  priceFrom?: boolean;
   imageAssetId: string | null;
   teaser: { de: string; en: string };
   reason?: string;
@@ -31,9 +32,9 @@ export function RecCard({ card, locale }: { card: RecCardData; locale: Locale })
       <h3 className="service-card__title">{card.name[locale]}</h3>
       <div className="meta-row">
         <span className="duration">
-          <IconClock /> {card.minutes} {t.common.min}
+          <IconClock /> {t.common.duration(card.minutes)}
         </span>
-        <span className="price">{formatPrice(card.priceCents, locale)}</span>
+        <span className="price">{formatServicePrice(card.priceCents, locale, card.priceFrom)}</span>
       </div>
       <p className="service-card__teaser">{card.reason || card.teaser[locale]}</p>
       <Link className="link small" href={`/${locale}/behandlungen/${card.serviceId}?variant=${card.variantId}`}>

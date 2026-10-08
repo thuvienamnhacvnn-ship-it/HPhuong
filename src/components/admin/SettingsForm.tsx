@@ -8,6 +8,7 @@ import { adminError } from "./ActionButton";
 type Values = {
   address: string;
   phone: string;
+  mobilePhone: string;
   email: string;
   mapUrl: string;
   instagram: string;
@@ -50,6 +51,7 @@ export function SettingsForm({ initial, canEdit }: { initial: Values; canEdit: b
             body: {
               address: orNull(v.address),
               phone: orNull(v.phone),
+              mobilePhone: orNull(v.mobilePhone),
               email: orNull(v.email),
               mapUrl: orNull(v.mapUrl),
               staffNotifyEmail: orNull(v.staffNotifyEmail),
@@ -77,7 +79,8 @@ export function SettingsForm({ initial, canEdit }: { initial: Values; canEdit: b
         <legend className="label">Kontakt (leer = auf der Website ausgeblendet)</legend>
         <div className="grid-2">
           <div className="field"><label htmlFor="s-addr">Adresse</label><input id="s-addr" className="input" value={v.address} onChange={text("address")} /></div>
-          <div className="field"><label htmlFor="s-phone">Telefon</label><input id="s-phone" className="input" value={v.phone} onChange={text("phone")} /></div>
+          <div className="field"><label htmlFor="s-phone">Telefon (Festnetz)</label><input id="s-phone" className="input" value={v.phone} onChange={text("phone")} /></div>
+          <div className="field"><label htmlFor="s-mobile">Mobil / WhatsApp</label><input id="s-mobile" className="input" value={v.mobilePhone} onChange={text("mobilePhone")} /></div>
           <div className="field"><label htmlFor="s-mail">E-Mail</label><input id="s-mail" className="input" type="email" value={v.email} onChange={text("email")} /></div>
           <div className="field"><label htmlFor="s-map">Karten-Link</label><input id="s-map" className="input" type="url" value={v.mapUrl} onChange={text("mapUrl")} /></div>
           <div className="field"><label htmlFor="s-ig">Instagram-URL</label><input id="s-ig" className="input" type="url" value={v.instagram} onChange={text("instagram")} /></div>

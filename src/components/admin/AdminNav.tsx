@@ -26,9 +26,9 @@ export function AdminNav({ role, name, theme }: { role: string; name: string; th
   return (
     <aside className="rail admin-rail" aria-label="Verwaltung">
       <Link href="/admin" className="rail__brand">
-        <img className="rail__logo" src="/media/logo-emblem-240.webp" alt="" width={80} height={92} style={{ objectFit: "contain" }} />
+        <img className="rail__logo" src="/media/logo-mark-240.webp" alt="" width={88} height={92} style={{ objectFit: "contain" }} />
         <span className="rail__name">HPHUONG</span>
-        <span className="rail__descriptor">Cosmetic &amp; Spa</span>
+        <span className="rail__descriptor">Kosmetik &amp; Spa</span>
       </Link>
       <span className="rail__divider" aria-hidden />
       <nav className="admin-nav" aria-label="Bereiche">

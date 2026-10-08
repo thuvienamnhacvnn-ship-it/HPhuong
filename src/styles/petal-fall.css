@@ -1,0 +1,91 @@
+/* Petals falling in the wind (PetalFall.tsx). A fixed decoration layer above the page content and
+   below the header (40), the phone header and dock (30), the booking bar (28) and every dialog.
+   Only transforms and opacity animate. Nothing here is shown unless motion is allowed. */
+.petal-fall {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .petal-fall {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+  /* 1 · falls the height of the window and is carried --w downwind */
+  .petal-fall__p {
+    position: absolute;
+    left: var(--x);
+    top: -70px;
+    width: var(--s);
+    opacity: 0;
+    animation: pf-fall var(--d) linear var(--dl) infinite;
+    will-change: transform, opacity;
+  }
+  /* 2 · swings in the gusts: slow out with the wind, quicker back */
+  .petal-fall__sway {
+    display: block;
+    animation: pf-sway var(--sd) cubic-bezier(0.45, 0, 0.3, 1) var(--dl) infinite alternate;
+  }
+  /* 3 · turns and tumbles */
+  .petal-fall img {
+    display: block;
+    width: 100%;
+    height: auto;
+    animation: pf-turn var(--rd) linear var(--dl) infinite;
+  }
+  :root[data-theme="dark"] .petal-fall {
+    opacity: 0.72;
+  }
+}
+
+/* Phones: half as many, and smaller. */
+@media (max-width: 900px) {
+  .petal-fall__p:nth-child(n + 7) {
+    display: none;
+  }
+  .petal-fall__p {
+    width: calc(var(--s) * 0.8);
+  }
+}
+@media print {
+  .petal-fall {
+    display: none;
+  }
+}
+
+@keyframes pf-fall {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  7% {
+    opacity: var(--o);
+  }
+  88% {
+    opacity: var(--o);
+  }
+  100% {
+    transform: translate3d(var(--w), calc(100vh + 140px), 0);
+    opacity: 0;
+  }
+}
+@keyframes pf-sway {
+  from {
+    transform: translateX(calc(var(--a) * -0.35));
+  }
+  to {
+    transform: translateX(var(--a));
+  }
+}
+@keyframes pf-turn {
+  from {
+    transform: rotate(var(--r)) rotateY(0deg);
+  }
+  to {
+    transform: rotate(calc(var(--r) + 300deg)) rotateY(360deg);
+  }
+}

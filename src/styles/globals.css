@@ -41,7 +41,7 @@
   --header: 68px;
   --gap: 24px;
   --shadow-sm: 0 1px 2px rgb(73 53 47 / 6%), 0 2px 8px rgb(73 53 47 / 5%);
-  --shadow: 0 2px 6px rgb(73 53 47 / 6%), 0 12px 32px rgb(135 73 83 / 8%);
+  --shadow: 0 2px 6px rgb(73 53 47 / 6%), 0 10px 24px rgb(73 53 47 / 9%);
   --focus: 0 0 0 3px var(--white), 0 0 0 5px var(--rose);
   --dock-h: 72px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -225,16 +225,50 @@ h3,
   line-height: 1.1;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
-  box-shadow: 0 6px 16px rgb(135 73 83 / 18%);
+  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease), transform 0.18s var(--ease);
+  box-shadow: var(--btn-shadow);
   text-align: center;
+  /* Directional fill (motion.css): ::before sweeps in from the left, behind the label, clipped to the pill. */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
 }
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+  pointer-events: none;
+}
+/* Basic fill for every page (admin does not load motion.css, which refines timing and direction). */
+.btn:not([disabled], [aria-disabled="true"]):hover::before {
+  transform: scaleX(1);
+}
+/* The base colour stays; the fill does the darkening. Only the 1px border follows it. */
 .btn:hover {
-  --btn-bg: var(--rose-deep);
-  --btn-border: var(--rose-deep);
+  --btn-border: var(--btn-fill);
 }
 .btn:active {
   transform: translateY(1px);
+}
+.btn:not(.btn--outline, .btn--ghost, .btn--danger):active {
+  --btn-bg: var(--btn-fill);
+}
+/* Outline / ghost / danger: no fill layer (tone change only), and nothing clipped — the outline sweep sits on the border. */
+.btn--outline,
+.btn--ghost,
+.btn--danger {
+  overflow: visible;
+}
+.btn--outline::before,
+.btn--ghost::before,
+.btn--danger::before {
+  content: none;
 }
 .btn[disabled],
 .btn[aria-disabled="true"] {
@@ -581,7 +615,6 @@ h3,
 .rail__logo {
   width: 104px;
   height: 104px;
-  filter: drop-shadow(0 4px 10px rgb(135 73 83 / 16%));
 }
 .rail__name {
   font-family: var(--font-heading);
@@ -655,7 +688,7 @@ h3,
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, var(--orb-hi), var(--petal-soft) 70%);
   border: 1px solid var(--gold-soft);
-  box-shadow: 0 8px 20px rgb(135 73 83 / 16%), inset 0 0 0 4px var(--orb-ring);
+  box-shadow: var(--btn-shadow), inset 0 0 0 4px var(--orb-ring);
   color: var(--rose-text);
   transition: transform 0.2s var(--ease);
 }
@@ -878,6 +911,7 @@ h3,
   .m-header__brand img {
     width: 46px;
     height: 46px;
+    object-fit: contain;
   }
   .m-header__name {
     font-family: var(--font-heading);
@@ -1114,6 +1148,20 @@ h3,
   pointer-events: none;
   overflow: visible;
 }
+.petal__line,
+.petal__hi {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.petal__line {
+  stroke: var(--gold);
+  stroke-width: 2.5;
+}
+.petal__hi {
+  stroke: var(--gold-soft);
+  stroke-width: 1;
+  opacity: 0.8;
+}
 
 /* round image medallion */
 .medallion {
@@ -1140,247 +1188,7 @@ h3,
   object-fit: cover;
 }
 
-/* ------------------------------------------------------------------ home */
-
-.home {
-  position: relative;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  min-height: calc(100dvh - var(--header));
-  overflow: hidden;
-  background: linear-gradient(180deg, var(--bg-a), var(--bg-b));
-}
-.home__stage {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  align-items: center;
-  gap: clamp(16px, 2vw, 32px);
-  padding: clamp(24px, 4vh, 56px) clamp(20px, 4vw, 72px) clamp(16px, 3vh, 36px);
-  min-height: 0;
-}
-.home__copy {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  gap: clamp(14px, 2.2vh, 26px);
-  align-content: center;
-}
-.home__eyebrow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-}
-.home__eyebrow span + span::before {
-  content: "·";
-  margin-right: 18px;
-}
-.home__actions {
-  display: grid;
-  gap: 14px;
-  width: min(100%, 360px);
-}
-.home__visual {
-  position: relative;
-  height: min(72vh, 680px);
-  min-height: 420px;
-}
-.home__visual .petal {
-  position: absolute;
-  inset: 0 -4% 0 0;
-}
-.home__side {
-  position: absolute;
-  right: clamp(12px, 2vw, 32px);
-  top: 50%;
-  z-index: 3;
-  transform: translateY(-50%);
-}
-.treatment-dock {
-  position: absolute;
-  right: clamp(12px, 2vw, 28px);
-  bottom: clamp(10px, 2vh, 24px);
-  z-index: 4;
-  display: grid;
-  grid-template-columns: 92px minmax(0, 1fr) auto;
-  gap: 16px;
-  align-items: center;
-  width: min(480px, 92%);
-  padding: 14px 16px;
-  border-radius: var(--radius-lg);
-  background: var(--glass-strong);
-  box-shadow: var(--shadow);
-  border: 1px solid var(--line-soft);
-}
-.treatment-dock__img {
-  width: 92px;
-  height: 78px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.treatment-dock__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.treatment-dock__title {
-  font-family: var(--font-heading);
-  font-size: 1.45rem;
-  font-weight: 600;
-  color: var(--tx-lg);
-  line-height: 1.1;
-}
-.cat-strip {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 0.9fr);
-  align-items: center;
-  gap: 0;
-  padding: 16px clamp(20px, 3vw, 48px);
-  background: var(--glass);
-  border-top: 1px solid var(--line-soft);
-}
-.cat-strip__item {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 6px clamp(10px, 1.6vw, 26px);
-  text-decoration: none;
-  border-right: 1px solid var(--line);
-  min-height: 92px;
-}
-.cat-strip__item .medallion {
-  width: clamp(64px, 6vw, 92px);
-  height: clamp(64px, 6vw, 92px);
-}
-.cat-strip__label {
-  font-family: var(--font-heading);
-  font-size: clamp(1.25rem, 1rem + 0.6vw, 1.6rem);
-  font-weight: 600;
-  color: var(--tx-lg);
-  position: relative;
-  padding-bottom: 8px;
-}
-.cat-strip__label::after {
-  content: "";
-  position: absolute;
-  left: 20%;
-  right: 20%;
-  bottom: 0;
-  height: 2px;
-  background: var(--ink);
-  transition: background-color 0.2s var(--ease);
-}
-.cat-strip__item:hover .cat-strip__label {
-  color: var(--rose-text);
-}
-.cat-strip__item:hover .cat-strip__label::after {
-  background: var(--rose);
-}
-.cat-strip__quote {
-  display: grid;
-  justify-items: center;
-}
-
-@media (max-width: 1180px) {
-  .cat-strip {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-  .cat-strip__quote {
-    display: none;
-  }
-  .cat-strip__item:nth-child(4) {
-    border-right: 0;
-  }
-}
-
-@media (max-width: 900px) {
-  .home {
-    min-height: auto;
-    grid-template-rows: auto auto;
-  }
-  .home__stage {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 20px 16px 8px;
-  }
-  .home__copy {
-    grid-row: 1;
-    position: relative;
-    z-index: 3;
-    width: 62%;
-    min-height: 560px;
-    align-content: start;
-    padding-top: 6px;
-  }
-  .home__eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    gap: 6px 10px;
-  }
-  .home__eyebrow span + span::before {
-    margin-right: 10px;
-  }
-  .home__copy .display {
-    font-size: clamp(3rem, 14vw, 4.2rem);
-  }
-  .home__visual {
-    grid-row: 1;
-    position: absolute;
-    right: -16px;
-    top: 80px;
-    width: 64%;
-    height: 520px;
-    min-height: 0;
-  }
-  .home__visual .petal {
-    inset: 0;
-  }
-  .home__side,
-  .treatment-dock {
-    display: none;
-  }
-  .home__actions {
-    width: min(100%, 300px);
-  }
-  .cat-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    padding: 12px 16px 20px;
-    background: transparent;
-    border: 0;
-  }
-  .cat-strip__item {
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-    border: 1px solid var(--line-soft);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-    padding: 18px 10px;
-    box-shadow: var(--shadow-sm);
-  }
-  .cat-strip__item .medallion {
-    width: 104px;
-    height: 104px;
-  }
-  .cat-strip__item:nth-child(4) {
-    border-right: 1px solid var(--line-soft);
-  }
-}
-@media (max-width: 420px) {
-  .home__copy {
-    width: 64%;
-    min-height: 520px;
-  }
-  .home__visual {
-    height: 470px;
-    width: 62%;
-  }
-  .home__copy .lead {
-    font-size: 1.15rem;
-  }
-}
+/* Home banner: all of it lives in decor.css (unlayered), next to the other home rules. */
 
 /* ---------------------------------------------------------------- hero band */
 
@@ -2097,11 +1905,46 @@ h3,
   object-fit: cover;
   object-position: 30% 50%;
 }
-.offers__hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgb(var(--fade) / 0%) 20%, rgb(var(--fade) / 88%) 55%, rgb(var(--fade) / 96%));
+/* No colour wash over the photo. The words standing on it keep the light theme's inks in both
+   themes (the photo is always light) and a soft cream shadow so they do not sink into it. */
+.offers__copy > .display,
+.offers__copy > .lead,
+.contact__copy,
+.location-card > div {
+  --on-photo-shadow: 0 1px 0 rgb(255 250 246 / 90%), 0 0 6px rgb(255 250 246 / 85%), 0 2px 16px rgb(255 250 246 / 80%);
+  text-shadow: var(--on-photo-shadow);
+}
+.offers__copy > .display,
+.contact__copy > .display,
+.location-card .h3 {
+  color: #7a4f24;
+}
+.offers__copy > .lead,
+.contact__copy > p {
+  color: #4a2f1c;
+}
+/* The photo fills the whole banner, mirrored like on the contact page: bottle and towels on the
+   left, the calm wall behind the words on the right. */
+.offers__hero-img .pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.offers__hero-img img {
+  object-position: 80% 50%;
+  transform: scaleX(-1);
+}
+/* a card standing on a photo is a solid card, not a veil */
+.offers__copy .voucher-card {
+  background: var(--white);
+  backdrop-filter: none;
+}
+.location-card > div > svg {
+  color: #7a4f24;
+}
+.contact__copy .btn,
+.location-card .btn {
+  text-shadow: none;
 }
 .offers__copy {
   grid-column: 2;
@@ -2447,12 +2290,6 @@ h3,
   position: absolute;
   inset: 0;
 }
-.studio__visual::after {
-  content: "";
-  position: absolute;
-  inset: 45% 0 0;
-  background: linear-gradient(180deg, transparent, rgb(60 36 32 / 45%));
-}
 .studio__overlay {
   position: absolute;
   left: clamp(18px, 4vw, 52px);
@@ -2462,7 +2299,7 @@ h3,
 }
 .studio__overlay .display {
   color: #fffaf6;
-  text-shadow: 0 2px 20px rgb(40 20 16 / 35%);
+  text-shadow: 0 2px 4px rgb(40 20 16 / 55%), 0 4px 22px rgb(40 20 16 / 45%);
 }
 .studio__label {
   position: absolute;
@@ -2533,12 +2370,6 @@ h3,
 .contact__hero .pic img {
   object-position: 80% 50%;
   transform: scaleX(-1);
-}
-.contact__hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgb(var(--fade) / 0%) 18%, rgb(var(--fade) / 90%) 52%);
 }
 .contact__copy {
   grid-column: 2;
@@ -2623,12 +2454,6 @@ h3,
 .location-card .pic {
   position: absolute;
   inset: 0;
-}
-.location-card .pic::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgb(var(--fade) / 72%);
 }
 .location-card > div {
   position: relative;
@@ -2997,53 +2822,10 @@ h3,
   }
 }
 
-.home__hero-img {
-  object-position: 80% 40%;
-}
-@media (max-width: 900px) {
-  .home__hero-img {
-    object-position: 58% 50%;
-  }
-}
-
-/* home fit-to-viewport refinements */
+/* display type is bold site-wide */
 .display {
   font-weight: 700;
 }
-.home {
-  height: calc(100dvh - var(--header) - var(--demo-h, 0px));
-  min-height: 600px;
-}
-.home__stage {
-  padding-top: clamp(12px, 3vh, 48px);
-  padding-bottom: clamp(8px, 2vh, 28px);
-}
-.home__visual {
-  height: 100%;
-  max-height: 700px;
-  min-height: 360px;
-}
-.home__visual .petal {
-  inset: 0 13% 0 0;
-}
-.home__side {
-  right: 0;
-}
-.home .lead {
-  max-width: 440px;
-}
-.home__copy {
-  gap: clamp(8px, 1.8vh, 24px);
-}
-@media (max-width: 900px) {
-  .home {
-    height: auto;
-  }
-  .home__visual .petal {
-    inset: 0;
-  }
-}
-
 .main:has(> .demo-bar) {
   --demo-h: 26px;
 }
@@ -3098,44 +2880,6 @@ p.row > svg {
 }
 
 @media (max-width: 900px) {
-  .home__actions {
-    width: min(80vw, 330px);
-    position: relative;
-    z-index: 4;
-  }
-  .home__actions .btn {
-    white-space: nowrap;
-    font-size: 1.3rem;
-    min-height: 54px;
-    padding-inline: 22px;
-  }
-  .home__eyebrow {
-    font-size: 0.64rem;
-    letter-spacing: 0.14em;
-    gap: 4px 8px;
-    flex-wrap: nowrap;
-    white-space: nowrap;
-  }
-  .home__eyebrow span + span::before {
-    margin-right: 8px;
-  }
-}
-@media (max-width: 360px) {
-  .home__eyebrow {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 900px) {
-  .home__actions .btn--outline {
-    --btn-bg: var(--glass-strong);
-  }
-  .home .lead {
-    max-width: 62%;
-  }
-}
-
-@media (max-width: 900px) {
   /* The booking bar already carries the primary action — no floating AI button on top of it. */
   body:has(.booking-bar) .ai-fab {
     display: none;
@@ -3169,3 +2913,13 @@ p.row > svg {
 }
 
 } /* @layer base */
+
+/* Contact banner, wide screens: the words sit on the calm wall above the bowl, not across it. */
+@media (min-width: 1101px) {
+  .contact__hero {
+    align-items: start;
+  }
+  .contact__copy {
+    padding-top: clamp(28px, 9vh, 96px);
+  }
+}

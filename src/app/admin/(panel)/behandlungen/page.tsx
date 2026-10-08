@@ -1,6 +1,7 @@
 import { getDb, schema } from "@/lib/db";
 import { pageStaff } from "@/lib/auth";
 import { listServices } from "@/lib/catalog";
+import { categoryName } from "@/lib/categories";
 import { ServiceEditor } from "@/components/admin/ServiceEditor";
 
 export const metadata = { title: "Behandlungen" };
@@ -20,6 +21,7 @@ export default async function ServicesAdmin() {
           <h1 className="display display--md">Behandlungen</h1>
           <p className="muted" style={{ margin: 0 }}>
             Preise und Dauer ändern nur neue Buchungen — bestehende Termine behalten ihren gespeicherten Preis. Preise darf nur die Inhaberin ändern.
+            Zeilen ohne Dauer erscheinen mit Preis auf der Website, sind aber nicht online buchbar (Termin telefonisch oder per WhatsApp).
           </p>
         </div>
       </div>
@@ -31,7 +33,8 @@ export default async function ServicesAdmin() {
           service={{
             id: s.id,
             name: s.name.de,
-            category: s.category,
+            category: categoryName(s.category, "de"),
+            isAddon: s.isAddon,
             visible: s.visible,
             bookable: s.bookable,
             contentApproved: s.contentApproved,
@@ -43,7 +46,7 @@ export default async function ServicesAdmin() {
             videoUrl: s.videoUrl,
             teaser: s.teaser,
             description: s.description,
-            variants: s.variants.map((v) => ({ id: v.id, minutes: v.minutes, priceCents: v.priceCents, active: v.active })),
+            variants: s.variants.map((v) => ({ id: v.id, label: v.label?.de ?? null, minutes: v.minutes, priceCents: v.priceCents, priceFrom: v.priceFrom, active: v.active })),
             skills: skills.filter((k) => k.serviceId === s.id).map((k) => k.staffId),
           }}
         />

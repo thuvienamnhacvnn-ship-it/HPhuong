@@ -1,5 +1,5 @@
 import type { schema } from "../db";
-import { formatAmount, formatPrice } from "../money";
+import { formatAmount, formatSnapshotPrice } from "../money";
 import { formatLocalDate, formatLocalTime } from "../time";
 
 type Appointment = typeof schema.appointments.$inferSelect;
@@ -16,11 +16,12 @@ function describe(a: Appointment, locale: L) {
   const when = a.startsAt
     ? `${formatLocalDate(a.startsAt, a.timezone, locale)}, ${formatLocalTime(a.startsAt, a.timezone, locale)}${locale === "de" ? " Uhr" : ""}`
     : locale === "de" ? "Termin wird noch vereinbart" : "Time to be arranged";
-  return { names, when, price: formatPrice(a.snapshot.totalCents, locale, a.snapshot.currency) };
+  return { names, when, price: formatSnapshotPrice(a.snapshot, locale) };
 }
 
 function footer(settings: Settings, locale: L) {
-  const contact = [settings.address, settings.phone, settings.email].filter(Boolean).join(" · ");
+  const mobile = settings.mobilePhone ? `Mobil / WhatsApp ${settings.mobilePhone}` : null;
+  const contact = [settings.address, settings.phone ? `Tel. ${settings.phone}` : null, mobile, settings.email].filter(Boolean).join(" · ");
   return `\n\n—\n${settings.brand}${contact ? `\n${contact}` : ""}\n${locale === "de" ? "Diese Nachricht wurde automatisch versendet." : "This message was sent automatically."}`;
 }
 

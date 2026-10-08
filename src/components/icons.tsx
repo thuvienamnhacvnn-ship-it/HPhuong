@@ -61,7 +61,45 @@ export const IconLotus = (p: P) => (
     <path opacity=".6" d="M2.5 14.5c2.2-.5 4.5-.3 6.4.8 1.3.7 2.3 1.7 3.1 2.9-2.3.9-4.6 1-6.6.1-1.3-.6-2.3-2-2.9-3.8Zm19 0c-.6 1.8-1.6 3.2-2.9 3.8-2 .9-4.3.8-6.6-.1.8-1.2 1.8-2.2 3.1-2.9 1.9-1.1 4.2-1.3 6.4-.8Z" />
   </svg>
 );
-export const IconLeaf = (p: P) => (
+/* Line versions for the home category discs (shown large — the strip thins the stroke in CSS). */
+/* Motion hooks (motion.css, hover on the home strip): ic-draw = the stroke redraws itself (pathLength 1),
+   ic-l* / ic-r* = lotus petals that open outward, ic-trace = a highlight that runs along a line. The
+   drawings themselves are unchanged — the lotus pairs are the same sub-paths, one <path> each. */
+export const IconLotusLine = (p: P) => (
+  <svg {...base({ ...p, className: `ic-lotus ${p.className ?? ""}` })}>
+    <path d="M12 4.6c1.9 1.9 2.9 4.1 2.9 6.5 0 2.3-1 4.4-2.9 6.3-1.9-1.9-2.9-4-2.9-6.3 0-2.4 1-4.6 2.9-6.5Z" />
+    <path className="ic-l1" d="M9.4 8.6C8 7.9 6.5 7.6 5 7.7c0 2.6.8 4.8 2.3 6.5 1.2 1.4 2.8 2.5 4.7 3.2" />
+    <path className="ic-r1" d="M14.6 8.6c1.4-.7 2.9-1 4.4-.9 0 2.6-.8 4.8-2.3 6.5-1.2 1.4-2.8 2.5-4.7 3.2" />
+    <path className="ic-l2" d="M5.2 11.9c-1.2-.2-2.4-.1-3.7.3.6 2 1.8 3.5 3.5 4.4 1.9 1 4.2 1.3 7 .8" />
+    <path className="ic-r2" d="M18.8 11.9c1.2-.2 2.4-.1 3.7.3-.6 2-1.8 3.5-3.5 4.4-1.9 1-4.2 1.3-7 .8" />
+  </svg>
+);
+export const IconFaceLine = (p: P) => (
+  <svg {...base(p)}>
+    <path className="ic-draw" pathLength={1} d="M13.9 5.3c1.2 1.1 1.8 2.5 1.8 4.1l1.5 2.5c.2.4.1.7-.4.8l-.8.2.1 1.2c0 .4-.2.6-.6.6.4.4.3.8-.1 1 .2 1.4-.5 2.2-1.9 2.2h-1.4c-.4 1-.4 2 0 3.1" />
+    <path d="M13.9 5.3c-1.4-1.6-3.4-2.2-5.2-1.6-2.5.8-3.8 3.2-3.5 5.9.2 1.9 1.2 3.2 2.2 4.5.9 1.1 1.2 2.6.8 4.6" />
+    <path d="M13.9 5.3c-.9 1.7-2.4 2.8-4.5 3.2.2 1.5-.1 2.8-.9 4" />
+    <path d="M6.9 4.6C5.5 2.9 3.3 3.3 2.9 5.1c-.3 1.5.8 2.7 2.4 2.6" />
+    <path d="M13.1 10.2c.5.3 1 .3 1.500 0" />
+  </svg>
+);
+export const IconHeadSpaLine = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M14.4 5.2c1.2 1.1 1.8 2.5 1.8 4.1l1.5 2.5c.2.4.1.7-.4.8l-.8.2.1 1.2c0 .4-.2.6-.6.6.4.4.3.8-.1 1 .2 1.4-.5 2.2-1.9 2.2h-1.4c-.4 1-.4 2 0 3.1" />
+    <path d="M14.4 5.2c-1.5-1.7-3.8-2.3-5.9-1.5-2.7 1-4 3.6-3.7 6.5.2 2-.5 3.5-1.3 4.9-.9 1.7-1 3.6-.2 5.8" />
+    <path d="M14.4 5.2c-1.1 2-2.8 3.2-5 3.6.4 2.4-.1 4.4-1.1 6.1-1 1.7-1.2 3.6-.6 6" />
+    <path className="ic-trace" pathLength={1} d="M14.4 5.2c-1.1 2-2.8 3.2-5 3.6.4 2.4-.1 4.4-1.1 6.1-1 1.7-1.2 3.6-.6 6" />
+    <path d="M9.4 8.800c1.300 1.500 1.700 3.300 1.300 5.200-.3 1.500-.1 2.900.6 4.300" />
+    <path d="M13.600 10.100c.5.3 1 .3 1.500 0" />
+  </svg>
+);
+export const IconLeafLine = (p: P) => (
+  <svg {...base({ ...p, className: `ic-leaf ${p.className ?? ""}` })}>
+    <path d="M17.4 3C10.800 4.900 7 9.200 6.900 14.300c0 1.800.5 3.300 1.500 4.600 5.900-1.600 9.400-6.300 9-15.900Z" />
+    <path className="ic-draw" pathLength={1} d="M15.300 6.600C11.300 10.900 8.700 15.400 6.200 21.300" />
+  </svg>
+);
+export const IconLeaf =(p: P) => (
   <svg {...base(p)}><path d="M5 19c0-8 5-13.5 14-14-.3 9-5.8 14-14 14Z" /><path d="M5 19 13 11" /></svg>
 );
 export const IconDrop = (p: P) => (
@@ -156,4 +194,42 @@ export const IconMoon = (p: P) => (
 );
 export const IconSun = (p: P) => (
   <svg {...base(p)}><circle cx="12" cy="12" r="4" /><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" /></svg>
+);
+/* Treatment-group icons (catalog tabs), same 1.5px line as the rest of the set. */
+export const IconHand = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M7.2 12.6V6.4a1.2 1.2 0 0 1 2.400 0v4.800" />
+    <path d="M9.600 11V4.600a1.200 1.200 0 0 1 2.400 0V11" />
+    <path d="M12 11V5.400a1.200 1.200 0 0 1 2.400 0v6.200" />
+    <path d="M14.400 12.200V8a1.200 1.200 0 0 1 2.400 0v6.600c0 3.800-2.200 6.400-5.600 6.400-2.300 0-3.800-1-5-2.900l-2.500-4a1.300 1.300 0 0 1 2.100-1.500l1.400 1.700" />
+  </svg>
+);
+export const IconFoot = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M9.400 21c-2 0-3.200-1.500-3-3.800.2-2.200 1.400-3.400 1.200-5.800-.2-2.600 1.200-4.400 3.400-4.400 2.400 0 3.700 2.100 3.400 5.300-.2 2.400.9 3.400.7 5.600-.2 1.900-1.600 3.100-3.700 3.100Z" />
+    <circle cx="7.800" cy="4.500" r="1" />
+    <circle cx="10.900" cy="3.500" r="1.100" />
+    <circle cx="14" cy="4.300" r="1" />
+    <circle cx="16.400" cy="6.400" r=".9" />
+  </svg>
+);
+export const IconNail = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M9.800 3h4.400v5.200H9.800z" />
+    <path d="M8.300 8.200h7.400l1.600 3.800v7.300a1.700 1.700 0 0 1-1.700 1.700H8.400a1.700 1.700 0 0 1-1.700-1.700V12Z" />
+    <path d="M6.700 15.200h10.600" />
+  </svg>
+);
+export const IconLash = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M3 9.500c2.400 3.300 5.400 5 9 5s6.600-1.700 9-5" />
+    <path d="M12 14.500V18M7.700 13.600l-1.300 3.200M16.300 13.600l1.300 3.200M4.500 11.300l-2 2.300M19.500 11.300l2 2.300" />
+  </svg>
+);
+export const IconEye = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M3 13.500c2.500-3.500 5.500-5.200 9-5.200s6.500 1.700 9 5.200c-2.500 3.500-5.500 5.200-9 5.200s-6.500-1.700-9-5.200Z" />
+    <circle cx="12" cy="13.500" r="2.500" />
+    <path d="M4.500 6.800C6.800 5.200 9.300 4.400 12 4.400s5.200.8 7.500 2.400" />
+  </svg>
 );

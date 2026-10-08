@@ -1,8 +1,11 @@
 /**
  * Derivative logo without the cream plate: keeps the gold HP monogram, the lily
  * and the lettering exactly as drawn, removes plate + outer ring.
- * Output: assets/brand/logo-emblem.png (raster derivative, not a print vector —
- * compare with logo-original.png before publishing).
+ *
+ * RETIRED (Oct 2026): the site's logos now come from the studio's artwork via
+ * scripts/logo-brand.ts. This script is kept for reference only and writes to the
+ * git-ignored data/ folder, so it can never put the old logo back into assets/brand.
+ * Output: data/logo-cutout-legacy.png.
  *
  * Method: colour key against the plate colour sampled from an empty area,
  * soft alpha ramp, then un-mix the plate colour from semi-transparent edges.
@@ -10,7 +13,7 @@
 import sharp from "sharp";
 
 const SRC = "assets/brand/logo-medallion.png";
-const OUT = "assets/brand/logo-emblem.png";
+const OUT = "data/logo-cutout-legacy.png";
 
 const { data, info } = await sharp(SRC).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 const { width: W, height: H } = info;

@@ -1,0 +1,36 @@
+/* Page transition: a bloom of petals opens from the clicked link, covers the page, then opens again
+   on the new one. Drawn on one canvas by PetalTransition.tsx; this file only holds the box and the palette. */
+.petal-tx {
+  /* leading layer → middle layer → the layer that ends up covering everything */
+  --ptx-a: #f1c5ba;
+  --ptx-b: #f8e0d6;
+  --ptx-c: #fdf2ec;
+  /* each petal: tint at its base, lift toward its tip, hairline edge */
+  --ptx-shade: rgba(168, 93, 109, 0.14);
+  --ptx-lift: rgba(255, 255, 255, 0.55);
+  --ptx-line: #9a6334;
+  /* fallback petal, only if the petal images have not loaded yet */
+  --ptx-petal: #e9aeb0;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: none;
+  pointer-events: none;
+  touch-action: none;
+}
+.petal-tx[data-on] {
+  display: block;
+  pointer-events: auto;
+}
+:root[data-theme="dark"] .petal-tx {
+  --ptx-a: #4a2f38;
+  --ptx-b: #33252c;
+  --ptx-c: #1f1c21;
+  --ptx-shade: rgba(0, 0, 0, 0.22);
+  --ptx-lift: rgba(255, 255, 255, 0.06);
+  --ptx-line: #c9a36b;
+  --ptx-petal: #8d5560;
+}

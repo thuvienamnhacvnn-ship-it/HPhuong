@@ -1,5 +1,5 @@
 import { createMemoryDb, schema } from "../src/lib/db";
-import { seedDemo } from "../src/lib/seed-data";
+import { seedKitFixture } from "./fixture";
 import { zonedToUtc } from "../src/lib/time";
 
 /** Monday 19 Oct 2026, 08:00 Berlin. Tuesday the 20th is a normal working day for both staff. */
@@ -8,7 +8,7 @@ export const TUESDAY = "2026-10-20";
 
 export async function testDb() {
   const db = await createMemoryDb();
-  await seedDemo(db, { passwords: { owner: "owner-test-pass", manager: "manager-test-pass", therapist: "therapist-test-pass" } });
+  await seedKitFixture(db, { passwords: { owner: "owner-test-pass", manager: "manager-test-pass", therapist: "therapist-test-pass" } });
   return db;
 }
 

@@ -6,7 +6,8 @@
  */
 import { z } from "zod";
 import type { DbOrTx } from "../db";
-import { getOffer, getService, getSettings, listOffers, listServices, type ServiceWithVariants } from "../catalog";
+import { getOffer, getService, getSettings, isTimed, listOffers, listServices, variantName, type ServiceWithVariants } from "../catalog";
+import { CATEGORIES, categoryName } from "../categories";
 import { getAvailability, todayLocal } from "../scheduling";
 import { addDays, isValidDateString } from "../time";
 import { DomainError } from "../errors";
@@ -17,6 +18,8 @@ export type Card = {
   name: { de: string; en: string };
   minutes: number;
   priceCents: number;
+  /** Starting price ("ab"). */
+  priceFrom: boolean;
   imageAssetId: string | null;
   teaser: { de: string; en: string };
   reason: string;
@@ -29,20 +32,21 @@ export const TOOL_DEFS = [
   {
     name: "search_services",
     description:
-      "List the studio's bookable treatments with variants (minutes, priceCents). Optional filters. Use this before recommending anything.",
+      "List the studio's treatments with their price rows (label, minutes, priceCents, priceFrom, onlineBookable). Rows with minutes=null have no published duration and are arranged by phone or WhatsApp, not online. Optional filters. Use this before recommending anything.",
     input_schema: {
       type: "object" as const,
       properties: {
-        category: { type: "string", enum: ["gesicht", "massage", "head-spa", "pflege"] },
+        category: { type: "string", enum: [...CATEGORIES] },
         maxPriceCents: { type: "integer", minimum: 0 },
         maxMinutes: { type: "integer", minimum: 0 },
+        onlineBookableOnly: { type: "boolean" },
       },
       additionalProperties: false,
     },
   },
   {
     name: "get_service",
-    description: "Details of one treatment: approved description, steps, preparation notes, variants.",
+    description: "Details of one treatment: description, steps, notes, price rows.",
     input_schema: { type: "object" as const, properties: { serviceId: { type: "string" } }, required: ["serviceId"], additionalProperties: false },
   },
   {
@@ -52,7 +56,7 @@ export const TOOL_DEFS = [
   },
   {
     name: "get_availability",
-    description: "Free start times for a treatment variant, from a date (YYYY-MM-DD, studio time zone) for up to 7 days.",
+    description: "Free start times for a price row with onlineBookable=true, from a date (YYYY-MM-DD, studio time zone) for up to 7 days.",
     input_schema: {
       type: "object" as const,
       properties: {
@@ -68,7 +72,7 @@ export const TOOL_DEFS = [
   {
     name: "propose_booking",
     description:
-      "Show the guest a recommendation card with a button to view or choose a time. This does NOT book anything. Call once per recommended treatment (max 3). Set withinBudget honestly against the guest's stated budget (null if no budget given).",
+      "Show the guest a recommendation card with a button to view or choose a time. Only for price rows with onlineBookable=true. This does NOT book anything. Call once per recommended treatment (max 3). Set withinBudget honestly against the guest's stated budget (null if no budget given).",
     input_schema: {
       type: "object" as const,
       properties: {
@@ -87,9 +91,10 @@ export const TOOL_DEFS = [
 
 const schemas = {
   search_services: z.object({
-    category: z.enum(["gesicht", "massage", "head-spa", "pflege"]).optional(),
+    category: z.enum(CATEGORIES).optional(),
     maxPriceCents: z.number().int().min(0).optional(),
     maxMinutes: z.number().int().min(0).optional(),
+    onlineBookableOnly: z.boolean().optional(),
   }).strict(),
   get_service: z.object({ serviceId: z.string().max(80) }).strict(),
   get_offer: z.object({ offerId: z.string().max(80).optional() }).strict(),
@@ -112,10 +117,22 @@ const schemas = {
 const publicService = (s: ServiceWithVariants, locale: "de" | "en") => ({
   serviceId: s.id,
   category: s.category,
+  categoryName: categoryName(s.category, locale),
   name: s.name[locale],
-  teaser: s.teaser[locale],
-  bookable: s.bookable,
-  variants: s.variants.map((v) => ({ variantId: v.id, minutes: v.minutes, priceCents: v.priceCents })),
+  subtitle: s.teaser[locale] || undefined,
+  addOnOnly: s.isAddon || undefined,
+  variants: s.variants.map((v) => {
+    const online = s.bookable && !s.isAddon && isTimed(v);
+    return {
+      variantId: v.id,
+      label: v.label?.[locale],
+      minutes: v.minutes, // null = no published duration
+      priceCents: v.priceCents,
+      priceFrom: v.priceFrom, // true = starting price ("ab" / "from")
+      onlineBookable: online,
+      ...(online ? {} : { howToBook: "by phone or WhatsApp" }),
+    };
+  }),
   contentApprovedByStudio: s.contentApproved,
 });
 
@@ -123,8 +140,14 @@ export async function runTool(db: DbOrTx, name: string, rawInput: unknown, local
   switch (name) {
     case "search_services": {
       const input = schemas.search_services.parse(rawInput);
-      const list = await listServices(db, { category: input.category, maxPriceCents: input.maxPriceCents, maxMinutes: input.maxMinutes, bookableOnly: true });
-      return { services: list.map((s) => publicService(s, locale)), currency: "EUR", note: "Prices are demo prices pending studio approval." };
+      const list = await listServices(db, { category: input.category, maxPriceCents: input.maxPriceCents, maxMinutes: input.maxMinutes, bookableOnly: input.onlineBookableOnly });
+      const settings = await getSettings(db);
+      return {
+        services: list.map((s) => publicService(s, locale)),
+        currency: "EUR",
+        note: "Studio list prices incl. VAT. priceFrom=true means a starting price. Rows with onlineBookable=false are arranged by phone or WhatsApp.",
+        studioContact: { phone: settings.phone, mobileAndWhatsApp: settings.mobilePhone },
+      };
     }
     case "get_service": {
       const { serviceId } = schemas.get_service.parse(rawInput);
@@ -172,14 +195,16 @@ export async function runTool(db: DbOrTx, name: string, rawInput: unknown, local
       if (cards.length >= 3) return { error: "max_three_cards" };
       const s = await getService(db, input.serviceId);
       const variant = s?.variants.find((v) => v.id === input.variantId);
-      if (!s || !variant || !s.bookable) return { error: "unknown_service_or_variant" };
+      if (!s || !variant) return { error: "unknown_service_or_variant" };
+      if (!s.bookable || s.isAddon || !isTimed(variant)) return { error: "not_bookable_online", howToBook: "by phone or WhatsApp" };
       if (cards.some((c) => c.serviceId === s.id && c.variantId === variant.id)) return { ok: true, note: "already shown" };
       cards.push({
         serviceId: s.id,
         variantId: variant.id,
-        name: s.name,
+        name: variantName(s, variant),
         minutes: variant.minutes,
         priceCents: variant.priceCents, // from the database, never from the model
+        priceFrom: variant.priceFrom,
         imageAssetId: s.imageAssetId,
         teaser: s.teaser,
         reason: input.reason,
@@ -187,7 +212,7 @@ export async function runTool(db: DbOrTx, name: string, rawInput: unknown, local
         suggestedDate: input.date && isValidDateString(input.date) ? input.date : undefined,
         suggestedTime: input.date && input.time ? input.time : undefined,
       });
-      return { ok: true, shownPriceCents: variant.priceCents, shownMinutes: variant.minutes };
+      return { ok: true, shownPriceCents: variant.priceCents, shownPriceIsStartingPrice: variant.priceFrom, shownMinutes: variant.minutes };
     }
     default:
       return { error: "unknown_tool" };

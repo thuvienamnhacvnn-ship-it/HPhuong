@@ -3,7 +3,7 @@ import { readJson, route } from "@/lib/http";
 import { choose } from "@/lib/assistant";
 
 const Body = z.object({
-  goal: z.enum(["entspannung", "gesicht", "kopf", "fuesse", "egal"]),
+  goal: z.enum(["entspannung", "gesicht", "koerper", "fuesse", "egal"]),
   maxMinutes: z.number().int().min(0).max(600).nullable().optional(),
   budgetCents: z.number().int().min(0).max(100000).nullable().optional(),
 });

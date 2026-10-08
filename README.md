@@ -1,9 +1,9 @@
-# HPHUONG Cosmetic & Spa — Webapp
+# HPHUONG Kosmetik & Spa — Webapp
 
 Website + hệ thống đặt lịch + voucher + trợ lý AI + trang quản trị, dựng theo **KIT 1 · Spa Atelier**
 (`docs/KIT-BUILD-PROMPT.md`, `docs/KIT-ASSET-MAP.md`, `docs/kit-demo-data.json`, 13 màn trong `docs/kit-screens/`).
 
-> Đây là bản **demo chạy được**: giá, dịch vụ, nhân sự, giờ mở cửa là dữ liệu mẫu (`is_demo`), thanh toán ở chế độ
+> Đây là bản **demo chạy được**: dịch vụ, giá, địa chỉ, giờ mở cửa lấy từ flyer của tiệm (06/10/2026); nhân sự, phòng, ca làm vẫn là dữ liệu mẫu (`is_demo`), thanh toán ở chế độ
 > **sandbox**, e-mail vào **hộp thư demo**, WhatsApp **tắt**. Chủ tiệm phải duyệt nội dung/giá/pháp lý trước khi mở bán.
 
 ## Chạy local
@@ -24,10 +24,11 @@ npm run dev                       # http://localhost:3035/de/start
 | Lệnh | Việc |
 |---|---|
 | `npm run dev` / `build` / `start` | Next.js 16 (cổng 3035) |
-| `npm test` | 23 test nghiệp vụ (DB in-memory) |
+| `npm test` | 33 test: 23 nghiệp vụ (fixture demo) + 10 cho bảng giá thật (DB in-memory) |
 | `npm run typecheck` / `lint` | TypeScript / ESLint |
 | `npm run db:generate` → `db:push` | sửa `src/lib/db/schema.ts` → sinh SQL → áp |
-| `npm run seed` | dữ liệu demo từ `kit-demo-data.json` |
+| `npm run seed` | DB mới: thông tin tiệm + bảng giá từ flyer (`src/lib/flyer-data.ts`) + nhân viên/tài khoản demo |
+| `npm run catalog:sync` | DB đã có: cập nhật thông tin tiệm, giờ mở, 67 dòng giá theo `flyer-data.ts` (idempotent, không đụng lịch hẹn/voucher) |
 | `npm run assets` | ảnh `assets/**.png` → `public/media/*.avif|webp` nhiều cỡ |
 | `npm run logo:cutout` | tách nền logo → `assets/brand/logo-emblem.png` |
 | `npm run worker` | worker gửi thông báo riêng (khi `INPROCESS_WORKER=0`) |

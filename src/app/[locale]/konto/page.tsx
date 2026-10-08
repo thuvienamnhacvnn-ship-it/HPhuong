@@ -5,14 +5,14 @@ import { desc, eq, inArray } from "drizzle-orm";
 import { pageContext } from "@/lib/page";
 import { currentCustomer } from "@/lib/auth";
 import { schema } from "@/lib/db";
-import { formatAmount, formatPrice } from "@/lib/money";
+import { formatAmount, formatSnapshotPrice } from "@/lib/money";
 import { formatLocalDate, formatLocalTime } from "@/lib/time";
 import { unseal } from "@/lib/ids";
 import { Img } from "@/components/Img";
 import { Lily, Ornament } from "@/components/decor";
 import { IconBell, IconCalendar, IconClock, IconGift, IconHourglass, IconCheck, IconLotus } from "@/components/icons";
 import { AccountPreferences } from "@/components/AccountPreferences";
-import { CATEGORY_IMAGE } from "@/components/categories";
+import { categoryImage } from "@/components/categories";
 import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -36,8 +36,11 @@ export default async function AccountPage({ params }: { params: Promise<{ locale
 
   const orders = await db.select().from(schema.voucherOrders).where(eq(schema.voucherOrders.buyerEmail, customer.email)).orderBy(desc(schema.voucherOrders.createdAt));
   const vouchers = orders.length ? await db.select().from(schema.vouchers).where(inArray(schema.vouchers.orderId, orders.map((o) => o.id))) : [];
-  const services = await db.select({ id: schema.services.id, category: schema.services.category }).from(schema.services);
-  const imageFor = (serviceId: string) => CATEGORY_IMAGE[services.find((s) => s.id === serviceId)?.category ?? ""] ?? "service-facial";
+  const services = await db.select({ id: schema.services.id, category: schema.services.category, imageAssetId: schema.services.imageAssetId }).from(schema.services);
+  const imageFor = (serviceId: string) => {
+    const s = services.find((x) => x.id === serviceId);
+    return s?.imageAssetId ?? categoryImage(s?.category);
+  };
   const tokenOf = (sealed: string | null) => (sealed ? unseal(sealed) : null);
 
   return (
@@ -74,7 +77,7 @@ export default async function AccountPage({ params }: { params: Promise<{ locale
                   <span className={`status status--${next.status}`} style={{ justifySelf: "start" }}>
                     {next.status === "confirmed" ? <IconCheck /> : <IconHourglass />} {t.appointment.status[next.status]}
                   </span>
-                  <span className="price" style={{ fontSize: "1.3rem" }}>{formatPrice(next.snapshot.totalCents, locale)}</span>
+                  <span className="price" style={{ fontSize: "1.3rem" }}>{formatSnapshotPrice(next.snapshot, locale)}</span>
                 </div>
               </div>
               <p className="muted" style={{ margin: 0 }}>{t.appointment.statusText[next.status]}</p>

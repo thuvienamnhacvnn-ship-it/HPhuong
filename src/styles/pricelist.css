@@ -1,0 +1,517 @@
+/* Catalog as the studio's price list: treatment groups, photo cards where a fitting photo
+   exists, text rows (name ..... ca. 60 Min. ..... 50,00 €) everywhere else.
+   Loaded after frames.css — the desktop block at the end adapts the one-screen catalog frame. */
+
+/* ------------------------------------------------------------- group tabs */
+.catalog-toolbar--groups .tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  padding-bottom: 4px;
+  gap: 8px;
+}
+.catalog-toolbar--groups .chip {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ groups */
+.catalog-list {
+  display: grid;
+  gap: 34px;
+  align-content: start;
+  min-width: 0;
+}
+.cat-group {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.cat-group + .cat-group {
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+.cat-group__head {
+  display: grid;
+  gap: 4px;
+}
+.cat-group__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 1.4rem + 1vw, 2.3rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--tx-lg);
+  margin: 0;
+}
+.cat-group__sub {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--rose-text);
+}
+.cat-group__intro {
+  margin: 4px 0 0;
+  max-width: 78ch;
+  color: var(--tx-sm);
+}
+.cat-group__note {
+  margin: 0;
+  padding: 10px 14px;
+  border-left: 2px solid var(--gold-soft);
+  background: var(--ivory);
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+  color: var(--tx-sm);
+}
+.service-card__phone {
+  text-align: center;
+}
+.catalog-list .service-card .duration {
+  white-space: nowrap;
+  gap: 6px;
+  font-size: 0.92rem;
+}
+.catalog-list .service-card .duration svg {
+  width: 17px;
+  height: 17px;
+}
+.catalog-list .service-card .price {
+  font-size: 1.4rem;
+}
+.catalog--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ------------------------------------------------------------- price rows */
+/* Columns, not a grid: short and tall blocks pack like the columns of the printed price list. */
+.price-list {
+  column-width: 330px;
+  column-gap: 22px;
+}
+.price-item {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  break-inside: avoid;
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: var(--white);
+  min-width: 0;
+}
+/* Picture in a price list: the group's picture as a tile of its own, or a treatment's picture on
+   top of its block. Cropped to a calm landscape so the price rows stay the main thing. */
+.price-photo {
+  break-inside: avoid;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+.price-photo--item {
+  margin: -14px -16px 6px;
+  border-radius: 13px 13px 0 0;
+  aspect-ratio: 16 / 9;
+}
+.price-photo .pic,
+.price-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 38%;
+}
+.price-list--extras .price-item {
+  background: var(--ivory);
+  border-style: dashed;
+  border-color: var(--gold-soft);
+}
+.price-item__title {
+  font-family: var(--font-heading);
+  font-size: 1.32rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--tx-lg);
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.price-item__sub {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.08rem;
+  color: var(--rose-text);
+}
+.price-item__desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--tx-sm);
+}
+.price-item__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  margin-top: 4px;
+}
+.price-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.price-row__name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--tx-sm);
+}
+.price-row__dots {
+  flex: 1 1 16px;
+  min-width: 12px;
+  border-bottom: 1px dotted var(--line);
+  transform: translateY(-4px);
+}
+.price-row__time {
+  flex: none;
+  white-space: nowrap;
+  font-size: 0.92rem;
+  color: var(--tx-sm);
+}
+.price-row__price {
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: var(--tx-lg);
+}
+.price-rows--detail {
+  max-width: 520px;
+}
+
+/* --------------------------------------------- "by phone or WhatsApp" block */
+.phone-cta {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding: 12px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: var(--ivory);
+}
+.phone-cta__label {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--tx-lg);
+}
+.phone-cta__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.phone-cta svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.phone-cta--inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  padding: 10px 14px;
+}
+.phone-cta--inline .phone-cta__label {
+  font-size: 1.08rem;
+}
+.phone-cta--inline .link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------- foot of the list */
+.catalog-foot {
+  display: grid;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.catalog-foot__note {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--tx-sm);
+}
+.catalog-foot__tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+.catalog-foot__tip {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+.catalog-foot__tip svg {
+  width: 20px;
+  height: 20px;
+  color: var(--rose-text);
+  flex: none;
+}
+.preview-panel__sub {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--rose-text);
+}
+
+/* ------------------------------------------------- treatment page details */
+.treatment--text {
+  grid-template-columns: minmax(0, 1fr);
+}
+.treatment--text .treatment__body {
+  width: min(100%, 980px);
+  margin-inline: auto;
+  overflow-x: hidden;
+}
+.treatment--text .treatment__back {
+  position: static;
+  justify-self: start;
+  border: 1px solid var(--line-soft);
+}
+.treatment__price-note {
+  margin: 0;
+}
+.info-cols--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.info-cols--1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+.variant-row--named .variant {
+  justify-items: start;
+  text-align: left;
+  min-width: 0;
+  font-size: 1.08rem;
+}
+.variant-row--named .variant > span:last-child {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+/* --------------------------------------------------------------- contact */
+.info-card__lines {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.info-card__lines .link {
+  overflow-wrap: anywhere;
+}
+.info-card__lines .small {
+  color: var(--tx-sm);
+}
+.hours__note {
+  font-style: italic;
+}
+.studio__products {
+  margin: 0;
+  max-width: 560px;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--tx-sm);
+}
+/* Offer banner: the picture is always the light one (cream wall, gift still life on the right),
+   so the words on it keep the light theme's inks in both themes. */
+.offer-banner {
+  display: grid;
+  align-content: start;
+  padding: 0;
+  overflow: hidden;
+}
+.offer-banner__art {
+  position: relative;
+  aspect-ratio: 3 / 2;
+}
+.offer-banner__art .pic,
+.offer-banner__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.offer-banner__text {
+  position: absolute;
+  left: 7%;
+  top: 50%;
+  width: 52%;
+  transform: translateY(-50%);
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  container-type: inline-size;
+}
+.offer-banner__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7a5626;
+}
+.offer-banner__title {
+  margin: 0;
+  display: grid;
+  font-family: var(--font-heading);
+  line-height: 0.92;
+}
+.offer-banner__pct {
+  font-size: clamp(2.6rem, 34cqw, 5rem);
+  font-weight: 700;
+  color: #86602e;
+  white-space: nowrap;
+}
+.offer-banner__word {
+  font-size: clamp(1.5rem, 17cqw, 2.5rem);
+  font-style: italic;
+  font-weight: 600;
+  color: #9d4752;
+}
+.offer-banner__who {
+  margin: 2px 0 8px;
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 8cqw, 1.25rem);
+  line-height: 1.15;
+  color: #5a3a1c;
+}
+.offer-banner .offer-notes {
+  padding: 14px 18px 16px;
+}
+.offer-info {
+  align-content: center;
+  gap: 18px;
+}
+.offer-info .h3 {
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.2rem);
+  line-height: 1.15;
+}
+.offer-notes {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+.offer-notes li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.offer-notes svg {
+  width: 20px;
+  height: 20px;
+  color: var(--rose-text);
+  flex: none;
+}
+
+@media (max-width: 1000px) {
+  .info-cols--2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  /* Phone: no dotted leader — name on the left (wraps), duration and price on the right. */
+  .price-row__dots {
+    display: none;
+  }
+  .price-row__name,
+  .price-item__title {
+    flex: 1 1 0;
+  }
+  .price-row__time {
+    font-size: 0.85rem;
+  }
+}
+
+/* ---------------------------------------------- desktop: one-screen frames */
+@media (min-width: 901px) and (min-height: 560px) {
+  .catalog-toolbar.catalog-toolbar--groups {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  /* All ten group chips stay visible: one row on wide screens, two on narrower ones. */
+  .catalog-toolbar.catalog-toolbar--groups .tabs {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
+    gap: 6px;
+  }
+  .catalog-toolbar.catalog-toolbar--groups .chip {
+    min-height: 34px;
+    padding: 3px 11px;
+    font-size: 0.9rem;
+    gap: 6px;
+  }
+  .catalog-toolbar--groups .chip svg {
+    width: 17px;
+    height: 17px;
+  }
+  .catalog-toolbar--groups .filters {
+    justify-content: flex-end;
+  }
+  /* The list scrolls inside the frame; its cards keep their natural height. */
+  .frame--catalog .catalog-list {
+    height: 100%;
+    gap: clamp(18px, 3vh, 34px);
+    padding-right: 6px;
+  }
+  .frame--catalog .catalog-list .service-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: auto;
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .frame--catalog .catalog-list .service-card {
+    height: auto;
+  }
+  .frame--catalog .catalog-list .service-card__img {
+    aspect-ratio: 4 / 3;
+    flex: none;
+    min-height: 0;
+  }
+  .frame--catalog .cat-group__title {
+    font-size: clamp(1.5rem, 3.6vh, 2.2rem);
+  }
+  .frame--catalog .preview-panel .price-rows {
+    font-size: 0.92rem;
+  }
+  .frame--treatment .treatment--text .treatment__body {
+    align-content: start;
+  }
+}
+@media (min-width: 901px) and (min-height: 560px) and (max-height: 960px) {
+  /* Laptop heights: the three trust items give their row to the price list. */
+  .frame--catalog .trust-row {
+    display: none;
+  }
+}

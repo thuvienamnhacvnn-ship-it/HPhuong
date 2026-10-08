@@ -10,6 +10,7 @@ const url = z.string().url().max(300);
 const Body = z.object({
   address: z.string().max(300).nullable().optional(),
   phone: z.string().max(40).nullable().optional(),
+  mobilePhone: z.string().max(40).nullable().optional(),
   email: z.string().email().max(200).nullable().optional(),
   mapUrl: url.nullable().optional(),
   socialLinks: z.object({ instagram: url.optional(), facebook: url.optional(), youtube: url.optional(), tiktok: url.optional() }).optional(),

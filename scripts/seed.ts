@@ -1,5 +1,5 @@
 /**
- * Seed demo data (KIT demo-data.json) plus a few demo appointments so the
+ * Seed the studio catalog (flyer data, src/lib/flyer-data.ts) plus demo staff/logins and two demo appointments so the
  * admin calendar is not empty. Refuses to run on a database that already has
  * settings — reseeding production would be a disaster.
  *
@@ -18,7 +18,7 @@ import { addDays } from "../src/lib/time";
 const db = await getDb();
 const existing = await db.select().from(schema.businessSettings).where(eq(schema.businessSettings.id, 1));
 if (existing.length) {
-  console.error("Database already seeded. Delete data/pgdata (dev only) to start over.");
+  console.error("Database already seeded. Use `npm run catalog:sync` to update the catalog, or delete data/pgdata (dev only) to start over.");
   process.exit(1);
 }
 
@@ -34,14 +34,14 @@ const { credentials } = await seedDemo(db, {
 const tz = "Europe/Berlin";
 let date = addDays(todayLocal(tz), 1);
 for (let i = 0; i < 7; i++) {
-  const facial = await getAvailability(db, { serviceId: "gesichtspflege", variantId: "60", from: date });
-  const massage = await getAvailability(db, { serviceId: "aroma-massage", variantId: "60", from: date });
+  const facial = await getAvailability(db, { serviceId: "basis-kosmetik", variantId: "60", from: date });
+  const massage = await getAvailability(db, { serviceId: "ganzkoerpermassage", variantId: "60", from: date });
   const f = facial.days[0].slots.find((s) => s.time === "11:30") ?? facial.days[0].slots[2];
   const m = massage.days[0].slots.find((s) => s.time === "14:00") ?? massage.days[0].slots[3];
   if (f && m) {
-    const h1 = await createHold(db, { serviceId: "gesichtspflege", variantId: "60", date, time: f.time });
+    const h1 = await createHold(db, { serviceId: "basis-kosmetik", variantId: "60", date, time: f.time });
     await submitAppointment(db, { holdToken: h1.holdToken, name: "Demo-Kundin01", email: "demo-kundin01@example.invalid", locale: "de", note: "Demo: ruhige Behandlung gewünscht." });
-    const h2 = await createHold(db, { serviceId: "aroma-massage", variantId: "60", date, time: m.time });
+    const h2 = await createHold(db, { serviceId: "ganzkoerpermassage", variantId: "60", date, time: m.time });
     const r2 = await submitAppointment(db, { holdToken: h2.holdToken, name: "Demo-Kundin02", email: "demo-kundin02@example.invalid", locale: "de" });
     await approveAppointment(db, r2.appointmentId, "seed");
     await db.update(schema.customers).set({ isDemo: true });

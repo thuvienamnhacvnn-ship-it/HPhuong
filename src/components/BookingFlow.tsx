@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { getDict, type Locale } from "@/i18n";
-import { formatPrice } from "@/lib/money";
+import { formatServicePrice } from "@/lib/money";
 import { api, ApiError, errorText } from "./api";
 import { Img } from "./Img";
 import { IconArrow, IconCalendar, IconCheck, IconChevronLeft, IconChevronRight, IconClock, IconInfo, IconMail, IconPhone, IconUser, IconWhatsapp } from "./icons";
@@ -13,7 +13,8 @@ export type BookingService = {
   id: string;
   name: { de: string; en: string };
   imageAssetId: string | null;
-  variants: { id: string; minutes: number; priceCents: number }[];
+  /** Only rows with a published duration — rows without one are arranged by phone and never reach this component. */
+  variants: { id: string; label: { de: string; en: string } | null; fullName: { de: string; en: string }; minutes: number; priceCents: number; priceFrom: boolean }[];
 };
 
 type Day = { date: string; slots: { time: string; startsAt: string }[]; closed: boolean };
@@ -339,7 +340,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
                     <span>
                       <span className="service-pick__name">{s.name[locale]}</span>
                       <span className="small muted" style={{ display: "block" }}>
-                        {v.minutes} {t.common.min} · {formatPrice(v.priceCents, locale)}
+                        {t.common.duration(v.minutes)} · {formatServicePrice(v.priceCents, locale, v.priceFrom)}
                       </span>
                     </span>
                     {selected ? (
@@ -349,7 +350,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
                     )}
                   </button>
                   {selected && s.variants.length > 1 && (
-                    <div className="variant-mini" role="group" aria-label={t.treatment.duration}>
+                    <div className="variant-mini" role="group" aria-label={t.treatment.variantChoose}>
                       {s.variants.map((x) => (
                         <button
                           key={x.id}
@@ -361,7 +362,8 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
                             setTime(null);
                           }}
                         >
-                          {x.minutes} {t.common.min} · {formatPrice(x.priceCents, locale)}
+                          {x.label ? `${x.label[locale]} · ` : ""}
+                          {t.common.duration(x.minutes)} · {formatServicePrice(x.priceCents, locale, x.priceFrom)}
                         </button>
                       ))}
                     </div>
@@ -381,10 +383,10 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
             <button type="button" className="service-pick show-mobile-flex" onClick={() => setStep(1)} aria-label={`${t.booking.change}: ${service.name[locale]}`}>
               <span className="service-pick__img"><Img id={service.imageAssetId} alt="" sizes="84px" /></span>
               <span>
-                <span className="service-pick__name">{service.name[locale]}</span>
-                <span className="small muted" style={{ display: "block" }}>{variant.minutes} {t.common.min}</span>
+                <span className="service-pick__name">{variant.fullName[locale]}</span>
+                <span className="small muted" style={{ display: "block" }}>{t.common.duration(variant.minutes)}</span>
               </span>
-              <span className="price" style={{ fontSize: "1.4rem" }}>{formatPrice(variant.priceCents, locale)}</span>
+              <span className="price" style={{ fontSize: "1.4rem" }}>{formatServicePrice(variant.priceCents, locale, variant.priceFrom)}</span>
             </button>
           )}
           <div className="row row--between">
@@ -473,10 +475,10 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
             <div className="service-pick" style={{ cursor: "default" }}>
               <span className="service-pick__img"><Img id={service.imageAssetId} alt="" sizes="84px" /></span>
               <span>
-                <span className="service-pick__name">{service.name[locale]}</span>
-                <span className="small muted" style={{ display: "block" }}>{variant.minutes} {t.common.min}</span>
+                <span className="service-pick__name">{variant.fullName[locale]}</span>
+                <span className="small muted" style={{ display: "block" }}>{t.common.duration(variant.minutes)}</span>
               </span>
-              <span className="price" style={{ fontSize: "1.45rem" }}>{formatPrice(variant.priceCents, locale)}</span>
+              <span className="price" style={{ fontSize: "1.45rem" }}>{formatServicePrice(variant.priceCents, locale, variant.priceFrom)}</span>
             </div>
           ) : (
             <p className="muted">{t.booking.chooseTreatment}</p>
@@ -536,7 +538,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
         <div className="booking-bar">
           <div>
             <span className="small muted">{t.booking.totalPrice}</span>
-            <div className="price">{variant ? formatPrice(variant.priceCents, locale) : "—"}</div>
+            <div className="price">{variant ? formatServicePrice(variant.priceCents, locale, variant.priceFrom) : "—"}</div>
           </div>
           {step === 1 ? (
             <button type="button" className="btn btn--block" disabled={!variant} onClick={() => setStep(2)}>

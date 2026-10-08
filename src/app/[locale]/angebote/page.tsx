@@ -44,7 +44,28 @@ export default async function OffersPage({ params }: { params: Promise<{ locale:
         </section>
 
         <div className="stack">
-          {details.length === 0 && <p className="card card--pad">{t.offers.noOffers}</p>}
+          {/* Studio notes from the price list — information only, nothing is deducted in the booking flow. */}
+          <section className="card offer-banner" aria-label={t.catalog.studentDiscount}>
+            {/* The picture keeps its left two thirds empty for the words; nothing is laid over it. */}
+            <div className="offer-banner__art">
+              <Img id="offer-banner" alt="" sizes="(max-width: 1100px) 100vw, 40vw" />
+              <div className="offer-banner__text">
+                <p className="offer-banner__eyebrow">{t.offers.banner.eyebrow}</p>
+                <h2 className="offer-banner__title">
+                  <span className="offer-banner__pct">{t.offers.banner.percent}</span>
+                  <span className="offer-banner__word">{t.offers.banner.word}</span>
+                </h2>
+                <p className="offer-banner__who">{t.offers.banner.who}</p>
+                <Link className="btn btn--sm" href={`/${locale}/termin`}>
+                  {t.home.cta} <IconArrow />
+                </Link>
+              </div>
+            </div>
+            <ul className="offer-notes">
+              <li><IconGift /> <span><strong>{t.catalog.voucherTipTitle}:</strong> {t.catalog.voucherTip}</span></li>
+              <li><IconHeart /> {t.common.priceNote}</li>
+            </ul>
+          </section>
           {details.map(({ offer, components, image }) => (
             <article key={offer.id} className="card package">
               <div className="package__img">

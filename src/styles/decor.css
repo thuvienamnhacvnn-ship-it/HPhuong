@@ -23,6 +23,50 @@
   height: 48px;
   object-fit: contain;
 }
+/* Header logo on every page but the home page: the turning 3D monogram. The box keeps the size of
+   the old emblem; the square video is drawn 1.6× as wide and centred on it, because the artwork
+   only fills about the middle two thirds of the square. The still frame shows until it plays. */
+.logo-spin {
+  position: relative;
+  display: block;
+  flex: none;
+}
+.m-header__brand .logo-spin {
+  width: 46px;
+  height: 46px;
+}
+.logo-spin > img,
+.m-header__brand .logo-spin > img,
+.logo-spin__video {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+/* phone header is 64px high: keep the square inside it */
+.m-header__brand .logo-spin > img,
+.m-header__brand .logo-spin__video {
+  width: 135%;
+}
+.logo-spin__video {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.logo-spin__video.is-on {
+  opacity: 1;
+}
+.logo-spin > img {
+  transition: opacity 400ms ease;
+}
+.logo-spin:has(.logo-spin__video.is-on) > img {
+  opacity: 0;
+}
 .brand__name {
   display: block;
   font-family: var(--font-heading);
@@ -194,153 +238,736 @@ body {
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='black' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M38 2C26 4 18 10 14 20'/%3E%3Cpath d='M30 4c-2 6-6 9-12 10 1-6 5-9 12-10Z'/%3E%3Cpath d='M22 10c-5 1-8 4-9 9 5-1 8-4 9-9Z'/%3E%3Ccircle cx='36' cy='12' r='1'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-/* ---------------------------------------------------------- home + emblem */
+/* ------------------------------------------------------------------ home
+   Banner per mockup: copy (left) · full logo (centre) · photo in a gold arch (right),
+   category strip below. On desktop every size is a multiple of --u = 1% of the banner
+   height (capped by its width), so the composition keeps the mockup's proportions in
+   every frame height. */
 
+.home {
+  /* BANNER PHOTO FOCAL POINT (object-position of the photo inside the arch).
+     After replacing assets/images/hero-desktop.png adjust this one value so the face
+     stays inside the arch and above the treatment card. */
+  --hero-pos: 28% 50%;
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  overflow: hidden;
+  background: var(--home-bg);
+}
 .home__stage {
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 0.9fr) minmax(0, 1.12fr);
-  grid-template-areas: "emblem copy visual";
+  position: relative;
+  display: grid;
+  min-height: 0;
+}
+.home__copy {
+  grid-area: copy;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.home__eyebrow {
+  display: flex;
+  white-space: nowrap;
+  color: var(--home-eyebrow);
+}
+.home__eyebrow span + span::before {
+  content: "·";
+}
+.home__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: 700;
+  line-height: 0.69;
+  white-space: nowrap;
+}
+/* "Time": tone gradient from cap height to baseline — a colour ramp, not a sheen. */
+.home__title-a {
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
+  background: var(--home-title-gold) 0 0 / 100% 0.69em no-repeat var(--home-title-gold-end);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.home__title-b {
+  font-style: italic;
+  font-weight: 600;
+  font-size: 0.95em;
+  letter-spacing: -0.01em;
+  /* the italic f rises above its line: keep it clear of the first line's baseline */
+  margin-top: 0.11em;
+  color: var(--home-title-rose);
+}
+.home__lead {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--home-lead);
+}
+.home__actions {
+  display: grid;
+}
+.home__actions .btn {
+  white-space: nowrap;
+}
+/* banner buttons in the mockup's plum. The base colour stays on hover: the darker tone comes in as
+   the directional fill (--btn-fill, motion.css); only the 1px border follows it. */
+.home .btn:not(.btn--outline) {
+  --btn-bg: var(--home-btn);
+  --btn-border: var(--home-btn);
+}
+.home .btn:not(.btn--outline):hover {
+  --btn-border: var(--btn-fill);
+}
+.home .btn:not(.btn--outline):active {
+  --btn-bg: var(--btn-fill);
+}
+.home__actions .btn--outline:not(:hover) {
+  --btn-border: var(--home-btn-line);
+  --btn-fg: var(--home-btn-text);
+}
+.home__side {
+  color: var(--home-side);
 }
 .home__emblem {
   grid-area: emblem;
   position: relative;
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  align-self: center;
-  gap: clamp(6px, 1.4vw, 18px);
-  z-index: 2;
-  container-type: inline-size;
+  justify-self: center;
 }
-.home__mark {
-  width: 100%;
-  height: auto;
-  max-height: min(52vh, 460px);
+.home__emblem > .pic:first-child {
+  aspect-ratio: 1119 / 1343;
+}
+.home__emblem img {
   object-fit: contain;
 }
-.home__emblem .pic {
-  width: min(100%, 360px);
+/* Turning 3D monogram: a square 1.25× the logo box, lifted so its artwork (about the middle two
+   thirds of the square) fills the space the old monogram had and ends just above the lettering,
+   which keeps the bottom of the box. */
+.home__logo3d {
+  position: relative;
 }
-
-/* Wordmark set in type (Cormorant) to match the emblem's gold — correctly spelled. */
-.wordmark {
-  display: grid;
-  justify-items: center;
-  gap: clamp(4px, 1.6cqw, 12px);
-  width: min(100%, 340px);
-  text-align: center;
-}
-.wordmark__name {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  padding-left: 0.14em;
-  line-height: 1;
-  font-size: clamp(1.5rem, 20cqw, 3rem);
-  background: var(--gold-metal);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  /* 3D extruded gold: warm bevel below, bright top edge, soft cast shadow. */
-  text-shadow:
-    0 1px 0 #c99a56,
-    0 2px 0 #a97e42,
-    0 3px 0 #8a6534,
-    0 4px 1px #6f5029,
-    0 5px 7px rgba(58, 30, 4, 0.42),
-    0 -1px 1px rgba(255, 246, 220, 0.55);
-}
-.wordmark__rule {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-}
-.wordmark__rule::before,
-.wordmark__rule::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-}
-.wordmark__rule::before {
-  background: linear-gradient(90deg, transparent, var(--gold));
-}
-.wordmark__rule::after {
-  background: linear-gradient(90deg, var(--gold), transparent);
-}
-.wordmark__rule .ornament {
-  margin: 0;
-  color: var(--gold);
-}
-.wordmark__arc {
-  display: block;
-  width: min(100%, 330px);
+.home__logo3d-still,
+.home__logo3d-video {
+  position: absolute;
+  left: -12.5%;
+  top: -18.5%;
+  width: 125%;
   height: auto;
-  overflow: visible;
-  margin-top: -4px;
+  aspect-ratio: 1;
 }
-.wordmark__arc text {
-  font-family: var(--font-heading);
+.home__logo3d-video {
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
 }
-.home__copy {
-  grid-area: copy;
+.home__logo3d-video.is-on {
+  opacity: 1;
+}
+.home__logo3d-still {
+  transition: opacity 400ms ease;
+}
+.home__logo3d:has(.home__logo3d-video.is-on) .home__logo3d-still {
+  opacity: 0;
+}
+.home__logo3d-word {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  aspect-ratio: 1119 / 413;
+}
+/* the reflection bands were cut to the old one-piece logo: not on a logo that turns */
+.home__emblem > .home__logo3d::before,
+.home__emblem > .home__logo3d::after {
+  display: none;
+}
+/* Leaf + lily cluster: decor image at the foot of the logo, base tucked behind the wave. */
+.home__flora {
+  position: absolute;
+  pointer-events: none;
+}
+.home__flora img {
+  height: auto;
 }
 .home__visual {
   grid-area: visual;
-}
-.home .display {
-  font-size: clamp(2.6rem, 1rem + 4vw, 5rem);
+  position: relative;
 }
 
-@media (max-width: 1280px) {
+/* Arch: the photo is one layer under an SVG clip; arc, band and card are separate layers. */
+.arch {
+  position: absolute;
+  inset: 0;
+}
+.arch__photo {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#arch-clip);
+}
+.arch__photo .pic,
+.arch__photo img {
+  width: 100%;
+  height: 100%;
+}
+.arch__photo img {
+  object-fit: cover;
+  object-position: var(--hero-pos);
+}
+.arch__band,
+.arch__line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.arch__band path,
+.arch__line path {
+  vector-effect: non-scaling-stroke;
+}
+.arch__far {
+  fill: var(--home-band-far);
+  opacity: 0.75;
+}
+.arch__in {
+  fill: var(--home-band-in);
+}
+.arch__stop-a {
+  stop-color: var(--home-band-a);
+}
+.arch__stop-b {
+  stop-color: var(--home-band-b);
+}
+.arch__stop-gold {
+  stop-color: var(--home-arc);
+}
+.arch__hair {
+  fill: none;
+  stroke: var(--home-line);
+  stroke-width: 1;
+  opacity: 0.7;
+}
+.arch__outer {
+  fill: none;
+  stroke-width: 2;
+}
+.arch__edge,
+.arch__gold,
+.arch__hi {
+  fill: none;
+}
+.arch__edge {
+  stroke: var(--home-arc-edge);
+  stroke-width: 5;
+}
+.arch__gold {
+  stroke: var(--home-arc);
+  stroke-width: 2.5;
+}
+.arch__hi {
+  stroke: var(--gold-soft);
+  stroke-width: 1;
+}
+
+/* Treatment card: solid plate on the lower part of the photo, never on the face. */
+.treatment-dock {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  align-items: center;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+.treatment-dock__img {
+  overflow: hidden;
+}
+.treatment-dock__img .pic {
+  width: 100%;
+  height: 100%;
+}
+.treatment-dock__text {
+  min-width: 0;
+}
+.treatment-dock__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--home-card-title);
+}
+.treatment-dock__meta {
+  color: var(--home-card-meta);
+  font-variant-numeric: lining-nums;
+}
+.treatment-dock__go {
+  display: grid;
+  justify-items: end;
+}
+.treatment-dock__go > svg {
+  color: var(--home-card-icon);
+}
+.treatment-dock__go .btn {
+  white-space: nowrap;
+}
+
+/* Wave edge between stage and strip */
+.home-wave {
+  position: relative;
+  pointer-events: none;
+}
+.home-wave svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.home-wave__fill {
+  fill: var(--home-strip);
+}
+.home-wave__stop-a {
+  stop-color: var(--home-wave-a);
+}
+.home-wave__stop-b {
+  stop-color: var(--home-wave-b);
+}
+.home-wave__stop-strip {
+  stop-color: var(--home-strip);
+}
+.home-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.home-foot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.home-foot__rose {
+  fill: var(--home-foot-rose);
+}
+.home-foot__base {
+  fill: var(--home-foot);
+}
+.home-wave__line {
+  fill: none;
+  stroke: var(--home-line);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Petals at fixed spots. Above the backgrounds, below copy, logo and card. */
+.petals--home {
+  z-index: 1;
+}
+.petals--home .petals__one {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: calc(var(--s) * var(--u));
+  transform: rotate(var(--r));
+  /* drift: motion.css (three petals only, each on its own path) */
+}
+.petals--home .petals__one img {
+  height: auto;
+}
+
+/* Category strip: line icon in a flat disc + label, hairline dividers. */
+.cat-strip {
+  position: relative;
+  display: grid;
+  background: var(--home-strip);
+}
+.cat-strip__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.cat-strip__disc {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--home-disc);
+  color: var(--home-icon);
+}
+.cat-strip__disc svg {
+  width: 94%;
+  height: 94%;
+  stroke-width: 0.52;
+}
+/* the lotus is wide, not tall: same visual weight at a smaller box */
+.cat-strip__disc--wide svg {
+  width: 74%;
+  height: 74%;
+  stroke-width: 0.66;
+}
+.cat-strip__label {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--home-label);
+}
+.cat-strip__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--home-underline);
+}
+/* hover states of the strip: motion.css (pointer devices only) */
+.cat-strip__quote {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  color: var(--home-quote);
+}
+
+@media (min-width: 901px) {
+  .home {
+    --u: min(1cqh, 0.5233cqw);
+    container-type: size;
+  }
   .home__stage {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    grid-template-areas:
-      "emblem visual"
-      "copy visual";
-    grid-template-rows: auto 1fr;
-    align-items: start;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "copy emblem visual";
+    align-items: center;
+  }
+  .home__copy {
+    width: calc(5.3cqw + 43 * var(--u));
+    /* sits a little below centre as in the mockup; the offset gives way first in very low frames */
+    padding: clamp(0px, calc((var(--u) - 6.2px) * 40), calc(1.4 * var(--u))) 0 0 5.3cqw;
+  }
+  .frame--home .home__eyebrow {
+    font-size: max(12px, calc(1.55 * var(--u)));
+    letter-spacing: 0.2em;
+    gap: calc(1.5 * var(--u));
+  }
+  .home__eyebrow span + span::before {
+    margin-right: calc(1.5 * var(--u));
+  }
+  .home__title {
+    margin-top: calc(var(--k) * 2.9 * var(--u));
+    font-size: calc(17.7 * var(--u) * var(--fit, 1));
+  }
+  .frame--home .home__copy > .ornament {
+    width: calc(40.1 * var(--u));
+    margin: calc(5.9 * var(--u)) 0 calc(var(--k) * 1.9 * var(--u));
+  }
+  .frame--home .home__copy .ornament svg {
+    width: max(12px, calc(2.4 * var(--u)));
+    height: max(12px, calc(2.4 * var(--u)));
+  }
+  .home__lead {
+    width: max-content;
+    max-width: 16em;
+    font-size: max(15px, calc(3.05 * var(--u)));
+  }
+  /* sentences stay whole: the line breaks after "…beautiful." as in the mockup */
+  .home__lead span {
+    white-space: nowrap;
+  }
+  .home__actions {
+    width: max(232px, calc(40.1 * var(--u)));
+    margin-top: calc(var(--k) * 2.2 * var(--u));
+    gap: calc(var(--k) * 1.8 * var(--u));
+  }
+  .frame--home .home__actions .btn {
+    min-height: max(var(--btn-floor), calc(6.2 * var(--u)));
+    padding: 0 calc(2 * var(--u));
+    font-size: max(15px, calc(2.55 * var(--u)));
+  }
+  .frame--home .home__actions .btn .arrow {
+    width: max(16px, calc(2.2 * var(--u)));
+    height: max(16px, calc(2.2 * var(--u)));
+  }
+  .home__side {
+    width: max(232px, calc(40.1 * var(--u)));
+    margin-top: calc(var(--k) * 1.8 * var(--u));
+    font-size: max(12px, calc(1.5 * var(--u)));
+    letter-spacing: 0.3em;
+    line-height: 1.6;
+  }
+  .frame--home .home__side .ornament {
+    width: calc(8 * var(--u));
+    margin: calc(var(--k) * 0.8 * var(--u)) auto 0;
+  }
+  .frame--home .home__side .ornament svg {
+    width: max(10px, calc(1.7 * var(--u)));
+    height: max(10px, calc(1.7 * var(--u)));
   }
   .home__emblem {
-    justify-self: start;
-    align-self: end;
+    padding-bottom: calc(2.5 * var(--u));
+    left: calc(3.4 * var(--u));
   }
-  .home__emblem .pic {
-    width: clamp(150px, 16vw, 210px);
+  .home__emblem > .pic:first-child {
+    height: calc(58 * var(--u));
   }
-  .home__emblem img {
-    max-height: 26vh;
+  .home__flora {
+    /* the logo's left edge (31.65cqw + 0.735u, from the column widths) + 5.7u: tied to the logo, so
+       the leaves keep the same distance from its lettering in every frame */
+    left: calc(31.65cqw - 1.3 * var(--u));
+    bottom: 0;
+    width: calc(65.2 * var(--u));
+    /* the lowest 2.4u of the artwork stay below the stage edge (the mockup hides them behind the wave) */
+    height: calc(30.4 * var(--u));
+    overflow: hidden;
   }
+  .home__visual {
+    align-self: stretch;
+    width: 42cqw;
+  }
+  .treatment-dock {
+    right: calc(4.3 * var(--u));
+    /* sits lower in low frames, where it is taller relative to the photo: stays off chin and hands */
+    bottom: calc((2.2 + 4 * var(--k)) * var(--u));
+    grid-template-columns: calc(11.1 * var(--u)) minmax(0, 1fr) auto;
+    gap: calc(2.2 * var(--u));
+    width: max-content;
+    min-width: max(292px, calc(52.1 * var(--u)));
+    max-width: calc(100% - 8.6 * var(--u));
+    padding: calc(1.5 * var(--u)) calc(2 * var(--u)) calc(1.5 * var(--u)) calc(1.7 * var(--u));
+    border-radius: calc(2.5 * var(--u));
+  }
+  .treatment-dock__img {
+    height: calc(10.1 * var(--u));
+    border-radius: calc(1.6 * var(--u));
+  }
+  .treatment-dock__title {
+    font-size: max(17px, calc(3 * var(--u)));
+    white-space: nowrap;
+  }
+  .treatment-dock__meta {
+    margin-top: calc(0.5 * var(--u));
+    font-size: max(13px, calc(2 * var(--u)));
+  }
+  .treatment-dock__go {
+    gap: calc(0.9 * var(--u));
+  }
+  .treatment-dock__go > svg {
+    width: max(18px, calc(2.6 * var(--u)));
+    height: max(18px, calc(2.6 * var(--u)));
+  }
+  .frame--home .treatment-dock__go .btn {
+    min-height: max(var(--btn-floor), calc(4.8 * var(--u)));
+    padding: 0 calc(1.7 * var(--u));
+    gap: calc(1.2 * var(--u));
+    font-size: max(14px, calc(2.3 * var(--u)));
+  }
+  .frame--home .treatment-dock__go .btn .arrow {
+    width: max(14px, calc(1.9 * var(--u)));
+    height: max(14px, calc(1.9 * var(--u)));
+  }
+  .home-wave {
+    height: calc(9.6 * var(--u));
+    margin-top: calc(-9.6 * var(--u));
+  }
+  .cat-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(min-content, 1.15fr);
+    align-items: center;
+    min-height: max(76px, calc(16.7 * var(--u)));
+    /* discs and labels sit above the strip's centre, as in the mockup (the foot is left free) */
+    padding-bottom: calc(var(--k) * 3.4 * var(--u));
+  }
+  .cat-strip__item {
+    gap: calc(4 * var(--u));
+    height: 100%;
+  }
+  .cat-strip > .cat-strip__item + *::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1px;
+    height: calc(7.8 * var(--u));
+    translate: 0 -50%;
+    background: var(--home-divider);
+  }
+  .cat-strip__disc {
+    width: max(50px, calc(10.1 * var(--u)));
+    height: max(50px, calc(10.1 * var(--u)));
+  }
+  .cat-strip__label {
+    padding-bottom: calc(1.6 * var(--u));
+    font-size: max(17px, calc(3 * var(--u)));
+  }
+  .cat-strip__label::after {
+    width: calc(5 * var(--u));
+  }
+  .cat-strip__quote {
+    padding-inline: max(16px, calc(2 * var(--u)));
+    font-size: max(12px, calc(1.5 * var(--u)));
+    letter-spacing: clamp(0.06em, calc((100cqw - 860px) * 0.012), 0.18em);
+    white-space: nowrap;
+  }
+  .frame--home .cat-strip__quote .ornament {
+    width: calc(14 * var(--u));
+    margin: calc(1 * var(--u)) auto 0;
+  }
+  .frame--home .cat-strip__quote .ornament svg {
+    width: max(10px, calc(1.7 * var(--u)));
+    height: max(10px, calc(1.7 * var(--u)));
+  }
+}
+/* Narrow, tall frames: the photo box is slimmer, so the photo shifts back to keep the whole face in. */
+@container (min-width: 901px) and (max-aspect-ratio: 17 / 10) {
+  .home__visual {
+    --hero-pos: 46% 50%;
+  }
+}
+/* Buttons: 44px from a 730px-high window up, 40px in lower frames. In low frames the type keeps
+   its floor sizes, so the vertical gaps (--k) give way instead. */
+@media (min-width: 901px) {
   .home {
-    height: auto;
-    min-height: calc(100dvh - var(--header) - var(--demo-h, 0px));
+    --btn-floor: 44px;
+    --k: 1;
+  }
+  .home-foot {
+    height: calc(5.4 * var(--u));
+  }
+}
+@media (min-width: 901px) and (max-height: 729px) {
+  .home {
+    --btn-floor: 40px;
+    --k: 0.6;
+  }
+}
+@media (min-width: 901px) and (max-height: 620px) {
+  .home {
+    --k: 0.25;
+  }
+}
+/* Wide but very low windows are not framed (frames.css): give the banner its own height. */
+@media (min-width: 901px) and (max-height: 559px) {
+  .home {
+    height: calc(100dvh - var(--header) - var(--demo-h, 0px));
+    min-height: 520px;
   }
 }
 
+/* Phones / narrow: one column — copy, photo in the arch, small logo, strip in two columns. */
 @media (max-width: 900px) {
+  /* the page snaps to the frame on load: keep the frame top below the 64px sticky header */
+  .frame--home {
+    scroll-margin-top: 64px;
+  }
+  .home {
+    --u: min(1.3vw, 7px);
+    --hero-pos: 50% 50%;
+  }
   .home__stage {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "emblem"
-      "hero";
-    grid-template-rows: auto auto;
+      "copy"
+      "visual"
+      "emblem";
+    row-gap: 22px;
+    padding: 24px 0 18px;
   }
-  .home__emblem {
-    justify-self: center;
-    margin-bottom: -8px;
+  .home__copy {
+    padding-inline: 16px;
   }
-  .home__emblem .pic {
-    width: min(58vw, 230px);
+  .home__eyebrow {
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
   }
-  .home__emblem img {
-    max-height: none;
+  .home__eyebrow span + span::before {
+    margin-right: 8px;
   }
-  .home__copy,
+  .home__title {
+    margin-top: 20px;
+    font-size: calc(min(22vw, 6.4rem) * var(--fit, 1));
+  }
+  .home__copy > .ornament {
+    width: min(100%, 330px);
+    margin: 40px 0 14px;
+  }
+  .home__lead {
+    font-size: 1.3rem;
+  }
+  .home__actions {
+    width: min(100%, 330px);
+    margin-top: 18px;
+    gap: 12px;
+  }
+  .home__actions .btn {
+    min-height: 54px;
+    padding-inline: 22px;
+    font-size: 1.3rem;
+  }
+  .home__side,
+  .treatment-dock,
+  .petals--home .petals__one:not(.petals__one--m) {
+    display: none;
+  }
+  /* two petals stay, in the free corners beside the title and above the photo */
+  .petals--home .petals__one--m {
+    left: var(--mx);
+    top: var(--my);
+    width: var(--ms);
+  }
+  .home__flora {
+    left: -14px;
+    bottom: 10px;
+    width: 30%;
+  }
   .home__visual {
-    grid-area: hero;
+    margin-left: 16px;
+    aspect-ratio: 703 / 734;
   }
-  .home__visual {
-    top: 150px;
+  .home__emblem > .pic:first-child {
+    width: min(46vw, 190px);
+  }
+  .home-wave {
+    height: 34px;
+    margin-top: -34px;
+  }
+  .home-foot {
+    height: 18px;
+  }
+  .cat-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 6px 16px 22px;
+  }
+  .cat-strip__item {
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 10px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .cat-strip__disc {
+    width: 76px;
+    height: 76px;
+  }
+  .cat-strip__label {
+    padding-bottom: 8px;
+    font-size: 1.4rem;
+  }
+  .cat-strip__label::after {
+    left: calc(50% - 18px);
+    width: 36px;
+  }
+  .cat-strip__quote {
+    display: none;
   }
 }

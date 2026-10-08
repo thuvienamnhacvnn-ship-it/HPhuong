@@ -5,13 +5,15 @@ import { useState } from "react";
 import { api } from "../api";
 import { adminError } from "./ActionButton";
 
-type Variant = { id: string; minutes: number; priceCents: number; active: boolean };
+/** minutes null = no published duration: the row shows its price on the website but cannot be booked online. */
+type Variant = { id: string; label: string | null; minutes: number | null; priceCents: number; priceFrom: boolean; active: boolean };
 type Service = {
   id: string;
   name: string;
   category: string;
   visible: boolean;
   bookable: boolean;
+  isAddon: boolean;
   contentApproved: boolean;
   isDemo: boolean;
   bufferBeforeMinutes: number;
@@ -60,21 +62,24 @@ export function ServiceEditor({ service, staff, canEditPrices }: { service: Serv
   }
 
   const num = (v: string) => Math.max(0, Math.round(Number(v) || 0));
+  const euro = (cents: number) => (cents / 100).toFixed(2).replace(".", ",");
+  const online = s.bookable && !s.isAddon && s.variants.some((v) => v.minutes !== null && v.active);
 
   return (
     <details className="card card--pad">
       <summary style={{ cursor: "pointer", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
         <strong style={{ fontFamily: "var(--font-heading)", fontSize: "1.45rem" }}>{s.name}</strong>
-        <span className="small muted">{s.variants.map((v) => `${v.minutes} Min. / ${(v.priceCents / 100).toFixed(2)} €`).join(" · ")}</span>
+        <span className="small muted">{s.category}</span>
+        <span className="small muted">{s.variants.map((v) => `${v.label ? `${v.label}: ` : ""}${v.minutes === null ? "" : `${v.minutes} Min. / `}${v.priceFrom ? "ab " : ""}${euro(v.priceCents)} €`).join(" · ")}</span>
         {!s.visible && <span className="status status--cancelled">ausgeblendet</span>}
-        {!s.bookable && <span className="status status--pending">nicht online buchbar</span>}
+        {s.isAddon ? <span className="status status--pending">Extra</span> : !online && <span className="status status--pending">nur telefonisch / WhatsApp</span>}
         {!s.contentApproved && <span className="badge">Text nicht freigegeben</span>}
         {s.isDemo && <span className="badge">Demo</span>}
       </summary>
       <div className="stack" style={{ marginTop: 16 }}>
         <div className="row">
           <label className="check"><input type="checkbox" checked={s.visible} onChange={(e) => setS({ ...s, visible: e.target.checked })} /><span>Auf der Website sichtbar</span></label>
-          <label className="check"><input type="checkbox" checked={s.bookable} onChange={(e) => setS({ ...s, bookable: e.target.checked })} /><span>Online buchbar</span></label>
+          <label className="check"><input type="checkbox" checked={s.bookable} disabled={s.isAddon} onChange={(e) => setS({ ...s, bookable: e.target.checked })} /><span>Online buchbar (nur Zeilen mit Dauer)</span></label>
           <label className="check"><input type="checkbox" checked={s.contentApproved} onChange={(e) => setS({ ...s, contentApproved: e.target.checked })} /><span>Beschreibung freigegeben</span></label>
         </div>
 
@@ -82,11 +87,14 @@ export function ServiceEditor({ service, staff, canEditPrices }: { service: Serv
           <legend className="label">Varianten {canEditPrices ? "" : "(nur Inhaberin)"}</legend>
           {s.variants.map((v, i) => (
             <div key={v.id} className="inline-form">
-              <div className="field"><label htmlFor={`${s.id}-m-${i}`}>Minuten</label><input id={`${s.id}-m-${i}`} className="input" type="number" min={5} disabled={!canEditPrices} value={v.minutes} onChange={(e) => setS({ ...s, variants: s.variants.map((x, j) => (j === i ? { ...x, minutes: num(e.target.value) } : x)) })} /></div>
+              {v.label && <div className="field"><span className="label">Zeile</span><span className="small">{v.label}</span></div>}
+              <div className="field"><label htmlFor={`${s.id}-m-${i}`}>Minuten</label><input id={`${s.id}-m-${i}`} className="input" type="number" min={5} disabled={!canEditPrices} value={v.minutes ?? ""} placeholder="keine Dauer" onChange={(e) => setS({ ...s, variants: s.variants.map((x, j) => (j === i ? { ...x, minutes: e.target.value.trim() === "" ? null : num(e.target.value) } : x)) })} /></div>
               <div className="field"><label htmlFor={`${s.id}-p-${i}`}>Preis (€)</label><input id={`${s.id}-p-${i}`} className="input" type="number" min={0} step="0.01" disabled={!canEditPrices} value={(v.priceCents / 100).toFixed(2)} onChange={(e) => setS({ ...s, variants: s.variants.map((x, j) => (j === i ? { ...x, priceCents: Math.round(Number(e.target.value) * 100) } : x)) })} /></div>
+              <label className="check"><input type="checkbox" disabled={!canEditPrices} checked={v.priceFrom} onChange={(e) => setS({ ...s, variants: s.variants.map((x, j) => (j === i ? { ...x, priceFrom: e.target.checked } : x)) })} /><span>ab-Preis</span></label>
               <label className="check"><input type="checkbox" disabled={!canEditPrices} checked={v.active} onChange={(e) => setS({ ...s, variants: s.variants.map((x, j) => (j === i ? { ...x, active: e.target.checked } : x)) })} /><span>aktiv</span></label>
             </div>
           ))}
+          <p className="small muted" style={{ margin: 0 }}>Minuten leer lassen = keine Dauer veröffentlicht: Die Zeile steht mit Preis auf der Website, Termin nur telefonisch oder per WhatsApp.</p>
         </fieldset>
 
         <div className="inline-form">

@@ -17,7 +17,16 @@ const Body = z.object({
   description: z.object({ de: z.string().max(2000), en: z.string().max(2000) }).optional(),
   skills: z.array(z.string().max(40)).optional(),
   variants: z
-    .array(z.object({ id: z.string().max(20), minutes: z.number().int().min(5).max(480), priceCents: z.number().int().min(0).max(1_000_000), active: z.boolean() }))
+    .array(
+      z.object({
+        id: z.string().max(40),
+        // null = no published duration: shown with its price, arranged by phone, never bookable online
+        minutes: z.number().int().min(5).max(480).nullable(),
+        priceCents: z.number().int().min(0).max(1_000_000),
+        priceFrom: z.boolean().optional(),
+        active: z.boolean(),
+      }),
+    )
     .optional(),
 });
 
@@ -36,7 +45,7 @@ export const PATCH = withParams<{ id: string }>(async (request, db, { id }) => {
     if (Object.keys(fields).length) await tx.update(schema.services).set(fields).where(eq(schema.services.id, id));
     for (const v of variants ?? []) {
       const [existing] = await tx.select().from(schema.serviceVariants).where(and(eq(schema.serviceVariants.serviceId, id), eq(schema.serviceVariants.id, v.id)));
-      if (existing) await tx.update(schema.serviceVariants).set({ minutes: v.minutes, priceCents: v.priceCents, active: v.active }).where(and(eq(schema.serviceVariants.serviceId, id), eq(schema.serviceVariants.id, v.id)));
+      if (existing) await tx.update(schema.serviceVariants).set({ minutes: v.minutes, priceCents: v.priceCents, active: v.active, ...(v.priceFrom === undefined ? {} : { priceFrom: v.priceFrom }) }).where(and(eq(schema.serviceVariants.serviceId, id), eq(schema.serviceVariants.id, v.id)));
       else await tx.insert(schema.serviceVariants).values({ serviceId: id, ...v });
     }
     if (skills) {

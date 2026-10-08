@@ -12,9 +12,12 @@
     "db:generate": "drizzle-kit generate",
     "db:push": "tsx scripts/db-push.ts",
     "seed": "tsx scripts/seed.ts",
+    "catalog:sync": "tsx scripts/catalog-sync.ts",
+    "deploy:db": "tsx scripts/deploy-db.ts",
     "setup": "npm run db:push && npm run seed && npm run assets",
     "assets": "tsx scripts/assets.ts",
-    "logo:cutout": "tsx scripts/logo-cutout.ts",
+    "logo:brand": "tsx scripts/logo-brand.ts",
+    "decor:home": "tsx scripts/home-decor.ts",
     "worker": "tsx scripts/worker.ts",
     "test": "tsx --test tests/*.test.ts"
   },

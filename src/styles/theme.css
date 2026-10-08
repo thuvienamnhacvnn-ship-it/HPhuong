@@ -25,13 +25,48 @@
   --tx-sm: #7a5626;
   --demo-bg: #49352f;
   --demo-fg: #fff7f1;
-  --glow: rgb(255 255 255 / 70%);
-  --blob-a: rgb(232 197 189 / 55%);
-  --blob-b: rgb(217 191 152 / 28%);
-  --pattern: rgb(181 138 85 / 9%);
-  --emblem-glow: rgb(255 255 255 / 85%);
-  /* Metallic gold sheen for the wordmark type, tuned to the emblem's gold. */
-  --gold-metal: linear-gradient(176deg, #f2ddb6 0%, #d8b073 38%, #b88d52 60%, #ecd39f 100%);
+  /* Motion colours (motion.css). Flat highlight tones inside a gradient or mask — never emitted light. */
+  --mo-gold-hi: #f3dcb4; /* travelling highlight on gold lines: arch, button outline, card edge */
+  --mo-sheen-c: rgb(255 246 228 / 55%); /* reflection band on the logo */
+  /* headline colour ramp: starts and ends on the same gold so it loops without a seam */
+  --mo-flow: linear-gradient(100deg, #b56d33 0%, #8f5829 13%, #b56d33 25%, #b25a45 38%, #9d4752 50%, #7f3447 62%, #9d4752 74%, #b25a45 87%, #b56d33 100%);
+  --mo-shadow-lift: 0 2px 4px rgb(73 53 47 / 8%), 0 10px 22px rgb(73 53 47 / 12%); /* lifted card: neutral, downward */
+  --mo-tone: color-mix(in srgb, var(--home-wave-b) 60%, var(--home-strip)); /* tonal shift behind a hovered service entry — lighter than the icon disc */
+  --mo-trace-c: #fff1d2; /* head of the highlight that runs along the arc */
+  --btn-fill: var(--rose-deep); /* colour that fills a primary button on hover (text stays white) */
+  --btn-shadow: 0 1px 2px rgb(73 53 47 / 14%), 0 3px 8px rgb(73 53 47 / 10%); /* neutral, small — no rose haze */
+  /* Home banner only (measured from the banner mockup). */
+  --home-bg: #fdf2ec;
+  --home-eyebrow: #7f4a1f;
+  --home-title-gold: linear-gradient(180deg, #b56d33 12%, #ab6a34 40%, #98602f 65%, #8a5527 93%);
+  --home-title-gold-end: #8a5527;
+  --home-title-rose: #9d4752;
+  --home-lead: #75411a;
+  --home-btn: #92424e;
+  --home-btn-line: #8c8584;
+  --home-btn-text: #7c4820;
+  --home-side: #a06a44;
+  --home-arc: #9a6334;
+  --home-card-title: #4a121c;
+  --home-card-meta: #5e2a0e;
+  --home-card-icon: #48040a;
+  --home-icon: #835020;
+  --home-label: #5a1f12;
+  --home-underline: #4a121c;
+  --home-divider: #cab2a2;
+  --home-quote: #7d4e2c;
+  --home-strip: #fdf5ef;
+  --home-wave-a: #f6d6ca;
+  --home-wave-b: #fae8e0;
+  --home-foot: #fcf2ec;
+  --home-foot-rose: #f5dbd1;
+  --home-disc: #f9e6dd;
+  --home-band-a: #f3d3c8;
+  --home-band-b: #fdeee6;
+  --home-band-far: #f9e1d8;
+  --home-band-in: #f9dccf;
+  --home-line: #ffffff;
+  --home-arc-edge: #fff8ee;
 }
 
 :root[data-theme="dark"] {
@@ -77,21 +112,68 @@
   --placeholder: #9a8d88;
   --demo-bg: #3a2830;
   --demo-fg: #f6eeea;
-  --glow: rgb(168 93 109 / 18%);
-  --blob-a: rgb(143 75 90 / 30%);
-  --blob-b: rgb(58 74 110 / 22%);
-  --pattern: rgb(201 163 107 / 7%);
-  --emblem-glow: rgb(246 226 206 / 30%);
+  --mo-gold-hi: #f6e2bd;
+  --mo-trace-c: #fff3d9;
+  --mo-sheen-c: rgb(255 236 200 / 30%); /* fainter on graphite, or the band reads as a halo */
+  --mo-flow: linear-gradient(100deg, #f0d3a4 0%, #c9a36b 13%, #f0d3a4 25%, #ecbfa6 38%, #e6a6ae 50%, #cf8794 62%, #e6a6ae 74%, #ecbfa6 87%, #f0d3a4 100%);
+  --mo-shadow-lift: 0 2px 4px rgb(0 0 0 / 40%), 0 12px 24px rgb(0 0 0 / 35%);
+  --btn-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 3px 8px rgb(0 0 0 / 30%);
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 35%), 0 2px 8px rgb(0 0 0 / 25%);
   --shadow: 0 2px 6px rgb(0 0 0 / 35%), 0 14px 36px rgb(0 0 0 / 35%);
   --focus: 0 0 0 3px #19171b, 0 0 0 5px #e3a7b4;
+
+  --home-bg: linear-gradient(180deg, var(--bg-a), var(--bg-b));
+  --home-eyebrow: var(--tx-lg);
+  --home-title-gold: linear-gradient(180deg, #f0d3a4, #c9a36b);
+  --home-title-gold-end: #c9a36b;
+  --home-lead: var(--tx-sm);
+  --home-btn: var(--rose);
+  --home-btn-line: var(--ink-soft);
+  --home-btn-text: var(--tx-sm);
+  --home-side: var(--gold);
+  --home-arc: var(--gold);
+  --home-card-meta: var(--tx-sm);
+  --home-icon: var(--tx-lg);
+  --home-label: var(--tx-lg);
+  --home-underline: var(--rose);
+  --home-divider: var(--line);
+  --home-quote: var(--tx-lg);
+  --home-strip: #1f1c21;
+  --home-wave-a: #3a2830;
+  --home-wave-b: #2c2228;
+  --home-foot: #1b191d;
+  --home-foot-rose: #33242b;
+  --home-title-rose: var(--rose-text);
+  --home-card-title: var(--rose-text);
+  --home-card-icon: var(--rose-text);
+  --home-disc: var(--petal-soft);
+  --home-band-a: #2f232a;
+  --home-band-b: #262026;
+  --home-band-far: #211c22;
+  --home-band-in: #33252c;
+  --home-line: rgb(255 255 255 / 14%);
+  --home-arc-edge: var(--gold-soft);
 }
 
 :root[data-theme="dark"] .notice {
   color: var(--tx-lg);
 }
-/* The logo lettering is dark brown: lift it a little and give it a warm halo on graphite. */
-:root[data-theme="dark"] .home__emblem img,
+/* The logo lettering is dark brown: lift it a little on graphite. No halo on the banner logo. */
+/* the 3D monogram is lit for both themes: only the dark lettering under it needs lifting */
+:root[data-theme="dark"] .home__emblem > .pic:first-child .home__logo3d-still img {
+  filter: none;
+}
+:root[data-theme="dark"] .home__emblem > .pic:first-child img {
+  filter: brightness(1.18) saturate(1.05);
+}
+/* Pale decor cut for a cream page: calm it down on graphite. */
+:root[data-theme="dark"] .home__flora,
+:root[data-theme="dark"] .petals--home .petals__one {
+  filter: brightness(0.72) saturate(0.9);
+}
+:root[data-theme="dark"] .brand__emblem.logo-spin {
+  filter: none; /* the 3D monogram is lit for both themes */
+}
 :root[data-theme="dark"] .brand__emblem {
-  filter: brightness(1.18) saturate(1.05) drop-shadow(0 0 18px rgb(246 226 206 / 18%));
+  filter: brightness(1.18) saturate(1.05);
 }

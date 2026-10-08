@@ -5,6 +5,12 @@ import "@/styles/globals.css";
 import "@/styles/theme.css";
 import "@/styles/decor.css";
 import "@/styles/frames.css";
+import "@/styles/pricelist.css";
+import "@/styles/motion.css";
+import "@/styles/petal-fall.css";
+import "@/styles/petal-transition.css";
+import { PetalFall } from "@/components/PetalFall";
+import { PetalTransition } from "@/components/PetalTransition";
 import { cookies } from "next/headers";
 import { getDict, isLocale, LOCALES } from "@/i18n";
 import { Chrome } from "@/components/Chrome";
@@ -13,7 +19,7 @@ import { getDb } from "@/lib/db";
 import { getSettings } from "@/lib/catalog";
 import { currentCustomer } from "@/lib/auth";
 
-const cormorant = Cormorant_Garamond({ subsets: ["latin", "latin-ext", "vietnamese"], weight: ["500", "600", "700"], variable: "--font-cormorant", display: "swap" });
+const cormorant = Cormorant_Garamond({ subsets: ["latin", "latin-ext", "vietnamese"], weight: ["500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
 const inter = Inter({ subsets: ["latin", "latin-ext", "vietnamese"], variable: "--font-inter", display: "swap" });
 
 export const dynamic = "force-dynamic";
@@ -52,6 +58,8 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         <Chrome locale={locale} socialLinks={settings.socialLinks} demo={settings.isDemo} signedIn={!!customer} theme={theme}>
           {children}
         </Chrome>
+        <PetalFall />
+        <PetalTransition />
       </body>
     </html>
   );

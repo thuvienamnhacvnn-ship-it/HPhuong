@@ -1,0 +1,699 @@
+/* Motion & micro-interaction system (06/10/2026). Imported LAST in [locale]/layout.tsx.
+
+   Rules of the house
+   - NO GLOW: nothing here uses box-shadow blur as light, drop-shadow, text-shadow or blur(). Gold
+     looks polished through a highlight that TRAVELS inside the shape (mask / stroke / gradient).
+   - Only transform (and the separate translate / scale / rotate properties), opacity, clip-path,
+     background-position and SVG stroke-dashoffset are animated.
+   - Distances are fixed px (3px is 3px in every frame) — never multiples of --u.
+   - Three channels that never fight each other:
+       entrance  = `animation` on opacity + `translate`, fill-mode backwards (leaves nothing behind)
+       hover     = `transition` on translate / scale / rotate
+       pointer   = Motion.tsx writes style.translate / style.transform through one rAF loop
+     Ambient loops (float, drift, Ken Burns) run on `transform`, on another element than the pointer one.
+   - Everything that moves by itself sits inside (prefers-reduced-motion: no-preference); every hover
+     reaction inside (hover: hover) and (pointer: fine). Without JS and without animation support the
+     page is simply complete and still.
+   - Keyframes carry the prefix mo- (shimmer / fade / spin are taken in globals.css). */
+
+:root {
+  --mo-ease: cubic-bezier(0.22, 1, 0.36, 1); /* main easing */
+  --mo-ease-sweep: cubic-bezier(0.6, 0, 0.25, 1); /* fills and sweeps: an ease-out would be over in the first 100ms and read as a colour flip */
+  --mo-dur-fill: 400ms; /* directional fill (250–400) */
+  --mo-dur-1: 250ms; /* menu text, tone changes */
+  --mo-dur-2: 350ms; /* button fill, underline, card lift (250–400) */
+  --mo-dur-3: 700ms; /* ordinary entrance (500–900) */
+  --mo-dur-4: 900ms; /* headline mask, arc draw, logo */
+  --mo-stagger: 80ms; /* 60–140 */
+  --mo-t0: 80ms; /* delay before the sequence starts */
+  --mo-rise: 14px; /* entrance travel (10–24) */
+  --mo-rise-lg: 20px; /* logo, card */
+  --mo-mask-rise: 0.9em; /* headline lines rise one full line from behind their mask (24px = the cautious variant) */
+  --mo-loops: 2.2s; /* ambient loops start after the entrance */
+  --mo-trace: 12s; /* highlight travelling along the arc (6–12) */
+  --mo-sheen: 10s; /* sheen cycle: 1.2s sweep, then rest */
+  --mo-sheen-logo-at: 3.5s; /* first logo sheen */
+  --mo-flow-dur: 11s; /* headline colour: one full turn of the ramp */
+  --mo-kb: 18s; /* Ken Burns (12–20) */
+  --mo-kb-scale: 1.025;
+  --mo-float: 9s; /* logo float */
+  --mo-float-y: -3px; /* 2–4px */
+}
+
+/* ------------------------------------------------------------ shared pieces */
+
+/* Label + icon of a button as one box: takes the 2px hover shift and the magnetic pull. */
+.btn__in {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+  white-space: nowrap;
+}
+.home__emblem > .pic {
+  position: relative;
+}
+/* Logo hover: a reflection that sits under the pointer (--hx, Motion.tsx), cut to the logo artwork
+   by its own file as mask. Invisible at rest; without the mask there is none. */
+.home__emblem[data-mo-sheen] > .pic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* band centre = 1.25 box-widths into a 2.5-wide image → on-box x = 1.25 − 1.5·P */
+  background: linear-gradient(105deg, transparent 41%, var(--mo-sheen-c) 50%, transparent 59%) calc((1.25 - var(--hx, 0.5)) / 1.5 * 100%) 0 / 250% 100% no-repeat;
+  -webkit-mask: var(--logo-mask) 0 0 / 100% 100% no-repeat;
+  mask: var(--logo-mask) 0 0 / 100% 100% no-repeat;
+  opacity: 0;
+  transition: opacity 450ms ease;
+}
+/* Arc highlight: hidden unless motion is allowed (below). Own stroke on the arc's path, never wider than the gold line. */
+.arch__line .arch__trace {
+  display: none;
+  vector-effect: none;
+  fill: none;
+  stroke: var(--mo-trace-c);
+  stroke-width: 2.6;
+  stroke-linecap: butt;
+  stroke-dasharray: var(--len) 3000px;
+  stroke-dashoffset: calc(var(--len) + 6px);
+  opacity: var(--o);
+}
+.arch__line .arch__trace:last-child {
+  stroke-linecap: round;
+}
+/* Head-spa icon: the highlight that runs along a strand — invisible at rest. */
+.ic-trace {
+  stroke: var(--mo-gold-hi);
+  stroke-dasharray: 0.3 2;
+  stroke-dashoffset: 0.36;
+  opacity: 0;
+}
+
+/* --------------------------------------------------- 10 · top navigation */
+
+.header__link {
+  transition: color var(--mo-dur-1) ease;
+}
+/* --o is set by Motion.tsx to the side the pointer came in from (and left through); without JS: left. */
+.header__link::after {
+  transform-origin: var(--o, left);
+  transition: transform 300ms var(--mo-ease);
+}
+
+/* ============================================================ self-running */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------------------------------------------- 13 · entrance sequence
+     --i = place in the sequence (inline). Not one recipe for all: text rises, the headline comes up
+     from behind a mask, lines open from the centre, the arc draws itself, the photo settles. */
+  .home [data-mo] {
+    --mo-d: calc(var(--mo-t0) + var(--i, 0) * var(--mo-stagger));
+  }
+  .home [data-mo="rise"],
+  .home [data-mo="rise-lg"] {
+    animation: mo-rise var(--mo-dur-3) var(--mo-ease) var(--mo-d) backwards;
+  }
+  .home [data-mo="rise-lg"],
+  .home [data-mo="logo"] {
+    --mo-y: var(--mo-rise-lg);
+  }
+  .home [data-mo="fade"] {
+    animation: mo-fade var(--mo-dur-3) ease-out var(--mo-d) backwards;
+  }
+
+  /* 14 · headline: each LINE rises from behind a mask edge that stands still on screen
+     (clip-path bottom = travel − edge at every moment). No overflow:hidden — the 0.69 line-height
+     lets the glyphs overhang their line box. */
+  .home [data-mo="mask"] {
+    --mo-edge: -0.17em; /* mask edge just under the baseline of "Time" */
+    animation: mo-mask var(--mo-dur-4) var(--mo-ease) var(--mo-d) backwards;
+  }
+  .home .home__title-b[data-mo="mask"] {
+    --mo-edge: 0.3em; /* room for the descender of "y" */
+    animation-delay: calc(var(--mo-d) + 60ms); /* 140ms after the first line */
+  }
+
+  /* 03 · logo: comes in, then floats 3px. Tilt + parallax are written on .home__emblem by Motion.tsx. */
+  .home [data-mo="logo"] > .pic {
+    animation:
+      mo-rise var(--mo-dur-4) var(--mo-ease) var(--mo-d) backwards,
+      mo-float var(--mo-float) ease-in-out var(--mo-loops) infinite;
+  }
+  /* The flower inside the logo cannot move on its own (one PNG): the leaf + lily cluster does, 1.5px. */
+  .home .home__flora > .pic {
+    transform-origin: 50% 100%;
+    animation: mo-sway 13s ease-in-out calc(var(--mo-loops) + 0.7s) infinite;
+  }
+
+  /* 06 · arc draws itself (diagonal wipe = follows the arc from its top-right start to its foot),
+     the photo settles inside its clip, the pale geometry fades in. */
+  .home [data-mo="visual"] .arch__line {
+    animation: mo-wipe var(--mo-dur-4) var(--mo-ease) var(--mo-d) backwards;
+  }
+  .home [data-mo="visual"] .arch__photo > .pic {
+    animation: mo-wipe var(--mo-dur-4) var(--mo-ease) calc(var(--mo-d) + 140ms) backwards;
+  }
+  .home [data-mo="visual"] .arch__band {
+    animation: mo-fade var(--mo-dur-3) ease-out var(--mo-d) backwards;
+  }
+
+  /* 16 · rules open from the centre, the star turns 30° once and settles */
+  .home .ornament::before,
+  .home .ornament::after {
+    animation: mo-line 800ms var(--mo-ease) var(--mo-d, 0ms) backwards;
+  }
+  .home .ornament::before {
+    transform-origin: right;
+  }
+  .home .ornament::after {
+    transform-origin: left;
+  }
+  .home .ornament svg {
+    animation: mo-star 700ms var(--mo-ease) var(--mo-d, 0ms) backwards;
+  }
+
+  /* 05 · Ken Burns inside the clip: nothing can show at the edges */
+  .home .arch__photo img {
+    transform-origin: 68% 45%;
+    animation:
+      mo-photo 1400ms var(--mo-ease) calc(var(--mo-d) + 140ms) backwards,
+      mo-kb var(--mo-kb) ease-in-out var(--mo-loops) infinite alternate;
+  }
+
+  /* 01 / 06 · highlight travelling down the arc: 70% of the cycle on the way, 30% rest */
+  .arch__line .arch__trace {
+    display: inline;
+    animation: mo-trace var(--mo-trace) linear calc(var(--mo-loops) + 0.2s) infinite;
+  }
+
+  /* 04 · petals: three drift (one on phones), each with its own path, period, delay and opacity */
+  .petals--home .petals__one[data-mo-drift] {
+    animation: mo-drift-a var(--dur) ease-in-out var(--dl) infinite;
+  }
+  .petals--home .petals__one[data-mo-drift="b"] {
+    animation-name: mo-drift-b;
+  }
+  .petals--home .petals__one[data-mo-drift="c"] {
+    animation-name: mo-drift-c;
+  }
+
+  /* 02 · sheen on the logo: a band masked by the logo artwork itself (--logo-mask = the <img>'s own
+     file, set by Motion.tsx), upper part only. Without the mask there is no band at all. */
+  .home__emblem[data-mo-sheen] > .pic::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 44%, var(--mo-sheen-c) 50%, transparent 56%) 94% 0 / 250% 100% no-repeat;
+    -webkit-mask-image: var(--logo-mask), linear-gradient(#000 0 62%, transparent 68%);
+    mask-image: var(--logo-mask), linear-gradient(#000 0 62%, transparent 68%);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    animation: mo-sheen var(--mo-sheen) linear var(--mo-sheen-logo-at) infinite;
+  }
+  /* 02 · main CTA: ONE pass when the entrance is done, never again */
+  .home__actions .btn:not(.btn--outline)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 44%, var(--mo-sheen-c) 50%, transparent 56%) 94% 0 / 250% 100% no-repeat;
+    opacity: 0.55;
+    animation: mo-sheen-once 1.2s linear calc(var(--mo-loops) + 0.3s) 1;
+  }
+
+  /* loops stand still while their block is off screen, while the tab is hidden, or while an
+     entrance is still waiting for its block to scroll in (Motion.tsx sets these) */
+  [data-mo-off],
+  [data-mo-off] *,
+  [data-mo-off] *::before,
+  [data-mo-off] *::after,
+  :root[data-mo-hidden] .home *,
+  :root[data-mo-hidden] .home *::before,
+  :root[data-mo-hidden] .home *::after,
+  .mo-wait,
+  .mo-wait::before,
+  .mo-wait::after,
+  .mo-wait *,
+  .mo-wait *::before,
+  .mo-wait *::after {
+    animation-play-state: paused !important;
+  }
+}
+
+/* Headline: its colour flows on its own. One ramp (--mo-flow, theme.css: gold → rose → plum → gold,
+   three headline-widths long, seamless) drifts through both lines; the second line runs half a
+   period ahead, so at rest "Time" is gold and "for you." is rose, exactly as without motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .home .home__title-a[data-mo="mask"],
+  .home .home__title-b[data-mo="mask"] {
+    background: var(--mo-flow) var(--flow-from, 0%) 0 / 300% 100% repeat-x;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation:
+      mo-mask var(--mo-dur-4) var(--mo-ease) var(--mo-d) backwards,
+      mo-flow var(--mo-flow-dur) linear 1.2s infinite;
+  }
+  /* The italic line overhangs its 0.69 line box on every side; the ramp is only painted inside the
+     box, so the box grows by padding and the margins take it back — nothing moves. */
+  .home .home__title-b[data-mo="mask"] {
+    --flow-from: 75%;
+    --mo-edge: -0.02em; /* the mask edge stays where it was: 0.3em under the old box = 0.02em above the new one */
+    padding: 0.3em 0.14em 0.32em;
+    margin: -0.19em -0.14em -0.32em;
+    animation-delay: calc(var(--mo-d) + 60ms), 1.2s;
+  }
+}
+@media (max-width: 900px) {
+  /* phones: one petal drifts, not two */
+  .petals--home .petals__one[data-mo-drift="c"] {
+    animation: none;
+  }
+}
+
+@keyframes mo-rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--mo-y, var(--mo-rise));
+  }
+}
+@keyframes mo-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes mo-mask {
+  0% {
+    opacity: 0;
+    transform: translateY(var(--mo-mask-rise));
+    clip-path: inset(-0.4em -0.4em calc(var(--mo-mask-rise) - var(--mo-edge)) -0.4em);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(-0.4em -0.4em calc(0em - var(--mo-edge)) -0.4em);
+  }
+}
+/* everything above the line y = x + c is shown; c runs from −120% to +120% of the box */
+@keyframes mo-wipe {
+  from {
+    clip-path: polygon(-50% -170%, 150% 30%, 150% -400%, -50% -400%);
+  }
+  to {
+    clip-path: polygon(-50% 70%, 150% 270%, 150% -400%, -50% -400%);
+  }
+}
+@keyframes mo-photo {
+  from {
+    scale: 1.05;
+  }
+}
+@keyframes mo-line {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes mo-star {
+  from {
+    opacity: 0;
+    transform: rotate(-30deg) scale(0.6);
+  }
+}
+@keyframes mo-float {
+  50% {
+    transform: translateY(var(--mo-float-y));
+  }
+}
+@keyframes mo-sway {
+  35% {
+    transform: translateX(1.5px) rotate(0.4deg);
+  }
+  70% {
+    transform: translateX(-1.5px) rotate(-0.4deg);
+  }
+}
+@keyframes mo-kb {
+  to {
+    transform: scale(var(--mo-kb-scale));
+  }
+}
+@keyframes mo-trace {
+  0% {
+    stroke-dashoffset: calc(var(--len) + 6px);
+  }
+  70%,
+  100% {
+    stroke-dashoffset: calc(var(--len) - 1210px);
+  }
+}
+/* Petal paths: three waypoints that are not in line; rotation stays within ±--dr of the resting angle. */
+@keyframes mo-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r));
+    opacity: 1;
+  }
+  30% {
+    transform: translate3d(calc(var(--dx) * 0.55), var(--dy), 0) rotate(calc(var(--r) + var(--dr) * 0.6));
+  }
+  62% {
+    transform: translate3d(var(--dx), calc(var(--dy) * 0.35), 0) rotate(calc(var(--r) + var(--dr)));
+    opacity: var(--do);
+  }
+  84% {
+    transform: translate3d(calc(var(--dx) * 0.3), calc(var(--dy) * -0.25), 0) rotate(calc(var(--r) - var(--dr) * 0.3));
+  }
+}
+@keyframes mo-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r));
+    opacity: 1;
+  }
+  22% {
+    transform: translate3d(calc(var(--dx) * 0.2), calc(var(--dy) * 0.7), 0) rotate(calc(var(--r) - var(--dr) * 0.4));
+    opacity: var(--do);
+  }
+  55% {
+    transform: translate3d(var(--dx), var(--dy), 0) rotate(calc(var(--r) + var(--dr)));
+  }
+  78% {
+    transform: translate3d(calc(var(--dx) * 0.75), calc(var(--dy) * -0.2), 0) rotate(calc(var(--r) + var(--dr) * 0.4));
+  }
+}
+@keyframes mo-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r));
+    opacity: 1;
+  }
+  38% {
+    transform: translate3d(calc(var(--dx) * -0.3), calc(var(--dy) * 0.6), 0) rotate(calc(var(--r) + var(--dr) * 0.5));
+  }
+  66% {
+    transform: translate3d(calc(var(--dx) * 0.6), var(--dy), 0) rotate(calc(var(--r) + var(--dr)));
+    opacity: var(--do);
+  }
+  88% {
+    transform: translate3d(var(--dx), calc(var(--dy) * 0.3), 0) rotate(calc(var(--r) + var(--dr) * 0.2));
+  }
+}
+/* band enters at 94%, has left at 6% (background 250% wide): one sweep in the first 12% = 1.2s, then rest */
+@keyframes mo-sheen {
+  0% {
+    background-position: 94% 0;
+  }
+  12%,
+  100% {
+    background-position: 6% 0;
+  }
+}
+/* 150% = one whole ramp at background-size 300% */
+@keyframes mo-flow {
+  to {
+    background-position: calc(var(--flow-from, 0%) + 150%) 0;
+  }
+}
+@keyframes mo-sheen-once {
+  from {
+    background-position: 94% 0;
+  }
+  to {
+    background-position: 6% 0;
+  }
+}
+/* ================================================== hover (pointer devices) */
+
+@media (hover: hover) and (pointer: fine) {
+  /* 07 · primary: directional fill. Enters from the left, leaves to the right. Base colour unchanged. */
+  .btn {
+    transition:
+      background-color var(--mo-dur-2) var(--mo-ease),
+      border-color var(--mo-dur-2) var(--mo-ease),
+      color var(--mo-dur-2) var(--mo-ease),
+      transform 0.18s var(--ease);
+  }
+  .btn::before {
+    transform-origin: right;
+    transition: transform var(--mo-dur-fill) var(--mo-ease-sweep);
+  }
+  .btn:not([disabled], [aria-disabled="true"]):hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* 10 · menu text */
+  .header__link:not([aria-current="page"]):hover {
+    color: var(--rose-text);
+  }
+
+  /* 09 · service entries: colour no longer flips instantly */
+  .cat-strip__label {
+    transition:
+      color var(--mo-dur-1) ease,
+      translate var(--mo-dur-2) var(--mo-ease);
+  }
+  .cat-strip__label::after {
+    transition: background-color var(--mo-dur-1) ease;
+  }
+  .cat-strip__item:is(:hover, :focus-visible) .cat-strip__label {
+    color: var(--rose-text);
+  }
+  .cat-strip__item:is(:hover, :focus-visible) .cat-strip__label::after {
+    background: var(--rose);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 901px) {
+  /* 09 · underline draws left → right (the short stroke stays; it seems to grow), dividers soften,
+     the entry gets a faint tone behind disc and label */
+  .cat-strip__label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--rose);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 400ms var(--mo-ease-sweep);
+  }
+  .cat-strip__item:is(:hover, :focus-visible) .cat-strip__label::before {
+    transform: scaleX(1);
+  }
+  .cat-strip__item::after {
+    content: "";
+    position: absolute;
+    inset: 0 1px;
+    background: linear-gradient(90deg, transparent, var(--mo-tone) 22%, var(--mo-tone) 78%, transparent);
+    opacity: 0;
+    transition: opacity var(--mo-dur-1) ease;
+    pointer-events: none;
+  }
+  .cat-strip__item:hover::after {
+    opacity: 1;
+  }
+  .cat-strip > .cat-strip__item + *::before {
+    transition: opacity var(--mo-dur-1) ease;
+  }
+  .cat-strip > .cat-strip__item:hover::before,
+  .cat-strip > .cat-strip__item:hover + *::before {
+    opacity: 0.45;
+  }
+
+  /* 12 · appointment card: deeper shadow by cross-fading a second, neutral one (box-shadow itself is not animated) */
+  .treatment-dock::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: var(--mo-shadow-lift);
+    opacity: 0;
+    transition: opacity var(--mo-dur-2) ease;
+    pointer-events: none;
+  }
+  .treatment-dock:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------- hover that MOVES something */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* 07 · label 2px, arrow 5px in all */
+  .btn__in,
+  .btn .arrow {
+    transition: translate var(--mo-dur-2) var(--mo-ease);
+  }
+  .btn:not([disabled], [aria-disabled="true"]):hover .btn__in {
+    translate: 2px 0;
+  }
+  .btn:not([disabled], [aria-disabled="true"]):hover .arrow {
+    translate: 5px 0;
+  }
+  .btn:not([disabled], [aria-disabled="true"]):hover .btn__in .arrow {
+    translate: 3px 0;
+  }
+
+  /* 07 · outline: a highlight with a fading tail runs once along the border. Resting state has no
+     transition, so nothing sweeps back when the pointer leaves. */
+  .btn--outline::after,
+  .treatment-dock::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    padding: 2px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 26%, var(--gold) 44%, var(--mo-gold-hi) 57%, var(--gold) 61%, transparent 65%) 110% 0 / 250% 100% no-repeat;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    transition: none;
+  }
+  .btn--outline:not([disabled], [aria-disabled="true"]):hover::after {
+    background-position: -25% 0;
+    transition: background-position 800ms var(--mo-ease-sweep);
+  }
+
+  /* 12 · card: lifts 4px, picture 1.03, arrow 4px, calendar nods once, edge gets one sweep */
+  .treatment-dock {
+    transition: translate var(--mo-dur-2) var(--mo-ease);
+  }
+  .treatment-dock:hover {
+    translate: 0 -4px;
+  }
+  .treatment-dock::after {
+    inset: 0;
+  }
+  .treatment-dock:hover::after {
+    background-position: -25% 0;
+    transition: background-position 900ms var(--mo-ease-sweep);
+  }
+  .treatment-dock__img img {
+    transition: scale 600ms var(--mo-ease);
+  }
+  .treatment-dock:hover .treatment-dock__img img {
+    scale: 1.03;
+  }
+  .treatment-dock:hover .btn .arrow {
+    translate: 4px 0;
+  }
+  .treatment-dock .btn:hover .btn__in .arrow {
+    translate: 2px 0;
+  }
+  .treatment-dock:hover .treatment-dock__go > svg {
+    animation: mo-cal 500ms var(--mo-ease);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) and (min-width: 901px) {
+  /* 09 · label 3px */
+  .cat-strip__item:is(:hover, :focus-visible) .cat-strip__label {
+    translate: 3px 0;
+  }
+
+  /* 08 · icons: the disc lifts 3px; each drawing reacts in its own way */
+  .cat-strip__disc {
+    transition: translate var(--mo-dur-2) var(--mo-ease);
+  }
+  .cat-strip__item:hover .cat-strip__disc {
+    translate: 0 -3px;
+  }
+  /* face outline, leaf vein: the stroke draws itself (dash only exists while it runs) */
+  .cat-strip__item:hover .ic-draw {
+    animation: mo-draw 650ms var(--mo-ease);
+  }
+  /* lotus: petals open outward 3° / 4° around the base of the flower */
+  .ic-lotus path {
+    transform-box: view-box;
+    transform-origin: 50% 72%;
+    transition: rotate 400ms var(--mo-ease);
+  }
+  .cat-strip__item:hover .ic-l1 {
+    rotate: -3deg;
+  }
+  .cat-strip__item:hover .ic-r1 {
+    rotate: 3deg;
+  }
+  .cat-strip__item:hover .ic-l2 {
+    rotate: -4deg;
+  }
+  .cat-strip__item:hover .ic-r2 {
+    rotate: 4deg;
+  }
+  /* head spa: a highlight travels down one strand, once */
+  .cat-strip__item:hover .ic-trace {
+    animation: mo-run 800ms var(--mo-ease);
+  }
+  /* leaf tilts 3° */
+  .ic-leaf {
+    transition: rotate 400ms var(--mo-ease);
+  }
+  .cat-strip__item:hover .ic-leaf {
+    rotate: 3deg;
+  }
+}
+
+@keyframes mo-draw {
+  from {
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 1.05;
+  }
+  to {
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes mo-run {
+  from {
+    stroke-dashoffset: 0.36;
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: -1.06;
+    opacity: 1;
+  }
+}
+@keyframes mo-cal {
+  40% {
+    transform: translateY(-1px) rotate(-6deg);
+  }
+}
+
+/* ------------------------------------------------ logo hover (mouse only)
+   Hero logo: comes 3.5% closer, leans to the pointer (Motion.tsx) and a reflection follows the
+   pointer across the metal. Header logo: the mark tips and lifts a little. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .home__emblem {
+    transition: scale 600ms var(--mo-ease);
+  }
+  .home__emblem:hover {
+    scale: 1.035;
+  }
+  .home__emblem:hover > .pic::before {
+    opacity: 1;
+  }
+  .brand__emblem {
+    transition: transform 450ms var(--mo-ease);
+  }
+  .brand:hover .brand__emblem {
+    transform: translateY(-1.5px) rotate(-5deg) scale(1.05);
+  }
+}

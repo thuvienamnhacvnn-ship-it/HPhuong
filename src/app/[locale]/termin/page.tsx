@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { one, pageContext } from "@/lib/page";
-import { getSettings, listServices } from "@/lib/catalog";
+import { bookableVariants, getSettings, listServices, variantName } from "@/lib/catalog";
 import { todayLocal } from "@/lib/scheduling";
 import { addDays } from "@/lib/time";
 import { whatsappConfigured } from "@/lib/notifications/adapters";
@@ -38,7 +38,13 @@ export default async function BookingPage({ params, searchParams }: { params: Pr
       <div className="page frame__fill booking-frame" style={{ paddingTop: 0 }}>
         <BookingFlow
           locale={locale}
-          services={services.map((s) => ({ id: s.id, name: s.name, imageAssetId: s.imageAssetId, variants: s.variants.map((v) => ({ id: v.id, minutes: v.minutes, priceCents: v.priceCents })) }))}
+          services={services.map((s) => ({
+            id: s.id,
+            name: s.name,
+            imageAssetId: s.imageAssetId,
+            // Only rows with a published duration reach the booking flow.
+            variants: bookableVariants(s).map((v) => ({ id: v.id, label: v.label, fullName: variantName(s, v), minutes: v.minutes, priceCents: v.priceCents, priceFrom: v.priceFrom })),
+          }))}
           today={today}
           lastDay={addDays(today, settings.bookingHorizonDays)}
           timezone={settings.timezone}

@@ -36,12 +36,13 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
       <section className="studio__body">
         <Lily position="tr-sm" />
         <div className="above-decor stack" style={{ justifyItems: "center", textAlign: "center", width: "100%" }}>
-          <img src="/media/logo-emblem-240.webp" srcSet="/media/logo-emblem-240.webp 1x, /media/logo-emblem-480.webp 2x" alt="HPHUONG" width={132} height={150} style={{ objectFit: "contain" }} />
+          <img src="/media/logo-emblem-240.webp" srcSet="/media/logo-emblem-240.webp 1x, /media/logo-emblem-480.webp 2x" alt="HPHUONG" width={111} height={150} style={{ objectFit: "contain" }} />
           <p className="eyebrow">HPHUONG · {t.brand.descriptor}</p>
           <Ornament className="ornament--center" />
         </div>
         <h1 className="display display--md above-decor">{t.studio.title}</h1>
         <p className="above-decor" style={{ fontSize: "1.1rem", margin: 0, maxWidth: 560 }}>{t.studio.lead}</p>
+        <p className="above-decor studio__products">{t.studio.products}</p>
         <div className="tiles above-decor">
           {tiles.map((tile) => (
             <figure key={tile.label} className="tile">

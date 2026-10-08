@@ -44,3 +44,20 @@ tên miền + e-mail gửi, tài khoản Stripe/PayPal, WhatsApp Business.
 - Chưa có PDF voucher (voucher gửi mã qua e-mail).
 - Chế độ tối dùng cùng ảnh sáng; chữ nâu nhỏ "KOSMETICK SPA" trong logo kém nổi hơn trên nền tối (đã tăng sáng + quầng sáng).
 - Concurrency test chạy trên PGlite (tuần tự hoá sẵn); với Postgres, khoá `SELECT … FOR UPDATE` trên `business_settings` đảm bảo tuần tự.
+
+## Cập nhật 06/10/2026 — dữ liệu thật từ 2 tờ flyer của tiệm
+
+- Thông tin tiệm (địa chỉ, 2 số điện thoại, e-mail, giờ mở Mo–Fr 9:30–18:30, thứ Bảy "nach Vereinbarung") và **toàn bộ
+  bảng giá 67 dòng / 9 nhóm** lấy từ flyer, nằm ở một chỗ: `src/lib/flyer-data.ts`. Sửa giá/tên → sửa file đó rồi
+  `npm run catalog:sync` (dừng `npm run dev` trước khi chạy với PGlite), hoặc sửa trong `/admin/behandlungen`.
+- 25 dòng có thời lượng → đặt lịch online. 42 dòng flyer không ghi thời lượng → chỉ hiện tên + giá, nút đặt thay bằng
+  "Termin telefonisch oder per WhatsApp". Không có số phút nào tự đặt (`minutes = null`).
+- 4 dịch vụ demo cũ + combo "Pflege & Ruhe" + thiết bị Head-Spa: trong DB cũ được **ẩn** (`visible=false`, combo `active=false`),
+  không xoá; DB mới seed thì không có. Dữ liệu demo cũ nay chỉ còn là fixture của test (`tests/fixture.ts`).
+- **Vẫn là demo** (chưa có nguồn): nhân viên "Mitarbeitende A/B" + ca làm, 2 phòng, buffer 15' sau mỗi liệu trình, phân loại
+  phòng cho từng dịch vụ, tài khoản admin, Impressum/Datenschutz, mệnh giá voucher. Thanh "Demo-Version…" và
+  `publicLaunchEnabled=false` giữ nguyên.
+- DB production (nếu đã seed bản demo): `npm run db:push` (áp `0002_flyer_catalog.sql`) rồi `npm run catalog:sync` —
+  **chưa chạy**, chờ chủ dự án quyết.
+- Test: 33 (23 cũ chạy trên fixture + 10 test mới cho catalog flyer trong `tests/flyer.test.ts`).
+  Đối chiếu dữ liệu đang chạy với flyer: `node _w-agent/kiem-flyer.mjs` (phải ra 67/67).

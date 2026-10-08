@@ -58,6 +58,7 @@ export default async function SettingsAdmin() {
           initial={{
             address: settings.address ?? "",
             phone: settings.phone ?? "",
+            mobilePhone: settings.mobilePhone ?? "",
             email: settings.email ?? "",
             mapUrl: settings.mapUrl ?? "",
             instagram: settings.socialLinks.instagram ?? "",
@@ -86,7 +87,8 @@ export default async function SettingsAdmin() {
               <tr>
                 <td><strong>Studio (Öffnungszeiten)</strong></td>
                 <td>—</td>
-                <td className="small">{rules.filter((r) => !r.resourceId).sort((a, b) => a.weekday - b.weekday).map((r) => `${DAYS[r.weekday - 1]} ${r.startTime}–${r.endTime}`).join(" · ")}</td>
+                <td className="small">{rules.filter((r) => !r.resourceId).sort((a, b) => a.weekday - b.weekday).map((r) => `${DAYS[r.weekday - 1]} ${r.startTime}–${r.endTime}`).join(" · ")}
+                  {Object.entries(settings.hoursNotes).map(([d, note]) => ` · ${DAYS[Number(d) - 1]} ${note.de} (keine Online-Termine)`).join("")}</td>
               </tr>
               {resources.map((r) => (
                 <tr key={r.id}>
