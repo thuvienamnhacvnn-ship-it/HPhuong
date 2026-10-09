@@ -1,9 +1,9 @@
 const de = {
   meta: {
-    title: "HPHUONG Kosmetik & Spa",
+    title: "HPHUONG Beauty & Spa",
     description: "Gesichtsbehandlungen, Massage & Wellness, Maniküre, Pediküre, Nageldesign und Wimpernverlängerung in Berlin — Termin online anfragen.",
   },
-  brand: { descriptor: "Kosmetik & Spa", tagline: "Schönheit beginnt bei dir." },
+  brand: { descriptor: "Beauty & Spa", tagline: "Schönheit beginnt bei dir." },
   nav: {
     start: "Start",
     behandlungen: "Behandlungen",
@@ -11,6 +11,7 @@ const de = {
     studio: "Studio",
     kontakt: "Kontakt",
     book: "Termin buchen",
+    bookShort: "Termin",
     account: "Mein Konto",
     assistant: "AI Beauty Assistant",
     assistantShort: "AI Beauty",

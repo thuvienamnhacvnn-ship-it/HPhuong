@@ -22,6 +22,8 @@ export const MEDIA = {
   // Home banner: front frame of the turning 3D monogram (public/brand/hp-logo-*.webm) and the lettering
   // cut from logo-full (rows 930–1343) that stays still underneath it.
   "logo-3d-still": { file: "assets/brand/logo-3d-still.png", width: 720, height: 720, widths: [240, 480, 720] },
+  // "HPHUONG" + leaf ornament only (rows 0–262 of logo-wordmark, the arched descriptor removed): the descriptor is live text now (BrandWord).
+  "logo-name": { file: "assets/brand/logo-name.png", width: 1119, height: 262, widths: [240, 480, 800, 1119] },
   "logo-wordmark": { file: "assets/brand/logo-wordmark.png", width: 1119, height: 413, widths: [240, 480, 800, 1119] },
   "logo-medallion": { file: "assets/brand/logo-medallion.png", width: 1254, height: 1254, widths: [96, 192, 320, 640] },
   "decor-lily": { file: "assets/images/decor-lily.png", width: 1254, height: 1254, widths: [320, 640, 960] },

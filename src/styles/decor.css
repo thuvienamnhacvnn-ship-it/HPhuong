@@ -971,3 +971,275 @@ body {
     display: none;
   }
 }
+
+/* =====================================================================================
+   PHONES (≤ 900px) — home as one fixed screen, dock with the booking button in the middle
+   ===================================================================================== */
+.m-home {
+  display: none;
+}
+@media (max-width: 900px) {
+  /* ---- home: exactly one screen, nothing to scroll ---- */
+  html:has(.m-home),
+  html:has(.m-home) body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  html:has(.m-home) .shell,
+  html:has(.m-home) .main {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+  }
+  html:has(.m-home) .content {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding-bottom: 0;
+  }
+  html:has(.m-home) .site-footer {
+    display: none;
+  }
+  .frame--home {
+    height: 100%;
+    scroll-margin-top: 0;
+  }
+  .frame--home > .home {
+    display: none;
+  }
+  .m-home {
+    --m-dock: calc(var(--dock-h) + 56px + env(safe-area-inset-bottom)); /* dock + its 10px offset + the raised button + air */
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-rows: minmax(150px, 1fr) auto;
+    padding-bottom: var(--m-dock);
+    background: var(--home-bg);
+    overflow: hidden;
+  }
+  /* the photo: edge to edge, its lower edge one calm curve with the gold hairline of the arch */
+  .m-home__photo {
+    position: relative;
+    min-height: 0;
+    border-radius: 0 0 50% 50% / 0 0 34px 34px;
+    overflow: hidden;
+    border-bottom: 1.5px solid var(--home-arc);
+  }
+  .m-home__photo .pic,
+  .m-home__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+  .m-home__brand {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    padding: 0 20px;
+    /* the logo rides on the photo's lower edge */
+    margin-top: clamp(-74px, -9dvh, -48px);
+  }
+  .m-home__logo {
+    width: clamp(104px, 17dvh, 150px);
+    aspect-ratio: 1;
+  }
+  .m-home__logo.logo-spin > img,
+  .m-home__logo .logo-spin__video {
+    width: 150%;
+  }
+  .m-home__word {
+    width: clamp(170px, 27dvh, 232px);
+    aspect-ratio: 1119 / 413;
+    margin-top: clamp(2px, 1dvh, 10px);
+  }
+  .m-home__word img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .m-home__title {
+    margin: clamp(4px, 1.4dvh, 14px) 0 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.9rem, 5.2dvh, 2.7rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--home-title-gold-end);
+  }
+  .m-home__title em {
+    font-weight: 600;
+    color: var(--home-title-rose);
+  }
+  .m-home__lead {
+    margin: clamp(4px, 1dvh, 10px) 0 0;
+    max-width: 30ch;
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 2.3dvh, 1.2rem);
+    line-height: 1.2;
+    color: var(--home-lead);
+  }
+  @media (max-height: 700px) {
+    .m-home__lead {
+      display: none;
+    }
+  }
+
+  /* ---- home header: language left, menu right, floating on the photo ---- */
+  .m-header--home {
+    position: relative;
+    height: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    backdrop-filter: none;
+  }
+  .m-lang,
+  .m-menu-btn {
+    position: absolute;
+    top: 12px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgb(73 53 47 / 16%);
+    color: var(--tx-lg);
+  }
+  .m-lang {
+    left: 14px;
+    gap: 6px;
+    padding: 0 16px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .m-lang a {
+    color: var(--tx-sm);
+    text-decoration: none;
+    padding: 10px 2px;
+  }
+  .m-lang a[aria-current="true"] {
+    color: var(--rose-text);
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 2px;
+  }
+  .m-menu-btn {
+    right: 14px;
+    width: 44px;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .m-menu-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ---- dock: two links · the booking button · two links ---- */
+  .dock {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 86px minmax(0, 1fr) minmax(0, 1fr);
+    background: var(--surface);
+  }
+  .dock a,
+  .dock button {
+    font-size: 0.72rem;
+    min-width: 0;
+  }
+  .dock a > span:last-child {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dock .dock__cta {
+    align-content: end;
+    padding-bottom: 9px;
+    color: var(--rose-text);
+    font-weight: 700;
+  }
+  .dock__cta-disc {
+    position: absolute;
+    left: 50%;
+    top: -26px;
+    transform: translateX(-50%);
+    width: 66px;
+    height: 66px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--home-btn);
+    color: #fff;
+    border: 4px solid var(--surface);
+    box-shadow: 0 8px 16px rgb(73 53 47 / 26%);
+    transition: transform 0.2s var(--ease);
+  }
+  .dock__cta:active .dock__cta-disc {
+    transform: translateX(-50%) scale(0.95);
+  }
+  .dock .dock__cta-disc svg {
+    width: 30px;
+    height: 30px;
+  }
+  .dock .dock__cta[aria-current="page"]::after {
+    display: none;
+  }
+  /* the assistant button clears the raised booking button */
+  .ai-fab {
+    bottom: calc(var(--dock-h) + 30px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 900px) {
+  /* the home frame is exactly the space under the demo bar — never a second screen */
+  html:has(.m-home) .frame--home {
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    padding: 0;
+  }
+  /* one calm screen: the assistant is reached through the menu here */
+  html:has(.m-home) .ai-fab {
+    display: none;
+  }
+}
+
+/* Lettering under the monogram (BrandWord): the artwork's "HPHUONG" + ornament, and the descriptor
+   as live text on the artwork's arch. Same box as the old one-piece lettering. */
+.brand-word {
+  position: relative;
+  aspect-ratio: 1119 / 413;
+}
+.brand-word .brand-word__name {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 63.44%;
+}
+.brand-word .brand-word__name img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.brand-word__arc {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 52.06%;
+  overflow: visible;
+}
+.brand-word__arc text {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 74px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  fill: #5a3a1c;
+}
+:root[data-theme="dark"] .brand-word__arc text {
+  fill: #d9b98a;
+}
+.brand-word.home__logo3d-word {
+  position: absolute;
+}

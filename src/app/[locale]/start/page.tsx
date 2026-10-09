@@ -10,8 +10,9 @@ import { IconArrow, IconCalendar, IconFaceLine, IconHeadSpaLine, IconLeafLine, I
 import { HomeFoot, HomePetals, HomeWave } from "@/components/SoftDecor";
 import { Frame } from "@/components/Frame";
 import { SpinLogo } from "@/components/SpinLogo";
+import { BrandWord } from "@/components/BrandWord";
 
-export const metadata: Metadata = { title: { absolute: "HPHUONG Kosmetik & Spa" } };
+export const metadata: Metadata = { title: { absolute: "HPHUONG Beauty & Spa" } };
 
 /** The four discs under the banner: same four icons as before, pointing at the studio's real treatment groups. */
 const STRIP = [
@@ -32,6 +33,25 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
 
   return (
     <Frame className="frame--home">
+      {/* Phones (≤ 900px): one fixed screen — photo, turning logo with the lettering, headline. The
+          desktop banner below is hidden there; the dock carries the navigation. */}
+      <div className="m-home">
+        <div className="m-home__photo">
+          <Img id="hero-mobile" alt={t.meta.title} priority sizes="100vw" />
+        </div>
+        <div className="m-home__brand">
+          <div className="m-home__logo logo-spin">
+            {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
+            <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="HPHUONG Beauty & Spa" />
+            <SpinLogo className="logo-spin__video" />
+          </div>
+          <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" descriptor={t.brand.descriptor} />
+          <p className="m-home__title">
+            <span>{t.home.title1}</span> <em>{t.home.title2}</em>
+          </p>
+          <p className="m-home__lead">{t.home.lead}</p>
+        </div>
+      </div>
       <div className="home frame__fill">
         <HomePetals />
         <section className="home__stage" aria-labelledby="home-title">
@@ -78,9 +98,9 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             {/* Turning 3D monogram over its own still frame; the lettering below it stands still.
                 Same box as the old one-piece logo (logo-full), so nothing around it moves. */}
             <div className="pic home__logo3d">
-              <Img id="logo-3d-still" alt="HPHUONG Kosmetik & Spa" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
+              <Img id="logo-3d-still" alt="HPHUONG Beauty & Spa" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
               <SpinLogo />
-              <Img id="logo-wordmark" alt="" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-word" />
+              <BrandWord id="bw-arc" className="home__logo3d-word" sizes="(max-width: 900px) 46vw, 30vw" descriptor={t.brand.descriptor} />
             </div>
           </div>
 

@@ -2,10 +2,10 @@ import type { Dict } from "./de";
 
 const en: Dict = {
   meta: {
-    title: "HPHUONG Kosmetik & Spa",
+    title: "HPHUONG Beauty & Spa",
     description: "Facial treatments, massage & wellness, manicure, pedicure, nail design and eyelash extensions in Berlin — request your appointment online.",
   },
-  brand: { descriptor: "Kosmetik & Spa", tagline: "Beauty begins with you." },
+  brand: { descriptor: "Beauty & Spa", tagline: "Beauty begins with you." },
   nav: {
     start: "Home",
     behandlungen: "Treatments",
@@ -13,6 +13,7 @@ const en: Dict = {
     studio: "Studio",
     kontakt: "Contact",
     book: "Book appointment",
+    bookShort: "Book",
     account: "My account",
     assistant: "AI Beauty Assistant",
     assistantShort: "AI Beauty",

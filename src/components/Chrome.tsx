@@ -8,6 +8,8 @@ import {
   IconCalendar,
   IconClose,
   IconDots,
+  IconGift,
+  IconPhone,
   IconFacebook,
   IconHome,
   IconInstagram,
@@ -147,32 +149,42 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
             </div>
           </header>
 
-          <header className="m-header">
-            <Link href={`/${locale}/start`} className="m-header__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
-              {section === "start" ? (
-                <img src="/media/logo-mark-120.webp" srcSet="/media/logo-mark-120.webp 1x, /media/logo-mark-240.webp 2x" width={44} height={46} alt="" />
-              ) : (
+          {section === "start" ? (
+            // Phone home: nothing but the language (left) and the menu (right), floating on the banner.
+            <header className="m-header m-header--home">
+              <div className="m-lang" aria-label={t.nav.language}>
+                <Link onClick={keepQuery("en")} href={switchHref("en")} aria-current={locale === "en" ? "true" : undefined} lang="en" hrefLang="en">EN</Link>
+                <span aria-hidden>·</span>
+                <Link onClick={keepQuery("de")} href={switchHref("de")} aria-current={locale === "de" ? "true" : undefined} lang="de" hrefLang="de">DE</Link>
+              </div>
+              <button type="button" className="m-menu-btn" onClick={() => open(setMenuOpen)} aria-haspopup="dialog" aria-expanded={menuOpen}>
+                <IconDots />
+                <span className="sr-only">{t.nav.menu}</span>
+              </button>
+            </header>
+          ) : (
+            <header className="m-header">
+              <Link href={`/${locale}/start`} className="m-header__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
                 <span className="logo-spin">
                   <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
                   <SpinLogo className="logo-spin__video" />
                 </span>
-              )}
-              <span>
-                <span className="m-header__name">HPHUONG</span>
-                <span className="m-header__descriptor">{t.brand.descriptor}</span>
-              </span>
-            </Link>
-            <div className="m-header__tools">
-              <ThemeToggle initial={theme} locale={locale} />
-              <Link className="icon-btn" onClick={keepQuery(otherLocale)} href={switchHref(otherLocale)} hrefLang={otherLocale} title={t.nav.language}>
-                <span style={{ fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.08em" }}>{otherLocale.toUpperCase()}</span>
+                <span>
+                  <span className="m-header__name">HPHUONG</span>
+                  <span className="m-header__descriptor">{t.brand.descriptor}</span>
+                </span>
               </Link>
-              <Link className="icon-btn" href={signedIn ? `/${locale}/konto` : `/${locale}/login`} title={t.nav.account}>
-                <IconUser />
-                <span className="sr-only">{t.nav.account}</span>
-              </Link>
-            </div>
-          </header>
+              <div className="m-header__tools">
+                <Link className="icon-btn" onClick={keepQuery(otherLocale)} href={switchHref(otherLocale)} hrefLang={otherLocale} title={t.nav.language}>
+                  <span style={{ fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.08em" }}>{otherLocale.toUpperCase()}</span>
+                </Link>
+                <button type="button" className="icon-btn" onClick={() => open(setMenuOpen)} aria-haspopup="dialog" aria-expanded={menuOpen}>
+                  <IconDots />
+                  <span className="sr-only">{t.nav.menu}</span>
+                </button>
+              </div>
+            </header>
+          )}
 
           <main id="inhalt" className="content" tabIndex={-1}>
             {children}
@@ -204,14 +216,18 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
             <IconLeaf />
             <span>{t.nav.care}</span>
           </Link>
-          <Link href={`/${locale}/termin`} aria-current={current("termin")}>
-            <IconCalendar />
-            <span>{t.nav.appointments}</span>
+          <Link href={`/${locale}/termin`} className="dock__cta" aria-current={current("termin")} aria-label={t.nav.book}>
+            <span className="dock__cta-disc"><IconCalendar /></span>
+            <span>{t.nav.bookShort}</span>
           </Link>
-          <button type="button" onClick={() => open(setMenuOpen)} aria-haspopup="dialog" aria-expanded={menuOpen}>
-            <IconDots />
-            <span>{t.nav.more}</span>
-          </button>
+          <Link href={`/${locale}/angebote`} aria-current={current("angebote", "gutschein", "checkout", "bestellung")}>
+            <IconGift />
+            <span>{t.nav.angebote}</span>
+          </Link>
+          <Link href={`/${locale}/kontakt`} aria-current={current("kontakt")}>
+            <IconPhone />
+            <span>{t.nav.kontakt}</span>
+          </Link>
         </nav>
       </div>
 

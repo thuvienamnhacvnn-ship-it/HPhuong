@@ -177,3 +177,7 @@
 :root[data-theme="dark"] .brand__emblem {
   filter: brightness(1.18) saturate(1.05);
 }
+/* phone home: the dark lettering of the logo needs lifting on graphite */
+:root[data-theme="dark"] .m-home__word img {
+  filter: brightness(1.55) saturate(1.05);
+}
