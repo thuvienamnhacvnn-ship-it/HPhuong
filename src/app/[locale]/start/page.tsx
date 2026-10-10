@@ -35,10 +35,7 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
     <Frame className="frame--home">
       {/* Phones (≤ 900px): one fixed screen — photo, turning logo with the lettering, headline. The
           desktop banner below is hidden there; the dock carries the navigation. */}
-      <div className="m-home">
-        <div className="m-home__photo">
-          <Img id="home-space-mobile" alt={t.meta.title} priority sizes="100vw" />
-        </div>
+      <div className="m-home m-home--arch">
         <div className="m-home__brand">
           <div className="m-home__logo logo-spin">
             {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
@@ -49,7 +46,26 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
           <p className="m-home__title">
             <span>{t.home.title1}</span> <em>{t.home.title2}</em>
           </p>
-          <p className="m-home__lead">{t.home.lead}</p>
+        </div>
+        {/* The desktop banner's soft arch with its flowers, holding the same slide show. */}
+        <div className="m-home__frame">
+          <ArchFrame
+            uid="arch-m"
+            imageId="home-space"
+            alt={t.meta.title}
+            priority
+            sizes="100vw"
+            slides={[
+              { id: "home-space-mobile", pos: "50% 62%" },
+              { id: "hero-desktop", pos: "40% 40%" },
+              { id: "studio-interior", pos: "55% 50%" },
+              { id: "service-ayurveda", pos: "50% 42%" },
+              { id: "service-facial-massage", pos: "50% 36%" },
+            ]}
+          />
+          <div className="m-home__flora" aria-hidden>
+            <Img id="home-flora" alt="" sizes="70vw" />
+          </div>
         </div>
       </div>
       <div className="home frame__fill">

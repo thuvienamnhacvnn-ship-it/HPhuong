@@ -101,6 +101,7 @@ export function ArchFrame({
   sizes,
   mobile,
   slides,
+  uid = "arch",
   children,
 }: {
   imageId: string;
@@ -110,27 +111,29 @@ export function ArchFrame({
   mobile?: { id: string; sizes: string };
   /** More pictures for the slide show (ArchSlides); `pos` = their focal point. */
   slides?: { id: string; pos?: string }[];
+  /** Prefix of the SVG gradient ids — a second arch on the page (phone home) needs its own. */
+  uid?: string;
   children?: React.ReactNode;
 }) {
   return (
     <div className="arch">
       <svg className="arch__band" data-mo-depth="3" viewBox="0 0 703 734" preserveAspectRatio="none" aria-hidden focusable={false}>
         <defs>
-          <linearGradient id="arch-band" gradientUnits="userSpaceOnUse" x1="20" y1="300" x2="230" y2="40">
+          <linearGradient id={`${uid}-band`} gradientUnits="userSpaceOnUse" x1="20" y1="300" x2="230" y2="40">
             <stop className="arch__stop-a" offset="0.5" />
             <stop className="arch__stop-b" offset="1" />
           </linearGradient>
-          <linearGradient id="arch-fade" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="414">
+          <linearGradient id={`${uid}-fade`} gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="0" y2="414">
             <stop className="arch__stop-gold" offset="0" />
             <stop className="arch__stop-gold" offset="1" stopOpacity="0" />
           </linearGradient>
         </defs>
         <path className="arch__far" d={ARCH_FAR + ARCH_FILL_TO} />
-        <path d={ARCH_OUTER + ARCH_FILL_TO} fill="url(#arch-band)" />
+        <path d={ARCH_OUTER + ARCH_FILL_TO} fill={`url(#${uid}-band)`} />
         <path className="arch__in" d={ARCH_INNER + ARCH_FILL_TO} />
         <path className="arch__hair" d={ARCH_FAR} />
         <path className="arch__hair" d={ARCH_INNER} />
-        <path className="arch__outer" d={ARCH_OUTER} stroke="url(#arch-fade)" />
+        <path className="arch__outer" d={ARCH_OUTER} stroke={`url(#${uid}-fade)`} />
       </svg>
       {/* data-mo-depth: pointer parallax (Motion.tsx). Photo and arc move as ONE layer (same values);
           data-mo-one = only towards the banner's top/right edge, so no edge is ever bared. */}

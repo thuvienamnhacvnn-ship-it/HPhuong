@@ -1373,3 +1373,82 @@ body {
   border-color: var(--rose-text);
   color: var(--on-accent);
 }
+
+/* slide show: the same settle-in for every arch, not only the desktop banner's */
+.arch__photo[data-run] > .pic img {
+  animation: none;
+  transform: scale(1.06);
+  transition: transform 8000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.arch__photo[data-run] > .pic.is-on img {
+  transform: scale(1);
+}
+
+/* ---- phone home, variant "arch" (2026-10-10): turning logo and name on top, below them the
+   desktop banner's soft arch with its flowers, holding the slide show. The full-screen-photo
+   variant before this one is commit 2371fe8. ---- */
+@media (max-width: 900px) {
+  .m-home--arch {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    padding-bottom: 0;
+    background: var(--home-bg);
+  }
+  .m-home--arch .m-home__brand {
+    position: relative;
+    top: auto;
+    margin-top: 0;
+    /* air between the top edge and the turning logo */
+    padding-top: clamp(22px, 4.6dvh, 44px);
+  }
+  .m-home--arch .m-home__logo {
+    width: clamp(88px, 13.5dvh, 118px);
+  }
+  .m-home--arch .m-home__word {
+    width: clamp(160px, 24dvh, 212px);
+    margin-top: 0;
+  }
+  .m-home--arch .m-home__title {
+    margin-top: clamp(2px, 0.8dvh, 8px);
+    font-size: clamp(1.7rem, 4.4dvh, 2.3rem);
+    color: var(--home-title-gold-end);
+    text-shadow: none;
+  }
+  .m-home--arch .m-home__title em {
+    color: var(--home-title-rose);
+  }
+  :root[data-theme="dark"] .m-home--arch .brand-word__arc text {
+    fill: #d9b98a;
+  }
+  :root[data-theme="dark"] .m-home--arch .m-home__word img {
+    filter: brightness(1.55) saturate(1.05);
+  }
+  /* the arch: smaller than the screen. Like on the desktop banner it runs off the right edge (a
+     margin there would show a hard cut); the air is on the left and above. */
+  .m-home__frame {
+    position: relative;
+    min-height: 0;
+    margin: clamp(14px, 2.8dvh, 28px) 0 0 58px;
+  }
+  .m-home__frame .arch__photo img {
+    object-position: 50% 45%;
+  }
+  /* leaf + lily cluster at the arch's lower left, above the dock */
+  /* leaf + lily cluster */
+  .m-home__flora {
+    position: absolute;
+    /* lying across the middle, behind the dock's large booking button: its base tucks behind the bar */
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(var(--dock-h) - 4px + env(safe-area-inset-bottom));
+    width: min(86%, 340px);
+    pointer-events: none;
+  }
+  .m-home__flora img {
+    width: 100%;
+    height: auto;
+  }
+  :root[data-theme="dark"] .m-home__flora {
+    filter: brightness(0.78) saturate(0.9);
+  }
+}

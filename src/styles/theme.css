@@ -147,11 +147,12 @@
   --home-card-title: var(--rose-text);
   --home-card-icon: var(--rose-text);
   --home-disc: var(--petal-soft);
-  --home-band-a: #2f232a;
-  --home-band-b: #262026;
-  --home-band-far: #211c22;
-  --home-band-in: #33252c;
-  --home-line: rgb(255 255 255 / 14%);
+  /* the soft bands and their hairlines must read on graphite too: a step lighter, lines in gold */
+  --home-band-a: #40303a;
+  --home-band-b: #2b232b;
+  --home-band-far: #2a222b;
+  --home-band-in: #46333d;
+  --home-line: rgb(214 178 122 / 60%);
   --home-arc-edge: var(--gold-soft);
 }
 
