@@ -43,7 +43,8 @@ const SOCIAL_ICONS: Record<string, (p: React.SVGProps<SVGSVGElement>) => React.R
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }: Props) {
+// (`demo` is still passed in: the notice bar it used to switch on was removed on the owner's request.)
+export function Chrome({ locale, socialLinks, signedIn, theme, children }: Props) {
   const t = getDict(locale);
   const pathname = usePathname();
   const router = useRouter();
@@ -97,9 +98,8 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
       <a className="skip-link" href="#inhalt">{t.nav.skip}</a>
       <div className="shell" inert={assistantOpen || menuOpen ? true : undefined}>
         <div className="main">
-          {demo && <div className="demo-bar" role="note">{t.common.demoNotice}</div>}
           <header className="header">
-            <Link href={`/${locale}/start`} className="brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
+            <Link prefetch href={`/${locale}/start`} className="brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
               {section === "start" ? (
                 <img className="brand__emblem" src="/media/logo-mark-120.webp" srcSet="/media/logo-mark-120.webp 1x, /media/logo-mark-240.webp 2x" width={46} height={48} alt="" />
               ) : (
@@ -116,7 +116,7 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
             </Link>
             <nav className="header__nav" aria-label={t.nav.mainNav}>
               {nav.map((n) => (
-                <Link key={n.key} href={n.href} className="header__link" aria-current={current(...n.match)}>
+                <Link prefetch key={n.key} href={n.href} className="header__link" aria-current={current(...n.match)}>
                   {n.label}
                 </Link>
               ))}
@@ -163,7 +163,7 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
             </header>
           ) : (
             <header className="m-header">
-              <Link href={`/${locale}/start`} className="m-header__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
+              <Link prefetch href={`/${locale}/start`} className="m-header__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
                 <span className="logo-spin">
                   <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
                   <SpinLogo className="logo-spin__video" />
@@ -207,11 +207,11 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
         )}
 
         <nav className="dock" aria-label={t.nav.quickNav}>
-          <Link href={`/${locale}/start`} aria-current={current("start")}>
+          <Link prefetch href={`/${locale}/start`} aria-current={current("start")}>
             <IconHome />
             <span>{t.nav.start}</span>
           </Link>
-          <Link href={`/${locale}/behandlungen`} aria-current={current("behandlungen")}>
+          <Link prefetch href={`/${locale}/behandlungen`} aria-current={current("behandlungen")}>
             <IconLeaf />
             <span>{t.nav.care}</span>
           </Link>
@@ -219,11 +219,11 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
             <span className="dock__cta-disc"><IconCalendar /></span>
             <span>{t.nav.bookShort}</span>
           </Link>
-          <Link href={`/${locale}/angebote`} aria-current={current("angebote", "gutschein", "checkout", "bestellung")}>
+          <Link prefetch href={`/${locale}/angebote`} aria-current={current("angebote", "gutschein", "checkout", "bestellung")}>
             <IconGift />
             <span>{t.nav.angebote}</span>
           </Link>
-          <Link href={`/${locale}/kontakt`} aria-current={current("kontakt")}>
+          <Link prefetch href={`/${locale}/kontakt`} aria-current={current("kontakt")}>
             <IconPhone />
             <span>{t.nav.kontakt}</span>
           </Link>

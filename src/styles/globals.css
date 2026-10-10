@@ -926,7 +926,7 @@ h3,
     font-size: 0.62rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--tx-sm);
+    color: var(--brand-slogan);
     margin-top: 4px;
   }
   .m-header__tools {

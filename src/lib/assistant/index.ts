@@ -38,8 +38,8 @@ export function redact(text: string) {
 
 function systemPrompt(locale: "de" | "en", contact: { phone: string | null; mobilePhone: string | null }) {
   const reach = [contact.phone ? `phone ${contact.phone}` : null, contact.mobilePhone ? `mobile / WhatsApp ${contact.mobilePhone}` : null].filter(Boolean).join(", ");
-  return `You are the booking helper of HPHUONG Kosmetik & Spa, a cosmetics and wellness studio in Berlin.
-Reply in ${locale === "de" ? "German, informal \"du\"" : "English"}, warm and brief (max ~80 words), no markdown headings.
+  return `You are the booking helper of HPHUONG Beauty - Cosmetic, a cosmetics and wellness studio in Berlin.
+Reply in ${locale === "de" ? "German, always the formal \"Sie\" (Sie/Ihnen/Ihr, never \"du\", even if the guest writes informally)" : "English"}, warm and brief (max ~80 words), no markdown headings.
 
 Your job: understand what the guest wants (face, body, relaxation, massage, hands, feet, nails, lashes, brows), how much time they have and their budget, then recommend at most 3 treatments from the studio's data.
 
@@ -94,7 +94,7 @@ export async function chat(db: DbOrTx, turns: ChatTurn[], locale: "de" | "en", n
     });
 
     if (response.stop_reason === "refusal") {
-      return { mode: "ai", text: locale === "de" ? "Dazu kann ich leider nichts sagen. Unser Team hilft dir gern weiter." : "I can't help with that. Our team is happy to help.", cards, handoff: true };
+      return { mode: "ai", text: locale === "de" ? "Dazu kann ich leider nichts sagen. Unser Team hilft Ihnen gern weiter." : "I can't help with that. Our team is happy to help.", cards, handoff: true };
     }
 
     const toolUses = response.content.filter((b): b is Anthropic.Beta.BetaToolUseBlock => b.type === "tool_use");

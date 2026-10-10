@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   serverExternalPackages: ["@electric-sql/pglite", "sharp"],
   images: { unoptimized: true },
+  // Pages render per request; keep a visited page for half a minute so going back (e.g. to Start) is instant.
+  experimental: { staleTimes: { dynamic: 30 } },
   async headers() {
     return [
       {

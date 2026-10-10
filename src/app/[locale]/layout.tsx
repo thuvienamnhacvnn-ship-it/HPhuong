@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import "@/styles/globals.css";
 import "@/styles/theme.css";
@@ -21,6 +21,8 @@ import { currentCustomer } from "@/lib/auth";
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin", "latin-ext", "vietnamese"], weight: ["500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
 const inter = Inter({ subsets: ["latin", "latin-ext", "vietnamese"], variable: "--font-inter", display: "swap" });
+// the arched descriptor under the logo, set like the studio artwork
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["700"], variable: "--font-playfair", display: "swap" });
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +54,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const customer = await currentCustomer();
   const theme = (await cookies()).get("hp-theme")?.value === "dark" ? "dark" : "light";
   return (
-    <html lang={locale} data-theme={theme} className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang={locale} data-theme={theme} className={`${cormorant.variable} ${inter.variable} ${playfair.variable}`}>
       <body>
         <PetalDefs />
         <Chrome locale={locale} socialLinks={settings.socialLinks} demo={settings.isDemo} signedIn={!!customer} theme={theme}>

@@ -154,7 +154,7 @@ test("opening hours: Mo–Fr 9:30–18:30, no online slots on Saturday or Sunday
 test("studio contact data from the flyer, with working tel:/WhatsApp links", async () => {
   const db = await flyerDb();
   const s = await getSettings(db);
-  assert.equal(s.brand, "HPHUONG Beauty & Spa");
+  assert.equal(s.brand, "HPHUONG Beauty - Cosmetic");
   assert.equal(s.address, "Kolonnenstraße 33, 10829 Berlin");
   assert.equal(s.phone, "030 78 71 29 51");
   assert.equal(s.mobilePhone, "0174 905 05 19");

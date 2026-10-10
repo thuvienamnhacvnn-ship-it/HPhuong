@@ -22,6 +22,7 @@
   /* Text: gold instead of near-black (Sep 22). Large type = standard deep gold (4:1 on
      ivory, fine ≥ 1.3rem); small type = dark gold (6:1) so body copy stays readable. */
   --tx-lg: #86602e;
+  --brand-slogan: #8c5a2a; /* "Beauty - Cosmetic" under the logo: coffee gold */
   --tx-sm: #7a5626;
   --demo-bg: #49352f;
   --demo-fg: #fff7f1;
@@ -83,6 +84,7 @@
   --ink-strong: #f6eeea;
   --ink-soft: #b8aba5;
   --tx-lg: #d8b57c; /* headings on graphite stay gold */
+  --brand-slogan: #d9b98a;
   --tx-sm: #e6dcd7;
   --gold: #c9a36b;
   --gold-soft: #7c6446;

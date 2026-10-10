@@ -13,7 +13,7 @@ import { SpinLogo } from "@/components/SpinLogo";
 import { BrandWord } from "@/components/BrandWord";
 import { ArchSlides } from "@/components/ArchSlides";
 
-export const metadata: Metadata = { title: { absolute: "HPHUONG Beauty & Spa" } };
+export const metadata: Metadata = { title: { absolute: "HPHUONG Beauty - Cosmetic" } };
 
 /** The four discs under the banner: same four icons as before, pointing at the studio's real treatment groups. */
 const STRIP = [
@@ -36,30 +36,41 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
     <Frame className="frame--home">
       {/* Phones (≤ 900px): one fixed screen — photo, turning logo with the lettering, headline. The
           desktop banner below is hidden there; the dock carries the navigation. */}
-      <div className="m-home m-home--frame">
-        {/* One closed frame for the phone: a tall arch holding the turning logo and the name in its
-            head, and inside it a second arch — the window of the slide show. */}
-        <div className="m-arch">
+      <div className="m-home m-home--flow">
+        {/* The desktop banner recomposed for a portrait screen, with the same parts: logo and
+            headline on the calm ground, the soft arch with its gold line holding the slide show,
+            the lily cluster at its foot, the powder waves closing it above and below. */}
+        <div className="m-home__brand">
           <div className="m-home__logo logo-spin">
             {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
-            <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="HPHUONG Beauty & Spa" />
+            <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="HPHUONG Beauty - Cosmetic" />
             <SpinLogo className="logo-spin__video" />
           </div>
           <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" descriptor={t.brand.descriptor} />
           <p className="m-home__title">
             <span>{t.home.title1}</span> <em>{t.home.title2}</em>
           </p>
-          <div className="m-arch__window">
-            <div className="arch__photo m-arch__photo">
-              <Img id="home-space" alt={t.meta.title} priority sizes="100vw" imgStyle={{ objectPosition: "62% 50%" }} />
-              <Img id="home-space-mobile" alt="" sizes="100vw" imgStyle={{ objectPosition: "50% 66%" }} />
-              <Img id="hero-desktop" alt="" sizes="100vw" imgStyle={{ objectPosition: "42% 40%" }} />
-              <Img id="studio-interior" alt="" sizes="100vw" imgStyle={{ objectPosition: "55% 50%" }} />
-              <Img id="service-ayurveda" alt="" sizes="100vw" imgStyle={{ objectPosition: "50% 42%" }} />
-              <Img id="service-facial-massage" alt="" sizes="100vw" imgStyle={{ objectPosition: "50% 36%" }} />
-              <ArchSlides />
-            </div>
+        </div>
+        <div className="m-home__frame">
+          <ArchFrame
+            uid="arch-m"
+            imageId="home-space"
+            alt={t.meta.title}
+            priority
+            sizes="100vw"
+            slides={[
+              { id: "home-space-mobile", pos: "50% 62%" },
+              { id: "hero-desktop", pos: "40% 40%" },
+              { id: "studio-interior", pos: "55% 50%" },
+              { id: "service-ayurveda", pos: "50% 42%" },
+              { id: "service-facial-massage", pos: "50% 36%" },
+            ]}
+          />
+          <div className="m-home__wave m-home__wave--top"><HomeWave uid="wave-mt" /></div>
+          <div className="m-home__flora" aria-hidden>
+            <Img id="home-flora" alt="" sizes="70vw" />
           </div>
+          <div className="m-home__wave m-home__wave--foot"><HomeWave uid="wave-mf" /></div>
         </div>
       </div>
       <div className="home frame__fill">
@@ -108,7 +119,7 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             {/* Turning 3D monogram over its own still frame; the lettering below it stands still.
                 Same box as the old one-piece logo (logo-full), so nothing around it moves. */}
             <div className="pic home__logo3d">
-              <Img id="logo-3d-still" alt="HPHUONG Beauty & Spa" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
+              <Img id="logo-3d-still" alt="HPHUONG Beauty - Cosmetic" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
               <SpinLogo />
               <BrandWord id="bw-arc" className="home__logo3d-word" sizes="(max-width: 900px) 46vw, 30vw" descriptor={t.brand.descriptor} />
             </div>

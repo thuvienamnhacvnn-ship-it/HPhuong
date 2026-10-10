@@ -41,7 +41,7 @@ export type FlyerService = {
 };
 
 export const FLYER_STUDIO = {
-  brand: "HPHUONG Beauty & Spa",
+  brand: "HPHUONG Beauty - Cosmetic",
   address: "Kolonnenstraße 33, 10829 Berlin",
   phone: "030 78 71 29 51",
   mobilePhone: "0174 905 05 19",

@@ -83,7 +83,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--tx-sm);
+  color: var(--brand-slogan);
 }
 .header__nav {
   margin-left: clamp(0px, 2vw, 32px);
@@ -1232,14 +1232,14 @@ body {
   overflow: visible;
 }
 .brand-word__arc text {
-  font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 60px;
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  fill: #5a3a1c;
+  font-family: var(--font-playfair), "Times New Roman", serif;
+  font-size: 84px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  fill: var(--brand-slogan);
 }
 :root[data-theme="dark"] .brand-word__arc text {
-  fill: #d9b98a;
+  fill: var(--brand-slogan);
 }
 .brand-word.home__logo3d-word {
   position: absolute;
@@ -1318,7 +1318,7 @@ body {
   }
   .m-home .brand-word__arc text,
   :root[data-theme="dark"] .m-home .brand-word__arc text {
-    fill: #5a3a1c;
+    fill: #8c5a2a;
   }
   :root[data-theme="dark"] .m-home__word img {
     filter: none;
@@ -1569,5 +1569,118 @@ body {
   .dock__cta-disc {
     border: 2px solid #c9a36b;
     box-shadow: 0 0 0 3px var(--dock-bg), 0 8px 16px rgb(73 53 47 / 26%);
+  }
+}
+
+/* ---- phone home, variant "flow" (2026-10-10): the desktop banner recomposed for portrait, with
+   the desktop's own parts — arch with gold line and soft bands, lily cluster, powder waves, the
+   headline in flowing colour. Variant "frame" before it = commit 14cc6fb. ---- */
+@media (max-width: 900px) {
+  .m-home.m-home--flow {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 0;
+    background: var(--home-bg);
+  }
+  .m-home--flow .m-home__brand {
+    position: relative;
+    top: auto;
+    z-index: 2;
+    padding-top: clamp(26px, 4.6dvh, 46px); /* air above the logo now that no notice bar sits on top */
+  }
+  .m-home--flow .m-home__logo {
+    width: clamp(88px, 14dvh, 124px);
+  }
+  .m-home--flow .m-home__word {
+    width: clamp(156px, 23.5dvh, 208px);
+    margin-top: 0;
+  }
+  .m-home--flow .m-home__title {
+    margin: clamp(0px, 0.6dvh, 6px) 0 0;
+    font-size: clamp(1.8rem, 4.8dvh, 2.5rem);
+    text-shadow: none;
+  }
+  /* headline in the desktop's flowing colour */
+  .m-home--flow .m-home__title span,
+  .m-home--flow .m-home__title em {
+    background: var(--mo-flow) var(--flow-from, 0%) 0 / 300% 100% repeat-x;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    padding: 0.12em 0.04em 0.2em;
+    margin: -0.12em -0.04em -0.2em;
+  }
+  .m-home--flow .m-home__title em {
+    --flow-from: 75%;
+  }
+  :root[data-theme="dark"] .m-home--flow .brand-word__arc text {
+    fill: #d9b98a;
+  }
+  :root[data-theme="dark"] .m-home--flow .m-home__word img {
+    filter: brightness(1.55) saturate(1.05);
+  }
+  /* the arch: as on the desktop it runs off the screen's right edge; the waves close it above and below */
+  .m-home--flow .m-home__frame {
+    position: relative;
+    min-height: 0;
+    margin: clamp(2px, 0.8dvh, 10px) 0 0 0;
+  }
+  .m-home--flow .m-home__frame .arch {
+    left: 26px;
+    top: 14px;
+  }
+  .m-home__wave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 40px;
+    pointer-events: none;
+  }
+  .m-home__wave .home-wave {
+    height: 100%;
+    margin: 0;
+  }
+  /* above: the same wave turned over, so the arch rises out of the page ground */
+  .m-home__wave--top {
+    top: -2px;
+    transform: scaleY(-1);
+    --home-strip: var(--home-bg-flat, #fdf2ec);
+  }
+  :root[data-theme="dark"] .m-home__wave--top {
+    --home-strip: #1d1b20;
+  }
+  .m-home__wave--foot {
+    bottom: calc(var(--dock-h) - 6px + env(safe-area-inset-bottom));
+    z-index: 2;
+  }
+  /* ground under the foot wave, behind the dock */
+  .m-home--flow .m-home__frame::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--dock-h) - 5px + env(safe-area-inset-bottom));
+    background: var(--home-strip);
+    z-index: 2;
+  }
+  .m-home--flow .m-home__flora {
+    /* small, in the middle of the dock, behind its booking button: the bloom (about two thirds
+       along the picture) sits on the screen's centre line */
+    --w: min(52%, 200px);
+    /* pushed to the right edge: only the pointed petal on its right is cut off by the screen */
+    left: auto;
+    right: calc(var(--w) * -0.13);
+    transform: none;
+    bottom: calc(var(--dock-h) - 12px + env(safe-area-inset-bottom));
+    width: var(--w);
+    z-index: 3;
+  }
+}
+@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .m-home--flow .m-home__title span,
+  .m-home--flow .m-home__title em {
+    animation: mo-flow var(--mo-flow-dur) linear 1.2s infinite;
   }
 }

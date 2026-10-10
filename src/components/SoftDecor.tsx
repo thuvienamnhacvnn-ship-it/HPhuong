@@ -119,23 +119,23 @@ const W3 =
   "M0,62 C41.7,63.3 166.7,67.3 250,70 C333.3,72.7 425,83 500,82 C575,81 625,60 700,57 C775,54 866.7,62.2 950,66 C1033.3,69.8 1116.7,81.3 1200,79 C1283.3,76.7 1371.3,54.5 1450,52 C1528.7,49.5 1635,62 1672,64";
 const WAVE_CLOSE = " L1672,86 L0,86 Z";
 
-export function HomeWave() {
+export function HomeWave({ uid = "home-wave" }: { uid?: string } = {}) {
   return (
     <div className="home-wave" aria-hidden>
       <svg viewBox="0 0 1672 84" preserveAspectRatio="none" focusable={false}>
         <defs>
-          <linearGradient id="home-wave-a" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={`${uid}-a`} x1="0" y1="0" x2="0" y2="1">
             <stop className="home-wave__stop-a" offset="0.72" />
             <stop className="home-wave__stop-strip" offset="1" />
           </linearGradient>
-          <linearGradient id="home-wave-b" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={`${uid}-b`} x1="0" y1="0" x2="0" y2="1">
             <stop className="home-wave__stop-b" offset="0.45" />
             <stop className="home-wave__stop-strip" offset="1" />
           </linearGradient>
         </defs>
-        <path d={W1 + WAVE_CLOSE} fill="url(#home-wave-a)" />
+        <path d={W1 + WAVE_CLOSE} fill={`url(#${uid}-a)`} />
         <path className="home-wave__line" d={W1} />
-        <path d={W2 + WAVE_CLOSE} fill="url(#home-wave-b)" />
+        <path d={W2 + WAVE_CLOSE} fill={`url(#${uid}-b)`} />
         <path className="home-wave__line" d={W2} />
         <path className="home-wave__fill" d={W3 + WAVE_CLOSE} />
         <path className="home-wave__line" d={W3} />
