@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
  *
  * It sits on top of the still frame the server renders and only shows once it is really playing,
  * so nothing flashes. Safari and every iOS browser cannot draw WebM alpha (black box): there the
- * same turn plays as an animated WebP with alpha (public/brand/hp-logo-*.webp, 20 fps). Reduced
+ * same turn plays as an animated WebP with alpha (public/brand/hp-logo-340 / -128.webp, 20 fps, kept small so it starts quickly and plays evenly). Reduced
  * motion keeps the still. The video pauses off screen and while the tab is hidden.
  */
 export function SpinLogo({ className = "home__logo3d-video" }: { className?: string }) {
@@ -24,7 +24,7 @@ export function SpinLogo({ className = "home__logo3d-video" }: { className?: str
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduce.matches) return;
     if (webkitOnly || !video.canPlayType('video/webm; codecs="vp9"')) {
-      const file = video.getBoundingClientRect().width > 130 ? "/brand/hp-logo-480.webp" : "/brand/hp-logo-200.webp";
+      const file = video.getBoundingClientRect().width > 130 ? "/brand/hp-logo-340.webp" : "/brand/hp-logo-128.webp";
       // show it only once it has arrived, so the still frame never gives way to nothing
       const pre = new Image();
       pre.onload = () => setAnim(file);
