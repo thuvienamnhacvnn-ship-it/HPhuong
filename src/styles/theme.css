@@ -82,7 +82,7 @@
   --ink: #e6dcd7;
   --ink-strong: #f6eeea;
   --ink-soft: #b8aba5;
-  --tx-lg: #f6eeea;
+  --tx-lg: #d8b57c; /* headings on graphite stay gold */
   --tx-sm: #e6dcd7;
   --gold: #c9a36b;
   --gold-soft: #7c6446;
@@ -115,7 +115,7 @@
   --mo-gold-hi: #f6e2bd;
   --mo-trace-c: #fff3d9;
   --mo-sheen-c: rgb(255 236 200 / 30%); /* fainter on graphite, or the band reads as a halo */
-  --mo-flow: linear-gradient(100deg, #f0d3a4 0%, #c9a36b 13%, #f0d3a4 25%, #ecbfa6 38%, #e6a6ae 50%, #cf8794 62%, #e6a6ae 74%, #ecbfa6 87%, #f0d3a4 100%);
+  --mo-flow: linear-gradient(100deg, #f0d3a4 0%, #c9a36b 13%, #f0d3a4 25%, #e2bd84 38%, #c9a36b 50%, #b08a52 62%, #c9a36b 74%, #e2bd84 87%, #f0d3a4 100%); /* gold only on graphite */
   --mo-shadow-lift: 0 2px 4px rgb(0 0 0 / 40%), 0 12px 24px rgb(0 0 0 / 35%);
   --btn-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 3px 8px rgb(0 0 0 / 30%);
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 35%), 0 2px 8px rgb(0 0 0 / 25%);
@@ -143,7 +143,7 @@
   --home-wave-b: #2c2228;
   --home-foot: #1b191d;
   --home-foot-rose: #33242b;
-  --home-title-rose: var(--rose-text);
+  --home-title-rose: #e2bd84;
   --home-card-title: var(--rose-text);
   --home-card-icon: var(--rose-text);
   --home-disc: var(--petal-soft);

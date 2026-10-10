@@ -37,7 +37,7 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
           desktop banner below is hidden there; the dock carries the navigation. */}
       <div className="m-home">
         <div className="m-home__photo">
-          <Img id="hero-mobile" alt={t.meta.title} priority sizes="100vw" />
+          <Img id="home-space-mobile" alt={t.meta.title} priority sizes="100vw" />
         </div>
         <div className="m-home__brand">
           <div className="m-home__logo logo-spin">
@@ -107,7 +107,15 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
           <div className="home__visual" data-mo="visual" style={{ ["--i" as string]: 8 }}>
             {/* Banner photo = its own layer. Swap it: overwrite assets/images/hero-desktop.png (+ hero-mobile.png),
                 then `npm run assets`. Any size; the box is near-square, so a landscape photo is cropped at the sides. Focal point = --hero-pos in decor.css. */}
-            <ArchFrame imageId="hero-desktop" alt={t.meta.title} priority sizes="(max-width: 900px) 100vw, max(42vw, calc(112vh - 145px))" mobile={{ id: "hero-mobile", sizes: "100vw" }}>
+            <ArchFrame imageId="home-space" alt={t.meta.title} priority sizes="(max-width: 900px) 100vw, max(42vw, calc(112vh - 145px))" mobile={{ id: "home-space-mobile", sizes: "100vw" }}
+              slides={[
+                { id: "hero-desktop", pos: "28% 50%" },
+                { id: "studio-interior", pos: "55% 50%" },
+                { id: "service-ayurveda", pos: "50% 42%" },
+                { id: "banner-contact", pos: "82% 50%" },
+                { id: "service-facial-massage", pos: "50% 36%" },
+              ]}
+            >
               {featured && featuredVariant && (
                 <div className="treatment-dock" data-mo="rise-lg" style={{ ["--i" as string]: 10 }}>
                   <div className="treatment-dock__img">

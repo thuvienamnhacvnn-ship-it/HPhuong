@@ -1911,7 +1911,8 @@ h3,
 .offers__copy > .lead,
 .contact__copy,
 .location-card > div {
-  --on-photo-shadow: 0 1px 0 rgb(255 250 246 / 90%), 0 0 6px rgb(255 250 246 / 85%), 0 2px 16px rgb(255 250 246 / 80%);
+  /* a small, dark drop shadow — never a light halo around the letters */
+  --on-photo-shadow: 0 1px 2px rgb(74 47 28 / 30%);
   text-shadow: var(--on-photo-shadow);
 }
 .offers__copy > .display,
@@ -2299,7 +2300,7 @@ h3,
 }
 .studio__overlay .display {
   color: #fffaf6;
-  text-shadow: 0 2px 4px rgb(40 20 16 / 55%), 0 4px 22px rgb(40 20 16 / 45%);
+  text-shadow: 0 2px 3px rgb(40 20 16 / 55%);
 }
 .studio__label {
   position: absolute;

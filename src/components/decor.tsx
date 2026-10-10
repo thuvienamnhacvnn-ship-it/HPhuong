@@ -1,5 +1,6 @@
 import { IconStar } from "./icons";
 import { Img } from "./Img";
+import { ArchSlides } from "./ArchSlides";
 
 /** `i` = place in the home entrance sequence (motion.css); other pages leave it out. */
 export function Ornament({ className = "", i }: { className?: string; i?: number }) {
@@ -99,6 +100,7 @@ export function ArchFrame({
   priority,
   sizes,
   mobile,
+  slides,
   children,
 }: {
   imageId: string;
@@ -106,6 +108,8 @@ export function ArchFrame({
   priority?: boolean;
   sizes?: string;
   mobile?: { id: string; sizes: string };
+  /** More pictures for the slide show (ArchSlides); `pos` = their focal point. */
+  slides?: { id: string; pos?: string }[];
   children?: React.ReactNode;
 }) {
   return (
@@ -132,6 +136,10 @@ export function ArchFrame({
           data-mo-one = only towards the banner's top/right edge, so no edge is ever bared. */}
       <div className="arch__photo" data-mo-depth="8" data-mo-depth-y="4" data-mo-one="">
         <Img id={imageId} alt={alt} priority={priority} sizes={sizes} mobile={mobile} />
+        {slides?.map((s) => (
+          <Img key={s.id} id={s.id} alt="" sizes={sizes} imgStyle={s.pos ? { objectPosition: s.pos } : undefined} />
+        ))}
+        {slides && slides.length > 0 && <ArchSlides />}
       </div>
       <svg className="arch__line" data-mo-depth="8" data-mo-depth-y="4" data-mo-one="" viewBox="0 0 703 734" preserveAspectRatio="none" aria-hidden focusable={false}>
         <path className="arch__edge" d={ARCH_LINE} />

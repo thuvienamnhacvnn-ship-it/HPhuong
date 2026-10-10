@@ -7,6 +7,7 @@ import { addDays } from "@/lib/time";
 import { whatsappConfigured } from "@/lib/notifications/adapters";
 import { BookingFlow } from "@/components/BookingFlow";
 import { Lily, Ornament } from "@/components/decor";
+import { Img } from "@/components/Img";
 import { Frame } from "@/components/Frame";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -24,8 +25,10 @@ export default async function BookingPage({ params, searchParams }: { params: Pr
 
   return (
     <Frame className="frame--booking" label={t.booking.title}>
-      <section className="band">
-        <Lily position="tr" />
+      <section className="band band--photo">
+        <div className="band__photo" aria-hidden>
+          <Img id="banner-booking" alt="" priority sizes="(max-width: 900px) 45vw, 46vw" />
+        </div>
         <div className="above-decor stack-sm">
           <h1 className="display display--md">
             <span className="hide-on-mobile">{t.booking.title}</span>

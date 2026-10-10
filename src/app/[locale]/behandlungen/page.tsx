@@ -6,6 +6,7 @@ import { getSettings, isBookableOnline, isTimed, listServices, type ServiceWithV
 import { CATEGORIES, CATEGORY_INFO, parseCategories, type Category } from "@/lib/categories";
 import { formatServicePrice } from "@/lib/money";
 import { Img } from "@/components/Img";
+import { AutoTabs } from "@/components/AutoTabs";
 import { Lily, Ornament } from "@/components/decor";
 import {
   IconArrow,
@@ -84,8 +85,10 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
 
   return (
     <Frame className="frame--catalog" label={t.nav.behandlungen}>
-      <section className="band">
-        <Lily position="tr" />
+      <section className="band band--photo">
+        <div className="band__photo" aria-hidden>
+          <Img id="banner-treatments" alt="" priority sizes="(max-width: 900px) 45vw, 46vw" />
+        </div>
         <div className="band__inner above-decor">
           <h1 className="display display--md">
             {t.catalog.title1}
@@ -102,6 +105,7 @@ export default async function CatalogPage({ params, searchParams }: { params: Pr
       <div className="page frame__fill catalog-page">
         <div className="catalog-toolbar catalog-toolbar--groups">
           <nav className="tabs" aria-label={t.catalog.filters}>
+            <AutoTabs />
             {(["alle", ...CATEGORIES] as const).map((c) => {
               const Icon = TAB_ICONS[c];
               const active = c === "alle" ? selected.length === 0 : selected.includes(c);

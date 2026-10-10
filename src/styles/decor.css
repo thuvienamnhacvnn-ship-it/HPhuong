@@ -1243,3 +1243,133 @@ body {
 .brand-word.home__logo3d-word {
   position: absolute;
 }
+
+/* ---- banner photo of a sub page: right part of the band, its inner edge one arch with the
+   gold hairline; no colour is laid over it ---- */
+.band--photo {
+  min-height: clamp(120px, 17vh, 190px);
+}
+.band__photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 46%;
+  border-radius: 999px 0 0 999px;
+  border-left: 1.5px solid var(--home-arc);
+  overflow: hidden;
+}
+.band__photo .pic,
+.band__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 82% 58%;
+}
+@media (max-width: 900px) {
+  .band__photo {
+    width: 38%;
+  }
+  .band--photo .band__inner,
+  .band--photo > .above-decor {
+    max-width: 60%;
+  }
+}
+
+/* ---- home banner = the studio's room ---- */
+.home {
+  --hero-pos: 50% 50%;
+}
+@media (max-width: 900px) {
+  /* phone home: the room fills the whole screen; logo and name stand on its calm wall */
+  .m-home {
+    display: block;
+    padding-bottom: 0;
+    background: var(--media-bg);
+  }
+  .m-home__photo {
+    position: absolute;
+    inset: 0;
+    border-radius: 0;
+    border-bottom: 0;
+  }
+  .m-home__photo .pic,
+  .m-home__photo img {
+    object-position: 50% 50%;
+  }
+  .m-home__brand {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: clamp(64px, 11dvh, 104px);
+    margin-top: 0;
+  }
+  .m-home__lead {
+    display: none;
+  }
+  /* the photo is always light: its words keep the light theme's inks, with a small dark drop shadow */
+  .m-home__title {
+    color: #74491c;
+    text-shadow: 0 1px 2px rgb(74 47 28 / 28%);
+  }
+  .m-home__title em {
+    color: #74491c;
+  }
+  .m-home .brand-word__arc text,
+  :root[data-theme="dark"] .m-home .brand-word__arc text {
+    fill: #5a3a1c;
+  }
+  :root[data-theme="dark"] .m-home__word img {
+    filter: none;
+  }
+}
+
+/* contact banner: the doorway stays clear of the headline */
+.contact__hero .pic img {
+  object-position: 42% 50%;
+}
+@media (max-width: 900px) {
+  /* the dock is a solid bar: nothing of the page shows through it */
+  .dock {
+    background: #fffaf6;
+    backdrop-filter: none;
+  }
+  :root[data-theme="dark"] .dock {
+    background: #27242b;
+  }
+}
+
+/* ---- slide show in the home banner's arch (ArchSlides): slow cross-fade, the incoming picture
+   settles from a slight zoom. Without the script only the first picture shows. ---- */
+.arch__photo > .pic {
+  position: absolute;
+  inset: 0;
+}
+.arch__photo > .pic + .pic {
+  opacity: 0;
+}
+.arch__photo[data-run] > .pic {
+  opacity: 0;
+  transition: opacity 1800ms ease-in-out;
+}
+.arch__photo[data-run] > .pic.is-on {
+  opacity: 1;
+}
+.home .arch__photo[data-run] > .pic img {
+  animation: none;
+  transform: scale(1.06);
+  transition: transform 8000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.home .arch__photo[data-run] > .pic.is-on img {
+  transform: scale(1);
+}
+
+/* ---- phones: the group buttons light up one after another (AutoTabs) ---- */
+.tabs .chip {
+  transition: background-color 450ms ease, border-color 450ms ease, color 450ms ease;
+}
+.tabs .chip.is-lit {
+  background: var(--rose);
+  border-color: var(--rose-text);
+  color: var(--on-accent);
+}

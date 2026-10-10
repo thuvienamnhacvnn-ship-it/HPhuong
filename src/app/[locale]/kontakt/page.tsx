@@ -39,7 +39,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
     <Frame className="frame--contact">
     <div className="contact frame__fill">
       <section className="contact__hero" aria-labelledby="contact-title">
-        <Img id="ritual-still-life" alt="" priority sizes="(max-width: 1100px) 100vw, 60vw" />
+        <Img id="banner-contact" alt="" priority sizes="(max-width: 1100px) 100vw, 60vw" />
         <div className="contact__copy">
           <h1 id="contact-title" className="display">
             {t.contact.title1}

@@ -66,6 +66,12 @@ export const MEDIA = {
   "service-facial-massage": { file: "assets/images/service-facial-massage.png", width: 1122, height: 1402, widths: [160, 400, 800, 1122] },
   "service-lashes": { file: "assets/images/service-lashes.png", width: 1122, height: 1402, widths: [160, 400, 800, 1122] },
   "offer-banner": { file: "assets/images/offer-banner.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  // Studio rooms (generated 2026-10-10): the home banner shows the studio itself, never a face.
+  "home-space": { file: "assets/images/home-space.png", width: 1254, height: 1254, widths: [640, 1024, 1254] },
+  "home-space-mobile": { file: "assets/images/home-space-mobile.png", width: 1024, height: 1536, widths: [480, 768, 1024] },
+  "banner-treatments": { file: "assets/images/banner-treatments.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  "banner-booking": { file: "assets/images/banner-booking.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  "banner-contact": { file: "assets/images/banner-contact.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "studio-interior": { file: "assets/images/studio-interior.png", width: 1660, height: 948, widths: [640, 1024, 1660] },
 } as const;
 
