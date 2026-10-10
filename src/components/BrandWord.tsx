@@ -11,7 +11,7 @@ export function BrandWord({ id, className = "", sizes, descriptor = "Beauty & Sp
     <div className={`brand-word ${className}`}>
       <Img id="logo-name" alt="" priority sizes={sizes} className="brand-word__name" />
       <svg className="brand-word__arc" viewBox="0 0 1119 215" aria-hidden focusable="false">
-        <path id={id} d="M 150 34 Q 559.5 296 969 34" fill="none" />
+        <path id={id} d="M 205 62 Q 559.5 366 914 62" fill="none" />
         <text>
           <textPath href={`#${id}`} startOffset="50%" textAnchor="middle">
             {descriptor.toUpperCase()}
