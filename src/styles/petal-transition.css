@@ -22,8 +22,7 @@
   touch-action: none;
 }
 .petal-tx[data-on] {
-  display: block;
-  pointer-events: auto;
+  display: block; /* the petals never block the page */
 }
 :root[data-theme="dark"] .petal-tx {
   --ptx-a: #4a2f38;

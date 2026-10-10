@@ -11,6 +11,7 @@ import { HomeFoot, HomePetals, HomeWave } from "@/components/SoftDecor";
 import { Frame } from "@/components/Frame";
 import { SpinLogo } from "@/components/SpinLogo";
 import { BrandWord } from "@/components/BrandWord";
+import { ArchSlides } from "@/components/ArchSlides";
 
 export const metadata: Metadata = { title: { absolute: "HPHUONG Beauty & Spa" } };
 
@@ -35,8 +36,10 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
     <Frame className="frame--home">
       {/* Phones (≤ 900px): one fixed screen — photo, turning logo with the lettering, headline. The
           desktop banner below is hidden there; the dock carries the navigation. */}
-      <div className="m-home m-home--arch">
-        <div className="m-home__brand">
+      <div className="m-home m-home--frame">
+        {/* One closed frame for the phone: a tall arch holding the turning logo and the name in its
+            head, and inside it a second arch — the window of the slide show. */}
+        <div className="m-arch">
           <div className="m-home__logo logo-spin">
             {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
             <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="HPHUONG Beauty & Spa" />
@@ -46,25 +49,16 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
           <p className="m-home__title">
             <span>{t.home.title1}</span> <em>{t.home.title2}</em>
           </p>
-        </div>
-        {/* The desktop banner's soft arch with its flowers, holding the same slide show. */}
-        <div className="m-home__frame">
-          <ArchFrame
-            uid="arch-m"
-            imageId="home-space"
-            alt={t.meta.title}
-            priority
-            sizes="100vw"
-            slides={[
-              { id: "home-space-mobile", pos: "50% 62%" },
-              { id: "hero-desktop", pos: "40% 40%" },
-              { id: "studio-interior", pos: "55% 50%" },
-              { id: "service-ayurveda", pos: "50% 42%" },
-              { id: "service-facial-massage", pos: "50% 36%" },
-            ]}
-          />
-          <div className="m-home__flora" aria-hidden>
-            <Img id="home-flora" alt="" sizes="70vw" />
+          <div className="m-arch__window">
+            <div className="arch__photo m-arch__photo">
+              <Img id="home-space" alt={t.meta.title} priority sizes="100vw" imgStyle={{ objectPosition: "62% 50%" }} />
+              <Img id="home-space-mobile" alt="" sizes="100vw" imgStyle={{ objectPosition: "50% 66%" }} />
+              <Img id="hero-desktop" alt="" sizes="100vw" imgStyle={{ objectPosition: "42% 40%" }} />
+              <Img id="studio-interior" alt="" sizes="100vw" imgStyle={{ objectPosition: "55% 50%" }} />
+              <Img id="service-ayurveda" alt="" sizes="100vw" imgStyle={{ objectPosition: "50% 42%" }} />
+              <Img id="service-facial-massage" alt="" sizes="100vw" imgStyle={{ objectPosition: "50% 36%" }} />
+              <ArchSlides />
+            </div>
           </div>
         </div>
       </div>

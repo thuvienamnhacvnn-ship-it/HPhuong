@@ -150,13 +150,12 @@ export function Chrome({ locale, socialLinks, demo, signedIn, theme, children }:
           </header>
 
           {section === "start" ? (
-            // Phone home: nothing but the language (left) and the menu (right), floating on the banner.
+            // Phone home: nothing but the language button (left) and the menu (right), floating on the banner.
             <header className="m-header m-header--home">
-              <div className="m-lang" aria-label={t.nav.language}>
-                <Link onClick={keepQuery("en")} href={switchHref("en")} aria-current={locale === "en" ? "true" : undefined} lang="en" hrefLang="en">EN</Link>
-                <span aria-hidden>·</span>
-                <Link onClick={keepQuery("de")} href={switchHref("de")} aria-current={locale === "de" ? "true" : undefined} lang="de" hrefLang="de">DE</Link>
-              </div>
+              {/* one round button: a tap switches to the other language (it shows the one you get) */}
+              <Link className="m-lang" onClick={keepQuery(otherLocale)} href={switchHref(otherLocale)} lang={otherLocale} hrefLang={otherLocale} aria-label={`${t.nav.language}: ${otherLocale === "de" ? "Deutsch" : "English"}`}>
+                {otherLocale.toUpperCase()}
+              </Link>
               <button type="button" className="m-menu-btn" onClick={() => open(setMenuOpen)} aria-haspopup="dialog" aria-expanded={menuOpen}>
                 <IconDots />
                 <span className="sr-only">{t.nav.menu}</span>

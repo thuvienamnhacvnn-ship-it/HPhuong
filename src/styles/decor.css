@@ -1452,3 +1452,121 @@ body {
     filter: brightness(0.78) saturate(0.9);
   }
 }
+
+/* ---- phone home, variant "frame" (2026-10-10): ONE closed decor made for the portrait screen.
+   A tall arch (double gold line, soft blush field) holds the turning logo and the name in its head;
+   inside it stands a second arch, the window of the slide show. Nothing runs off the screen.
+   Earlier variants: "slide" = commit b3d35fb, full-screen photo = commit 2371fe8. ---- */
+@media (max-width: 900px) {
+  .m-home.m-home--frame {
+    display: block;
+    padding: 0;
+    background: var(--home-bg);
+  }
+  .m-arch {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: clamp(26px, 3.8dvh, 34px); /* the arch's head rises between the language and menu buttons */
+    bottom: calc(26px + env(safe-area-inset-bottom)); /* the frame's foot lies behind the dock */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(20px, 3.6dvh, 34px) 12px 12px;
+    border: 1.5px solid var(--home-arc);
+    border-radius: 999px 999px 26px 26px;
+    background: linear-gradient(180deg, var(--home-band-b), var(--home-band-a));
+  }
+  /* second line of the frame, all the way round */
+  .m-arch::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--home-arc);
+    border-radius: 999px 999px 20px 20px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .m-arch .m-home__logo {
+    flex: none;
+    width: clamp(86px, 14.5dvh, 128px);
+  }
+  .m-arch .m-home__word {
+    flex: none;
+    width: clamp(150px, 23dvh, 204px);
+    margin-top: 0;
+  }
+  .m-home--frame .m-home__title {
+    flex: none;
+    margin: clamp(0px, 0.6dvh, 6px) 0 clamp(8px, 1.6dvh, 14px);
+    font-size: clamp(1.55rem, 4.1dvh, 2.2rem);
+    color: var(--home-title-gold-end);
+    text-shadow: none;
+  }
+  .m-home--frame .m-home__title em {
+    color: var(--home-title-rose);
+  }
+  :root[data-theme="dark"] .m-home--frame .brand-word__arc text {
+    fill: #d9b98a;
+  }
+  :root[data-theme="dark"] .m-home--frame .m-home__word img {
+    filter: brightness(1.55) saturate(1.05);
+  }
+  /* the window: an arch in the arch, with its own gold line and a hairline around it */
+  .m-arch__window {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    align-self: stretch;
+    padding: 5px;
+    border: 1px solid color-mix(in srgb, var(--home-arc) 55%, transparent);
+    border-radius: 999px 999px 18px 18px;
+  }
+  .m-arch .m-arch__photo {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 100%;
+    clip-path: none;
+    overflow: hidden;
+    border: 1.5px solid var(--home-arc);
+    border-radius: 999px 999px 13px 13px;
+    background: var(--media-bg);
+  }
+}
+
+@media (max-width: 900px) {
+  /* language: one round button like the menu's */
+  .m-lang {
+    width: 44px;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--tx-lg);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+}
+@media (max-width: 900px) {
+  /* dock: a polished gold rim all the way round (a metal gradient on the border, no light around it) */
+  .dock {
+    --dock-bg: #fffaf6;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(var(--dock-bg), var(--dock-bg)) padding-box,
+      linear-gradient(115deg, #a9783a 0%, #e9cf98 22%, #b98a4a 45%, #f3dfb4 62%, #b08040 80%, #dcbc7e 100%) border-box;
+  }
+  :root[data-theme="dark"] .dock {
+    --dock-bg: #27242b;
+    background:
+      linear-gradient(var(--dock-bg), var(--dock-bg)) padding-box,
+      linear-gradient(115deg, #a9783a 0%, #e9cf98 22%, #b98a4a 45%, #f3dfb4 62%, #b08040 80%, #dcbc7e 100%) border-box;
+  }
+  /* the booking button carries the same rim */
+  .dock__cta-disc {
+    border: 2px solid #c9a36b;
+    box-shadow: 0 0 0 3px var(--dock-bg), 0 8px 16px rgb(73 53 47 / 26%);
+  }
+}

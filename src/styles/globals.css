@@ -2924,3 +2924,18 @@ p.row > svg {
     padding-top: clamp(28px, 9vh, 96px);
   }
 }
+
+/* Narrow screens: the words of the offers and contact banners stand below the photo, on the page's
+   own ground — on graphite they are light gold, not the dark gold meant for the light photo. */
+@media (max-width: 1100px) {
+  :root[data-theme="dark"] .offers__copy > .display,
+  :root[data-theme="dark"] .contact__copy > .display {
+    color: #e6c58e;
+    text-shadow: none;
+  }
+  :root[data-theme="dark"] .offers__copy > .lead,
+  :root[data-theme="dark"] .contact__copy > p {
+    color: #ead9bd;
+    text-shadow: none;
+  }
+}
