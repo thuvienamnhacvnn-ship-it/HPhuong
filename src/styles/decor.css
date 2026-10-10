@@ -64,7 +64,8 @@
 .logo-spin > img {
   transition: opacity 400ms ease;
 }
-.logo-spin:has(.logo-spin__video.is-on) > img {
+/* (on Safari/iOS the turning logo is itself an <img>: only the still gives way) */
+.logo-spin:has(.logo-spin__video.is-on) > img:not(.logo-spin__video) {
   opacity: 0;
 }
 .brand__name {
