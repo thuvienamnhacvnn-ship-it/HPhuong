@@ -46,10 +46,12 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="HPHUONG Beauty - Cosmetic" />
             <SpinLogo className="logo-spin__video" />
           </div>
-          <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" descriptor={t.brand.descriptor} />
-          <p className="m-home__title">
-            <span>{t.home.title1}</span> <em>{t.home.title2}</em>
-          </p>
+          <div className="m-home__lockup">
+            <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" descriptor={t.brand.descriptor} />
+            <p className="m-home__title">
+              <span>{t.home.title1}</span> <em>{t.home.title2}</em>
+            </p>
+          </div>
         </div>
         <div className="m-home__frame">
           <ArchFrame
@@ -71,6 +73,22 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <Img id="home-flora" alt="" sizes="70vw" />
           </div>
           <div className="m-home__wave m-home__wave--foot"><HomeWave uid="wave-mf" /></div>
+          {featured && featuredVariant && (
+            <div className="m-home__card treatment-dock">
+              <div className="treatment-dock__img">
+                <Img id={featured.imageAssetId} alt="" sizes="72px" />
+              </div>
+              <div className="treatment-dock__text">
+                <div className="treatment-dock__title">{featured.name[locale]}</div>
+                <div className="treatment-dock__meta">{t.common.duration(featuredVariant.minutes)}</div>
+              </div>
+              <Link className="btn btn--sm" href={`/${locale}/termin?service=${featured.id}&variant=${featuredVariant.id}`}>
+                <span className="btn__in">
+                  {t.common.chooseTime} <IconArrow />
+                </span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       <div className="home frame__fill">
