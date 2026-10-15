@@ -1,6 +1,7 @@
 /**
  * Studio data and price list from the studio's two flyers (source of truth:
- * `_w-agent/20_flyer-du-lieu.md`, transcribed from "H.P Flyer1.png" / "H.P Flyer2.png").
+ * `_w-agent/20_flyer-du-lieu.md`, transcribed from "H.P Flyer1.png" / "H.P Flyer2.png";
+ * prices and contact checked against the print file "FLYER HPHUONG.pdf", 2026-10-10).
  *
  * Rules for this file:
  * - German names, subtitles, descriptions and steps are the flyer's wording, verbatim
@@ -45,7 +46,7 @@ export const FLYER_STUDIO = {
   address: "Kolonnenstraße 33, 10829 Berlin",
   phone: "030 78 71 29 51",
   mobilePhone: "0174 905 05 19",
-  email: "beautymore.hoang@icloud.com",
+  email: "hphuong.kosmetik.spa@gmail.com",
   // A plain Google Maps search for the printed address — no coordinates, no place id.
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Kolonnenstra%C3%9Fe+33%2C+10829+Berlin",
   /** Montag–Freitag: 9:30–18:30 Uhr */
@@ -76,7 +77,8 @@ const STEP: Record<string, string> = {
   Abschlusspflege: "Finishing care",
   Wirkstoffampulle: "Active-ingredient ampoule",
   Wirkstoffpackung: "Active-ingredient mask",
-  "klärende Wirkstoffpackung": "Clarifying active-ingredient mask",
+  Klärungsmaske: "Clarifying mask",
+  Abdeckungsmaske: "Covering mask",
   Wirkstoffpflege: "Active-ingredient care",
   Feuchtigkeitspackung: "Moisturising mask",
   "Hals- und Dekolletépflege": "Neck and décolleté care",
@@ -126,7 +128,7 @@ export const FLYER_SERVICES: FlyerService[] = [
     steps: steps("Hautdiagnose · Abreinigung · Augenbrauenkorrektur · Peeling · Bedampfung · Ausreinigung · Gesichtsmassage · Pflegepackung · Abschlusspflege"),
     image: "service-facial",
     room: "cosmetic",
-    variants: one(60, 5000),
+    variants: one(60, 5500),
   },
   {
     id: "klassische-kosmetik",
@@ -138,7 +140,7 @@ export const FLYER_SERVICES: FlyerService[] = [
       "A comprehensive cosmetic treatment with high-quality active ingredients, tailored to the individual needs of your skin.",
     ),
     steps: steps(
-      "Hautdiagnose · Abreinigung · Augenbrauenkorrektur und -färbung · Peeling · Bedampfung · Ausreinigung · Wirkstoffampulle · Wirkstoffpackung · Hals- und Dekolletépflege · Massage · Abschlusspflege",
+      "Hautdiagnose · Abreinigung · Augenbrauenkorrektur und -färbung · Peeling · Bedampfung · Ausreinigung · Wirkstoffampulle · Pflegepackung · Massage · Abschlusspflege",
     ),
     image: "service-serum",
     room: "cosmetic",
@@ -166,8 +168,8 @@ export const FLYER_SERVICES: FlyerService[] = [
     name: S("Anti-Age-Behandlung", "Anti-Age Treatment"),
     teaser: S("Intensive Pflege für anspruchsvolle Haut", "Intensive care for demanding skin"),
     description: S(
-      "Eine hochwertige Pflegebehandlung für reife und anspruchsvolle Haut. Die Beauty-Wachs-Modellage unterstützt die Aufnahme wertvoller Wirkstoffe. Sheabutter, Sojalecithin sowie die Vitamine A und E pflegen intensiv.",
-      "A high-quality care treatment for mature and demanding skin. The beauty wax modelling supports the absorption of valuable active ingredients. Shea butter, soy lecithin and vitamins A and E provide intensive care.",
+      "Eine hochwertige Pflegebehandlung für reife und anspruchsvolle Haut. Die Beauty-Wachs-Modellage unterstützt die Aufnahme wertvoller Wirkstoffe.",
+      "A high-quality care treatment for mature and demanding skin. The beauty wax modelling supports the absorption of valuable active ingredients.",
     ),
     steps: steps(
       "Hautdiagnose · Abreinigung · Augenbrauenkorrektur · Peeling · Bedampfung · Ausreinigung · Wirkstoffampulle · Beauty-Wachs-Modellage · Hals- und Dekolletépflege · Massage · Abschlusspflege",
@@ -214,7 +216,7 @@ export const FLYER_SERVICES: FlyerService[] = [
       "Eine gezielte Behandlung zur intensiven Reinigung und Pflege unreiner Haut. Regelmäßige Anwendungen können dazu beitragen, das Hautbild sichtbar zu verfeinern und Unreinheiten zu reduzieren.",
       "A targeted treatment for intensive cleansing and care of blemished skin. Regular applications can help to visibly refine the complexion and reduce impurities.",
     ),
-    steps: steps("Hautdiagnose · Abreinigung · Peeling · Bedampfung · intensive Ausreinigung · klärende Wirkstoffpackung · Abschlusspflege"),
+    steps: steps("Hautdiagnose · Abreinigung · Peeling · Bedampfung · intensive Ausreinigung · Klärungsmaske · Abdeckungsmaske · Abschlusspflege"),
     room: "cosmetic",
     variants: [
       { id: "gesicht", label: S("Gesicht", "Face"), minutes: null, priceCents: 3500 },
@@ -338,7 +340,7 @@ export const FLYER_SERVICES: FlyerService[] = [
     ),
     image: "service-ayurveda",
     room: "body",
-    variants: one(60, 5000),
+    variants: one(60, 6000),
   },
   {
     id: "hot-stone-massage",
@@ -347,7 +349,7 @@ export const FLYER_SERVICES: FlyerService[] = [
     description: S("Entspannende Massage mit angenehm erwärmten Steinen.", "Relaxing massage with pleasantly warmed stones."),
     image: "service-hotstone",
     room: "body",
-    variants: one(60, 5500),
+    variants: one(60, 6500),
   },
   {
     id: "gesichtsmassage", image: "service-facial-massage",
@@ -402,7 +404,7 @@ export const FLYER_SERVICES: FlyerService[] = [
     description: S("Klassische Wellnessmassage für ganzheitliche Entspannung.", "Classic wellness massage for holistic relaxation."),
     image: "service-massage",
     room: "body",
-    variants: one(60, 5000),
+    variants: one(60, 5500),
   },
 
   /* -------------------------------------------------------- B5 Maniküre (5 rows) */
@@ -423,7 +425,7 @@ export const FLYER_SERVICES: FlyerService[] = [
     description: S("Ein wohltuendes Pflegeprogramm für schöne und gepflegte Hände.", "A soothing care programme for beautiful and well-groomed hands."),
     steps: steps("Aroma-Handbad · Peeling · intensive Handpflege · Packung · Massage"),
     room: "cosmetic",
-    variants: one(45, 2800),
+    variants: one(45, 3500),
   },
 
   /* -------------------------------------------------------- B6 Pediküre (5 rows) */
@@ -526,13 +528,13 @@ export const FLYER_SERVICES: FlyerService[] = [
   /* --------------------------------------------------- B4 Augenkosmetik (5 rows) */
   { id: "augenbrauenkorrektur", category: "augenkosmetik", name: S("Augenbrauenkorrektur", "Eyebrow Shaping"), room: "cosmetic", variants: one(null, 700) },
   { id: "augenbrauen-faerben", category: "augenkosmetik", name: S("Augenbrauen färben", "Eyebrow Tinting"), room: "cosmetic", variants: one(null, 1000) },
-  { id: "wimpern-faerben", category: "augenkosmetik", name: S("Wimpern färben", "Eyelash Tinting"), room: "cosmetic", variants: one(null, 1200) },
+  { id: "wimpern-faerben", category: "augenkosmetik", name: S("Wimpern färben", "Eyelash Tinting"), room: "cosmetic", variants: one(null, 1500) },
   {
     id: "augenbrauen-wimpern-faerben",
     category: "augenkosmetik",
     name: S("Augenbrauen und Wimpern färben", "Eyebrow and Eyelash Tinting"),
     room: "cosmetic",
-    variants: one(null, 1700),
+    variants: one(null, 2000),
   },
   { id: "tages-make-up", category: "augenkosmetik", name: S("Tages-Make-up", "Day Make-up"), room: "cosmetic", variants: one(null, 2000) },
 ];

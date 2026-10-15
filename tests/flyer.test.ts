@@ -64,12 +64,12 @@ test("spot checks against the flyer: prices, durations, 'ab'", async () => {
     assert.ok(v, `${serviceId}/${variantId} exists`);
     return [v.minutes, v.priceCents, v.priceFrom] as const;
   };
-  assert.deepEqual(await row("basis-kosmetik", "60"), [60, 5000, false]);
+  assert.deepEqual(await row("basis-kosmetik", "60"), [60, 5500, false]);
   assert.deepEqual(await row("anti-age-behandlung", "105"), [105, 9500, false]);
   assert.deepEqual(await row("lomi-lomi-nui-massage", "80"), [80, 8000, false]);
   assert.deepEqual(await row("schulter-nackenmassage", "20"), [20, 2500, false]);
   assert.deepEqual(await row("klassische-fusspflege", "45"), [45, 3000, true]);
-  assert.deepEqual(await row("spa-manikuere", "45"), [45, 2800, false]);
+  assert.deepEqual(await row("spa-manikuere", "45"), [45, 3500, false]);
   assert.deepEqual(await row("bodyfit-monthalit", "mineral-sole-schlick"), [60, 4500, false]);
   assert.deepEqual(await row("aknebehandlung", "gesicht-dekollete"), [null, 4000, true]);
   assert.deepEqual(await row("sugaring", "beine-komplett"), [null, 4800, false]);
@@ -158,7 +158,7 @@ test("studio contact data from the flyer, with working tel:/WhatsApp links", asy
   assert.equal(s.address, "Kolonnenstraße 33, 10829 Berlin");
   assert.equal(s.phone, "030 78 71 29 51");
   assert.equal(s.mobilePhone, "0174 905 05 19");
-  assert.equal(s.email, "beautymore.hoang@icloud.com");
+  assert.equal(s.email, "hphuong.kosmetik.spa@gmail.com");
   assert.ok(s.mapUrl?.startsWith("https://www.google.com/maps/search/"));
   assert.equal(decodeURIComponent(new URL(s.mapUrl!).searchParams.get("query")!), "Kolonnenstraße 33, 10829 Berlin");
   assert.equal(telHref(s.phone!), "tel:+493078712951");
@@ -186,7 +186,7 @@ test("home page card: Basis-Kosmetik, 60 minutes, 50,00 €, bookable", async ()
   const featured = (await listServices(db, { bookableOnly: true })).find((s) => s.id === FEATURED_SERVICE_ID)!;
   const v = bookableVariants(featured)[0];
   assert.equal(featured.name.de, "Basis-Kosmetik");
-  assert.deepEqual([v.id, v.minutes, v.priceCents], ["60", 60, 5000]);
+  assert.deepEqual([v.id, v.minutes, v.priceCents], ["60", 60, 5500]);
   assert.equal(featured.imageAssetId, "service-facial");
 });
 
