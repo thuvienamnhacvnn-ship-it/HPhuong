@@ -21,7 +21,8 @@ import {
   IconYoutube,
 } from "./icons";
 import { AssistantChat } from "./AssistantChat";
-import { ThemeToggle, type Theme } from "./ThemeToggle";
+import { ThemeToggle } from "./ThemeToggle";
+import type { Theme, ThemeChoice } from "@/lib/theme-auto";
 import { MotionRoot } from "./Motion";
 import { SpinLogo } from "./SpinLogo";
 
@@ -31,6 +32,7 @@ type Props = {
   demo: boolean;
   signedIn: boolean;
   theme: Theme;
+  themeChoice: ThemeChoice;
   children: React.ReactNode;
 };
 
@@ -44,7 +46,7 @@ const SOCIAL_ICONS: Record<string, (p: React.SVGProps<SVGSVGElement>) => React.R
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 // (`demo` is still passed in: the notice bar it used to switch on was removed on the owner's request.)
-export function Chrome({ locale, socialLinks, signedIn, theme, children }: Props) {
+export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }: Props) {
   const t = getDict(locale);
   const pathname = usePathname();
   const router = useRouter();
@@ -131,7 +133,7 @@ export function Chrome({ locale, socialLinks, signedIn, theme, children }: Props
                 <IconSearch />
                 <span className="sr-only">{t.nav.search}</span>
               </Link>
-              <ThemeToggle initial={theme} locale={locale} />
+              <ThemeToggle choice={themeChoice} locale={locale} />
               <Link className="icon-btn" href={signedIn ? `/${locale}/konto` : `/${locale}/login`} title={t.nav.account} aria-current={current("konto", "login")}>
                 <IconUser />
                 <span className="sr-only">{t.nav.account}</span>
@@ -266,7 +268,7 @@ export function Chrome({ locale, socialLinks, signedIn, theme, children }: Props
             ))}
           </ul>
           <div className="row" style={{ marginTop: 16 }}>
-            <ThemeToggle initial={theme} locale={locale} withLabel />
+            <ThemeToggle choice={themeChoice} locale={locale} withLabel />
             <Link className="chip" onClick={keepQuery("de")} href={switchHref("de")} aria-current={locale === "de" ? "true" : undefined}>Deutsch</Link>
             <Link className="chip" onClick={keepQuery("en")} href={switchHref("en")} aria-current={locale === "en" ? "true" : undefined}>English</Link>
           </div>

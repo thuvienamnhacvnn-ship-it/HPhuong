@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCalendar, IconChat, IconFlower, IconGift, IconHome, IconHourglass, IconLotus, IconSettings, IconUsers } from "../icons";
 import { api } from "../api";
-import { ThemeToggle, type Theme } from "../ThemeToggle";
+import { ThemeToggle } from "../ThemeToggle";
+import type { ThemeChoice } from "@/lib/theme-auto";
 
 const ITEMS = [
   { href: "/admin", label: "Übersicht", icon: IconHome, min: 1 },
@@ -19,7 +20,7 @@ const ITEMS = [
 const RANK: Record<string, number> = { therapist: 1, manager: 2, owner: 3 };
 const ROLE_LABEL: Record<string, string> = { owner: "Inhaber:in", manager: "Leitung", therapist: "Mitarbeitende" };
 
-export function AdminNav({ role, name, theme }: { role: string; name: string; theme: Theme }) {
+export function AdminNav({ role, name, choice }: { role: string; name: string; choice: ThemeChoice }) {
   const pathname = usePathname();
   const router = useRouter();
   const rank = RANK[role] ?? 0;
@@ -44,7 +45,7 @@ export function AdminNav({ role, name, theme }: { role: string; name: string; th
       <span className="rail__spacer" />
       <div className="admin-user">
         <span className="ai-launch__orb" style={{ width: 52, height: 52 }}><IconLotus width={26} height={26} /></span>
-        <ThemeToggle initial={theme} locale="de" />
+        <ThemeToggle choice={choice} locale="de" />
         <strong>{name}</strong>
         <span className="small muted">{ROLE_LABEL[role]}</span>
         <button
