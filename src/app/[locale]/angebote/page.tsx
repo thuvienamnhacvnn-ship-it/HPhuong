@@ -65,6 +65,20 @@ export default async function OffersPage({ params }: { params: Promise<{ locale:
               <li><IconGift /> <span><strong>{t.catalog.voucherTipTitle}:</strong> {t.catalog.voucherTip}</span></li>
               <li><IconHeart /> {t.common.priceNote}</li>
             </ul>
+            <div className="offer-extras">
+              <p className="parking parking--sm">
+                <span className="parking__sign" role="img" aria-label={t.contact.parkingLabel}>P</span>
+                <span className="parking__text">
+                  {t.contact.parking[0]}
+                  <br />
+                  {t.contact.parking[1]}
+                </span>
+              </p>
+              <div className="brand-logos" aria-label={t.contact.partners}>
+                <img src="/partners/gertraud-gruber.png" alt="Gertraud Gruber Kosmetik Kultur" style={{ height: 46, width: "auto" }} loading="lazy" />
+                <img src="/partners/gehwol.png" alt="GEHWOL" style={{ height: 26, width: "auto" }} loading="lazy" />
+              </div>
+            </div>
           </section>
           {details.map(({ offer, components, image }) => (
             <article key={offer.id} className="card package">

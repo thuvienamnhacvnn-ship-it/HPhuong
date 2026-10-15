@@ -306,6 +306,7 @@ const de = {
     parking: ["Mit privatem Parkplatz", "(Nr. 5) des Studios!"],
     parkingLabel: "Parkplatz",
     partners: "Unsere Marken",
+    partnerLine: "Pflege mit Marken von",
   },
   assistant: {
     title1: "Ihre persönliche",

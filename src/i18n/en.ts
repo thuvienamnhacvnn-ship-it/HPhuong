@@ -298,6 +298,7 @@ const en: Dict = {
     parking: ["With private parking space", "(No. 5) at the studio!"],
     parkingLabel: "Parking",
     partners: "Our brands",
+    partnerLine: "Care with brands by",
   },
   assistant: {
     title1: "Your personal",

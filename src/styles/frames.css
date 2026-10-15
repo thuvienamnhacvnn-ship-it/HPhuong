@@ -572,7 +572,7 @@
     gap: clamp(8px, 1.6vh, 18px);
   }
   .frame--studio .studio__body img[alt="HPHUONG"] {
-    width: clamp(80px, 13vh, 150px);
+    width: clamp(70px, 11vh, 150px);
     height: auto;
   }
   .frame--studio .display--md {

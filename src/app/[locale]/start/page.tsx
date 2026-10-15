@@ -179,9 +179,9 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
               <span className="cat-strip__label">{t.home.strip[key]}</span>
             </Link>
           ))}
-          <div className="cat-strip__quote side-quote" aria-hidden data-mo="fade" style={{ ["--i" as string]: 15 }}>
-            <div>{t.brand.tagline}</div>
-            <Ornament className="ornament--sm ornament--center" />
+          <div className="cat-strip__quote side-quote cat-strip__partner" data-mo="fade" style={{ ["--i" as string]: 15 }}>
+            <div>{t.contact.partnerLine}</div>
+            <img src="/partners/gertraud-gruber.png" alt="Gertraud Gruber Kosmetik Kultur" loading="lazy" />
           </div>
         </nav>
       </div>

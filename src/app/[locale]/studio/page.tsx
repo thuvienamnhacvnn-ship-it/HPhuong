@@ -42,7 +42,10 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
         </div>
         <h1 className="display display--md above-decor">{t.studio.title}</h1>
         <p className="above-decor" style={{ fontSize: "1.1rem", margin: 0, maxWidth: 560 }}>{t.studio.lead}</p>
-        <p className="above-decor studio__products">{t.studio.products}</p>
+        <div className="above-decor studio__partner">
+          <img src="/partners/gertraud-gruber.png" alt="Gertraud Gruber Kosmetik Kultur" loading="lazy" />
+          <p className="studio__products">{t.studio.products}</p>
+        </div>
         <div className="tiles above-decor">
           {tiles.map((tile) => (
             <figure key={tile.label} className="tile">
