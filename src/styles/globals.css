@@ -3097,3 +3097,27 @@ p.row > svg {
   margin-top: auto;
   padding-top: 8px;
 }
+
+/* partner logos are dark-on-light artwork: give them a light plate in the dark theme */
+:root[data-theme="dark"] .cat-strip__partner img,
+:root[data-theme="dark"] .studio__partner img,
+:root[data-theme="dark"] .brand-logos img,
+:root[data-theme="dark"] .partners img {
+  background: #fbf3ee;
+  padding: 6px 10px;
+  border-radius: 10px;
+  box-sizing: content-box;
+}
+.offer-extras {
+  gap: 8px;
+  padding-block: 10px 12px;
+}
+.offer-extras .brand-logos img:first-child {
+  height: 38px !important;
+}
+.offer-extras .brand-logos img:last-child {
+  height: 24px !important;
+}
+:root[data-theme="dark"] .offer-extras .brand-logos img {
+  padding: 3px 8px;
+}
