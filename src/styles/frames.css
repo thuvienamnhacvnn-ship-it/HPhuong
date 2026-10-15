@@ -593,7 +593,7 @@
   }
   .frame--contact .contact--more {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
     align-content: stretch;
   }
   .frame--contact .contact--more .location-card {

@@ -303,6 +303,9 @@ const de = {
     privacyHint: "Bitte senden Sie uns keine Gesundheitsdaten über dieses Formular.",
     days: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
     closedDay: "geschlossen",
+    parking: ["Mit privatem Parkplatz", "(Nr. 5) des Studios!"],
+    parkingLabel: "Parkplatz",
+    partners: "Unsere Marken",
   },
   assistant: {
     title1: "Ihre persönliche",

@@ -295,6 +295,9 @@ const en: Dict = {
     privacyHint: "Please do not send health data through this form.",
     days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     closedDay: "closed",
+    parking: ["With private parking space", "(No. 5) at the studio!"],
+    parkingLabel: "Parking",
+    partners: "Our brands",
   },
   assistant: {
     title1: "Your personal",

@@ -141,7 +141,22 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 <a className="btn btn--sm" href={settings.mapUrl} target="_blank" rel="noopener noreferrer">{t.contact.map}</a>
               )}
             </>
-          )}        </div>
+          )}
+          <p className="parking">
+            <span className="parking__sign" role="img" aria-label={t.contact.parkingLabel}>P</span>
+            <span className="parking__text">
+              {t.contact.parking[0]}
+              <br />
+              {t.contact.parking[1]}
+            </span>
+          </p>
+        </div>
+      </section>
+
+      <section className="partners" aria-label={t.contact.partners}>
+        <h2 className="eyebrow">{t.contact.partners}</h2>
+        <img src="/partners/gertraud-gruber.png" alt="Gertraud Gruber Kosmetik Kultur" height={64} style={{ height: 64, width: "auto" }} loading="lazy" />
+        <img src="/partners/gehwol.png" alt="GEHWOL" height={40} style={{ height: 40, width: "auto" }} loading="lazy" />
       </section>
     </div>
     </Frame>

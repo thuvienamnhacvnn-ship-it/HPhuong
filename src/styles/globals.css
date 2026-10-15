@@ -2939,3 +2939,42 @@ p.row > svg {
     text-shadow: none;
   }
 }
+
+/* parking note + partner brands (contact page) */
+.parking {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 0;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+}
+.parking__sign {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  background: #5568a6;
+  color: #fff;
+  font: 700 2rem/1 system-ui, sans-serif;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 12%);
+}
+.partners {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px clamp(24px, 5vw, 64px);
+  padding: 14px 0 0;
+  border-top: 1px solid var(--line);
+}
+.partners h2 {
+  margin: 0;
+}
