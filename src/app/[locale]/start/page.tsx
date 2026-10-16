@@ -23,6 +23,15 @@ const STRIP = [
   { key: "care", icon: IconLeafLine, categories: ["manikuere", "pedikuere"], wide: false },
 ] as const;
 
+/** Phone slide show: portrait-friendly pictures first, `pos` = focal point of each. */
+const MOBILE_SLIDES = [
+  { id: "home-space-mobile", pos: "50% 60%" },
+  { id: "hero-tall", pos: "58% 50%" },
+  { id: "studio-tall", pos: "50% 50%" },
+  { id: "service-ayurveda", pos: "50% 42%" },
+  { id: "service-facial-massage", pos: "50% 36%" },
+];
+
 export default async function StartPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale, t, db } = await pageContext(params);
   const services = await listServices(db, { bookableOnly: true });
@@ -36,10 +45,17 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
     <Frame className="frame--home">
       {/* Phones (≤ 900px): one fixed screen — photo, turning logo with the lettering, headline. The
           desktop banner below is hidden there; the dock carries the navigation. */}
-      <div className="m-home m-home--flow">
-        {/* The desktop banner recomposed for a portrait screen, with the same parts: logo and
-            headline on the calm ground, the soft arch with its gold line holding the slide show,
-            the lily cluster at its foot, the powder waves closing it above and below. */}
+      <div className="m-home m-home--full">
+        {/* Full-screen slide show: the photo runs edge to edge behind the header buttons and the dock.
+            The turning logo, the lettering and the headline sit on its upper part (a soft shade keeps
+            them readable); the lily cluster rests on its lower right corner above the dock. */}
+        <div className="arch__photo m-full__photo">
+          {MOBILE_SLIDES.map((sl, i) => (
+            <Img key={sl.id} id={sl.id} alt={i === 0 ? t.meta.title : ""} priority={i === 0} sizes="100vw" imgStyle={{ objectPosition: sl.pos }} />
+          ))}
+          <ArchSlides />
+        </div>
+        <div className="m-full__shade" aria-hidden />
         <div className="m-home__brand">
           <div className="m-home__logo logo-spin">
             {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
@@ -51,26 +67,8 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <span>{t.home.title1}</span> <em>{t.home.title2}</em>
           </p>
         </div>
-        <div className="m-home__frame">
-          <ArchFrame
-            uid="arch-m"
-            imageId="home-space"
-            alt={t.meta.title}
-            priority
-            sizes="100vw"
-            slides={[
-              { id: "home-space-mobile", pos: "50% 62%" },
-              { id: "hero-desktop", pos: "40% 40%" },
-              { id: "studio-interior", pos: "55% 50%" },
-              { id: "service-ayurveda", pos: "50% 42%" },
-              { id: "service-facial-massage", pos: "50% 36%" },
-            ]}
-          />
-          <div className="m-home__wave m-home__wave--top"><HomeWave uid="wave-mt" /></div>
-          <div className="m-home__flora" aria-hidden>
-            <Img id="home-flora" alt="" sizes="70vw" />
-          </div>
-          <div className="m-home__wave m-home__wave--foot"><HomeWave uid="wave-mf" /></div>
+        <div className="m-home__flora" aria-hidden>
+          <Img id="home-flora" alt="" sizes="70vw" />
         </div>
       </div>
       <div className="home frame__fill">

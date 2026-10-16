@@ -72,6 +72,8 @@ export const MEDIA = {
   "banner-treatments": { file: "assets/images/banner-treatments.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "banner-booking": { file: "assets/images/banner-booking.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "banner-contact": { file: "assets/images/banner-contact.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  "hero-tall": { file: "assets/images/hero-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
+  "studio-tall": { file: "assets/images/studio-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
   "studio-interior": { file: "assets/images/studio-interior.png", width: 1660, height: 948, widths: [640, 1024, 1660] },
 } as const;
 
