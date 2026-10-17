@@ -18,6 +18,9 @@ export type BookingService = {
 };
 
 type Day = { date: string; slots: { time: string; startsAt: string }[]; closed: boolean };
+/** Solo studio for now: the staff picker is hidden, not removed. Set to true once there is a team. */
+const SHOW_STAFF_PICKER = false;
+
 type Availability = { days: Day[]; staff: { id: string; name: string }[]; totalCents: number };
 type Hold = { token: string; expiresAt: number; key: string };
 
@@ -74,7 +77,7 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
   const [date, setDate] = useState<string | null>(validInitialDate);
   const [month, setMonth] = useState(monthOf(validInitialDate ?? today));
   const [time, setTime] = useState<string | null>(validInitialDate ? (initial.time ?? null) : null);
-  const [staffId, setStaffId] = useState<string>(initial.staff ?? "");
+  const [staffId, setStaffId] = useState<string>(SHOW_STAFF_PICKER ? initial.staff ?? "" : "");
   const [step, setStep] = useState<1 | 2 | 3>(initialService ? (initial.time ? 3 : 2) : 1);
 
   const [avail, setAvail] = useState<Availability | null>(null);
@@ -457,15 +460,17 @@ export function BookingFlow({ locale, services, today, lastDay, timezone, whatsa
             {holdMessage && <p className="notice notice--warn" role="alert">{holdMessage}</p>}
           </div>
 
-          <div className="field">
-            <label htmlFor="b-staff">{t.booking.staff}</label>
-            <select id="b-staff" className="select" value={staffId} onChange={(e) => { setStaffId(e.target.value); setTime(null); }}>
-              <option value="">{t.booking.noPreference}</option>
-              {avail?.staff.map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-          </div>
+          {SHOW_STAFF_PICKER && (
+            <div className="field">
+              <label htmlFor="b-staff">{t.booking.staff}</label>
+              <select id="b-staff" className="select" value={staffId} onChange={(e) => { setStaffId(e.target.value); setTime(null); }}>
+                <option value="">{t.booking.noPreference}</option>
+                {avail?.staff.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </section>
 
         {/* 3 — summary & contact */}
