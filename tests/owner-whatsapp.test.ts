@@ -100,3 +100,34 @@ test("owner gets an SMS (seven.io format) when SMS_API_KEY is set, exactly once"
     delete process.env.SMS_URL;
   }
 });
+
+test("owner SMS can go out through the studio's own SIM (Android SMS gateway)", async () => {
+  const got: { auth?: string; body: { phoneNumbers: string[]; message: string } }[] = [];
+  const server = http.createServer((req, res) => {
+    const c: Buffer[] = [];
+    req.on("data", (d) => c.push(d));
+    req.on("end", () => {
+      got.push({ auth: req.headers.authorization, body: JSON.parse(Buffer.concat(c).toString()) });
+      res.statusCode = 202;
+      res.end("{}");
+    });
+  });
+  await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
+  process.env.OWNER_WHATSAPP_PHONE = "+49 174 9050519";
+  process.env.SMS_GATE_USER = "u";
+  process.env.SMS_GATE_PASS = "p";
+  process.env.SMS_GATE_URL = `http://127.0.0.1:${(server.address() as { port: number }).port}/m`;
+  try {
+    const db = await testDb();
+    const h = await createHold(db, { serviceId: "gesichtspflege", variantId: "60", date: TUESDAY, time: "10:00" }, NOW);
+    await submitAppointment(db, { ...contact({ name: "SIM Kundin" }), holdToken: h.holdToken }, NOW);
+    await processDueJobs(db, NOW);
+    assert.equal(got.length, 1);
+    assert.equal(got[0].auth, `Basic ${Buffer.from("u:p").toString("base64")}`);
+    assert.deepEqual(got[0].body.phoneNumbers, ["+491749050519"]);
+    assert.match(got[0].body.message, /SIM Kundin/);
+  } finally {
+    server.close();
+    for (const k of ["OWNER_WHATSAPP_PHONE", "SMS_GATE_USER", "SMS_GATE_PASS", "SMS_GATE_URL"]) delete process.env[k];
+  }
+});

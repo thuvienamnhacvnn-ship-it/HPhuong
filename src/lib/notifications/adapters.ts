@@ -96,10 +96,24 @@ export async function sendOwnerWhatsapp(db: DbOrTx, settings: { whatsappEnabled:
 
 /** SMS via seven.io (German gateway). SMS_API_KEY required; SMS_FROM is the sender name (max 11 chars). */
 export async function sendSms(to: string, message: Rendered): Promise<DeliveryResult> {
+  const text = message.smsText ?? message.text.slice(0, 300);
+  // Own SIM: an Android phone running "SMS Gateway for Android" (sms-gate.app) sends from the studio's own SIM card.
+  if (process.env.SMS_GATE_USER && process.env.SMS_GATE_PASS) {
+    const base = process.env.SMS_GATE_URL ?? "https://api.sms-gate.app/3rdparty/v1/message";
+    const auth = Buffer.from(`${process.env.SMS_GATE_USER}:${process.env.SMS_GATE_PASS}`).toString("base64");
+    const response = await fetch(base, {
+      method: "POST",
+      headers: { Authorization: `Basic ${auth}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, textMessage: { text }, phoneNumbers: [`+${to.replace(/[^0-9]/g, "")}`] }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!response.ok) throw new Error(`smsgate_http_${response.status}`);
+    return { status: "sent" };
+  }
   const key = process.env.SMS_API_KEY;
   if (!key) return { status: "skipped", reason: "sms_not_configured" };
   const base = process.env.SMS_URL ?? "https://gateway.seven.io/api/sms";
-  const body = new URLSearchParams({ to: to.replace(/[^0-9]/g, ""), text: message.smsText ?? message.text.slice(0, 300), from: process.env.SMS_FROM ?? "HPHUONG", json: "1" });
+  const body = new URLSearchParams({ to: to.replace(/[^0-9]/g, ""), text, from: process.env.SMS_FROM ?? "HPHUONG", json: "1" });
   const response = await fetch(base, { method: "POST", headers: { "X-Api-Key": key, Accept: "application/json" }, body, signal: AbortSignal.timeout(15_000) });
   if (!response.ok) throw new Error(`sms_http_${response.status}`);
   const data = (await response.json().catch(() => ({}))) as { success?: string | boolean };

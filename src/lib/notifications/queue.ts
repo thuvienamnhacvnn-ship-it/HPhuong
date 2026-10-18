@@ -65,7 +65,7 @@ export async function enqueueAppointmentNotifications(
     // Owner alert: SMS when a gateway key is set (SMS_API_KEY), otherwise WhatsApp/dev outbox. No customer consent involved.
     const phone = (process.env.OWNER_SMS_PHONE ?? process.env.OWNER_WHATSAPP_PHONE ?? "").replace(/[^0-9]/g, "");
     if (phone) {
-      const channel = process.env.SMS_API_KEY ? "sms" : "whatsapp";
+      const channel = process.env.SMS_API_KEY || process.env.SMS_GATE_USER ? "sms" : "whatsapp";
       await enqueue(db, { dedupeKey: `appt:${appointment.id}:owner_new_booking:${channel}`, channel, template: "owner_new_booking", recipient: phone, locale: "de", payload, appointmentId: appointment.id, runAt: now });
     }
     return;
