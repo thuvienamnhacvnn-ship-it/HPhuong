@@ -93,6 +93,26 @@ export function renderAppointment(template: string, a: Appointment, c: Customer,
         subject: `Neue Terminanfrage: ${d.names}`,
         text: `Neue Anfrage (${a.kind === "combo_request" ? "Paket — bitte einplanen" : "Slot"}).\n\n${d.names}\n${d.when}\n\nPrüfen: ${appUrl()}/admin/anfragen`,
       };
+    case "owner_new_booking": {
+      const d2 = describe(a, "de");
+      const state = a.status === "confirmed" ? "BESTÄTIGT" : "ANFRAGE (bitte prüfen)";
+      const contact = [c.phone ? `Tel. ${c.phone}` : null, c.email].filter(Boolean).join(" · ");
+      return {
+        subject: `Neue Buchung: ${d2.names}`,
+        text: `Neue Buchung — ${state}
+
+${c.name}${contact ? `
+${contact}` : ""}
+${d2.names}
+${d2.when}
+${d2.price}${a.customerNote ? `
+Notiz: ${a.customerNote}` : ""}
+
+${appUrl()}/admin/anfragen`,
+        whatsappTemplate: process.env.WHATSAPP_TEMPLATE_OWNER_NEW,
+        whatsappParams: [c.name, d2.names, d2.when],
+      };
+    }
     case "staff_pending_expiring":
       return {
         subject: `Anfrage läuft bald ab: ${d.names}`,

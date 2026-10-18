@@ -562,6 +562,7 @@ export async function submitAppointment(db: Db, input: ContactInput & { holdToke
     const [freshCustomer] = await tx.select().from(schema.customers).where(eq(schema.customers.id, customer.id));
     await enqueueAppointmentNotifications(tx, appointment, freshCustomer, status === "pending" ? "request_received" : "confirmed", settings, now);
     if (status === "pending") await enqueueAppointmentNotifications(tx, appointment, freshCustomer, "staff_new_request", settings, now);
+    await enqueueAppointmentNotifications(tx, appointment, freshCustomer, "owner_new_booking", settings, now);
     return { appointmentId, publicToken: token, status };
   });
 }

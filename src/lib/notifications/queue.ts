@@ -23,7 +23,8 @@ export type AppointmentEvent =
   | "cancelled"
   | "expired"
   | "rescheduled"
-  | "staff_new_request";
+  | "staff_new_request"
+  | "owner_new_booking";
 
 export type JobInput = {
   dedupeKey: string;
@@ -59,6 +60,15 @@ export async function enqueueAppointmentNotifications(
   const payload = { appointmentId: appointment.id };
   const version = appointment.startsAt ? appointment.startsAt.toISOString() : "request";
   const base = `appt:${appointment.id}:${event}:${event === "rescheduled" ? version : appointment.updatedAt.toISOString()}`;
+
+  if (event === "owner_new_booking") {
+    // The owner's own WhatsApp: no customer consent involved, but only if a number is configured.
+    const phone = (process.env.OWNER_WHATSAPP_PHONE ?? "").replace(/[^0-9]/g, "");
+    if (phone) {
+      await enqueue(db, { dedupeKey: `appt:${appointment.id}:owner_new_booking:whatsapp`, channel: "whatsapp", template: "owner_new_booking", recipient: phone, locale: "de", payload, appointmentId: appointment.id, runAt: now });
+    }
+    return;
+  }
 
   if (event === "staff_new_request") {
     if (settings.staffNotifyEmail) {

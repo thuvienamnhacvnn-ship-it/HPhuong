@@ -4,7 +4,7 @@ import { schema } from "../db";
 import { getSettings } from "../catalog";
 import { unseal } from "../ids";
 import { addMinutes } from "../time";
-import { sendEmail, sendWhatsapp, type DeliveryResult } from "./adapters";
+import { sendEmail, sendOwnerWhatsapp, sendWhatsapp, type DeliveryResult } from "./adapters";
 import { claimDueJobs, enqueue } from "./queue";
 import { renderAppointment, renderContactCopy, renderMagicLink, renderVoucherIssued, type Rendered } from "./templates";
 
@@ -18,7 +18,7 @@ async function prepare(db: Db, job: Job): Promise<Rendered | { cancel: string }>
   const settings = await getSettings(db);
   const p = job.payload as Record<string, string>;
 
-  if (job.template.startsWith("appointment_") || job.template.startsWith("staff_")) {
+  if (job.template.startsWith("appointment_") || job.template.startsWith("staff_") || job.template === "owner_new_booking") {
     const [appointment] = await db.select().from(schema.appointments).where(eq(schema.appointments.id, p.appointmentId));
     if (!appointment) return { cancel: "appointment_missing" };
     const [customer] = await db.select().from(schema.customers).where(eq(schema.customers.id, appointment.customerId));
@@ -27,7 +27,7 @@ async function prepare(db: Db, job: Job): Promise<Rendered | { cancel: string }>
       if (!appointment.startsAt || appointment.startsAt.toISOString() !== p.startsAt) return { cancel: "appointment_moved" };
     }
     if (job.template === "staff_pending_expiring" && appointment.status !== "pending") return { cancel: "already_decided" };
-    if (job.channel === "whatsapp" && !(appointment.whatsappReminder && customer.whatsappOptIn && customer.phone)) {
+    if (job.channel === "whatsapp" && job.template !== "owner_new_booking" && !(appointment.whatsappReminder && customer.whatsappOptIn && customer.phone)) {
       return { cancel: "no_whatsapp_consent" };
     }
     const manage = appointment.publicTokenSealed ? `${appUrl()}/${customer.locale}/termin/${unseal(appointment.publicTokenSealed)}` : undefined;
@@ -58,7 +58,9 @@ export async function processDueJobs(db: Db, now = new Date()) {
         continue;
       }
       let result: DeliveryResult;
-      if (job.channel === "whatsapp") {
+      if (job.template === "owner_new_booking") {
+        result = await sendOwnerWhatsapp(db, settings!, job.id, job.recipient, prepared);
+      } else if (job.channel === "whatsapp") {
         result = await sendWhatsapp(db, settings!, job.id, job.recipient, prepared);
         if (result.status === "skipped") {
           // Fall back to e-mail; the dedupe key makes this a no-op when the e-mail twin already exists.

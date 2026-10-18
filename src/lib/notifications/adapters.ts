@@ -73,3 +73,23 @@ export async function sendWhatsapp(
   void db;
   return { status: "sent", providerMessageId: data.messages?.[0]?.id };
 }
+
+/**
+ * Message to the owner's own WhatsApp when a booking comes in. Order:
+ *  1. CALLMEBOT_APIKEY (+ OWNER_WHATSAPP_PHONE): free CallMeBot gateway, owner activates once.
+ *  2. Official Cloud API (same env as customer messages) with WHATSAPP_TEMPLATE_OWNER_NEW.
+ *  3. Nothing configured: written to the dev outbox, status dev_outbox (never "sent").
+ */
+export async function sendOwnerWhatsapp(db: DbOrTx, settings: { whatsappEnabled: boolean }, jobId: string, to: string, message: Rendered): Promise<DeliveryResult> {
+  const key = process.env.CALLMEBOT_APIKEY;
+  if (key) {
+    const base = process.env.CALLMEBOT_URL ?? "https://api.callmebot.com/whatsapp.php";
+    const url = `${base}?phone=${encodeURIComponent(to)}&text=${encodeURIComponent(message.text)}&apikey=${encodeURIComponent(key)}`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    if (!response.ok) throw new Error(`callmebot_http_${response.status}`);
+    return { status: "sent" };
+  }
+  if (whatsappConfigured(settings) && message.whatsappTemplate) return sendWhatsapp(db, settings, jobId, to, message);
+  await db.insert(schema.outbox).values({ id: newId("out"), jobId, channel: "whatsapp", recipient: to, subject: message.subject, body: message.text });
+  return { status: "dev_outbox" };
+}
