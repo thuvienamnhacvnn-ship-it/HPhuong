@@ -7,7 +7,7 @@ type Customer = typeof schema.customers.$inferSelect;
 type Settings = typeof schema.businessSettings.$inferSelect;
 type L = "de" | "en";
 
-export type Rendered = { subject: string; text: string; whatsappTemplate?: string; whatsappParams?: string[] };
+export type Rendered = { subject: string; text: string; smsText?: string; whatsappTemplate?: string; whatsappParams?: string[] };
 
 const appUrl = () => (process.env.APP_URL ?? "http://localhost:3035").replace(/\/$/, "");
 
@@ -109,6 +109,7 @@ ${d2.price}${a.customerNote ? `
 Notiz: ${a.customerNote}` : ""}
 
 ${appUrl()}/admin/anfragen`,
+        smsText: `HPHUONG neue Buchung (${a.status === "confirmed" ? "bestätigt" : "Anfrage"}): ${c.name}${c.phone ? ` ${c.phone}` : ""}, ${d2.names}, ${d2.when}`,
         whatsappTemplate: process.env.WHATSAPP_TEMPLATE_OWNER_NEW,
         whatsappParams: [c.name, d2.names, d2.when],
       };

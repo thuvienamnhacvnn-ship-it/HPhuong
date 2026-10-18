@@ -28,7 +28,7 @@ export type AppointmentEvent =
 
 export type JobInput = {
   dedupeKey: string;
-  channel: "email" | "whatsapp";
+  channel: "email" | "whatsapp" | "sms";
   template: string;
   recipient: string;
   locale: string;
@@ -62,10 +62,11 @@ export async function enqueueAppointmentNotifications(
   const base = `appt:${appointment.id}:${event}:${event === "rescheduled" ? version : appointment.updatedAt.toISOString()}`;
 
   if (event === "owner_new_booking") {
-    // The owner's own WhatsApp: no customer consent involved, but only if a number is configured.
-    const phone = (process.env.OWNER_WHATSAPP_PHONE ?? "").replace(/[^0-9]/g, "");
+    // Owner alert: SMS when a gateway key is set (SMS_API_KEY), otherwise WhatsApp/dev outbox. No customer consent involved.
+    const phone = (process.env.OWNER_SMS_PHONE ?? process.env.OWNER_WHATSAPP_PHONE ?? "").replace(/[^0-9]/g, "");
     if (phone) {
-      await enqueue(db, { dedupeKey: `appt:${appointment.id}:owner_new_booking:whatsapp`, channel: "whatsapp", template: "owner_new_booking", recipient: phone, locale: "de", payload, appointmentId: appointment.id, runAt: now });
+      const channel = process.env.SMS_API_KEY ? "sms" : "whatsapp";
+      await enqueue(db, { dedupeKey: `appt:${appointment.id}:owner_new_booking:${channel}`, channel, template: "owner_new_booking", recipient: phone, locale: "de", payload, appointmentId: appointment.id, runAt: now });
     }
     return;
   }

@@ -64,3 +64,39 @@ test("without a gateway key the owner alert lands in the dev outbox, never marke
     delete process.env.OWNER_WHATSAPP_PHONE;
   }
 });
+
+test("owner gets an SMS (seven.io format) when SMS_API_KEY is set, exactly once", async () => {
+  const bodies: { key: string | undefined; form: URLSearchParams }[] = [];
+  const server = http.createServer((req, res) => {
+    const c: Buffer[] = [];
+    req.on("data", (d) => c.push(d));
+    req.on("end", () => {
+      bodies.push({ key: req.headers["x-api-key"] as string | undefined, form: new URLSearchParams(Buffer.concat(c).toString()) });
+      res.setHeader("content-type", "application/json");
+      res.end('{"success":"100"}');
+    });
+  });
+  await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
+  process.env.OWNER_WHATSAPP_PHONE = "+49 174 9050519";
+  process.env.SMS_API_KEY = "sk1";
+  process.env.SMS_URL = `http://127.0.0.1:${(server.address() as { port: number }).port}/api/sms`;
+  try {
+    const db = await testDb();
+    const h = await createHold(db, { serviceId: "gesichtspflege", variantId: "60", date: TUESDAY, time: "10:00" }, NOW);
+    await submitAppointment(db, { ...contact({ name: "SMS Kundin" }), holdToken: h.holdToken }, NOW);
+    await processDueJobs(db, NOW);
+    await processDueJobs(db, NOW);
+    assert.equal(bodies.length, 1);
+    assert.equal(bodies[0].key, "sk1");
+    assert.equal(bodies[0].form.get("to"), "491749050519");
+    assert.match(bodies[0].form.get("text")!, /SMS Kundin/);
+    const [job] = await db.select().from(schema.notificationJobs).where(eq(schema.notificationJobs.template, "owner_new_booking"));
+    assert.equal(job.channel, "sms");
+    assert.equal(job.status, "sent");
+  } finally {
+    server.close();
+    delete process.env.OWNER_WHATSAPP_PHONE;
+    delete process.env.SMS_API_KEY;
+    delete process.env.SMS_URL;
+  }
+});

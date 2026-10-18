@@ -4,7 +4,7 @@ import { schema } from "../db";
 import { getSettings } from "../catalog";
 import { unseal } from "../ids";
 import { addMinutes } from "../time";
-import { sendEmail, sendOwnerWhatsapp, sendWhatsapp, type DeliveryResult } from "./adapters";
+import { sendEmail, sendOwnerWhatsapp, sendSms, sendWhatsapp, type DeliveryResult } from "./adapters";
 import { claimDueJobs, enqueue } from "./queue";
 import { renderAppointment, renderContactCopy, renderMagicLink, renderVoucherIssued, type Rendered } from "./templates";
 
@@ -58,7 +58,9 @@ export async function processDueJobs(db: Db, now = new Date()) {
         continue;
       }
       let result: DeliveryResult;
-      if (job.template === "owner_new_booking") {
+      if (job.channel === "sms") {
+        result = await sendSms(job.recipient, prepared);
+      } else if (job.template === "owner_new_booking") {
         result = await sendOwnerWhatsapp(db, settings!, job.id, job.recipient, prepared);
       } else if (job.channel === "whatsapp") {
         result = await sendWhatsapp(db, settings!, job.id, job.recipient, prepared);
