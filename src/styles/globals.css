@@ -2965,6 +2965,29 @@ p.row > svg {
   font: 700 2rem/1 system-ui, sans-serif;
   box-shadow: 0 0 0 1px rgb(0 0 0 / 12%);
 }
+.parking__text {
+  display: block;
+}
+.parking__car {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  color: #d9a54a;
+}
+.parking__car svg {
+  width: 30px;
+  height: 22px;
+  flex: none;
+}
+.parking__car::after {
+  content: "";
+  flex: 1;
+  max-width: 150px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.8;
+}
 .partners {
   grid-column: 1 / -1;
   display: flex;
@@ -3099,10 +3122,10 @@ p.row > svg {
 }
 
 /* partner logos are dark-on-light artwork: give them a light plate in the dark theme */
-:root[data-theme="dark"] .cat-strip__partner img,
-:root[data-theme="dark"] .studio__partner img,
-:root[data-theme="dark"] .brand-logos img,
-:root[data-theme="dark"] .partners img {
+:root[data-theme="dark"] .cat-strip__partner img:not([src*="gertraud"]),
+:root[data-theme="dark"] .studio__partner img:not([src*="gertraud"]),
+:root[data-theme="dark"] .brand-logos img:not([src*="gertraud"]),
+:root[data-theme="dark"] .partners img:not([src*="gertraud"]) {
   background: #fbf3ee;
   padding: 6px 10px;
   border-radius: 10px;

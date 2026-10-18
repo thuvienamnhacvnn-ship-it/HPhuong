@@ -237,3 +237,10 @@ export const IconEye = (p: P) => (
     <path d="M4.500 6.800C6.800 5.200 9.300 4.400 12 4.400s5.200.8 7.500 2.400" />
   </svg>
 );
+
+/** Solid front-view car (gold in the parking note). */
+export const IconCar = (p: P) => (
+  <svg viewBox="0 0 32 24" fill="currentColor" aria-hidden focusable={false} {...p}>
+    <path d="M9.2 2.6A2.4 2.4 0 0 1 11.4 1h9.2a2.4 2.4 0 0 1 2.2 1.6L24.6 8H27a1.6 1.6 0 0 1 0 3.2h-.6c.9.8 1.6 2 1.6 3.4V20a2 2 0 0 1-2 2h-2.6a2 2 0 0 1-2-2v-1.4H9.6V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5.4c0-1.4.6-2.6 1.6-3.4H4A1.6 1.6 0 0 1 4 8h2.4Zm2.2 1.6L9.4 8h13.2l-2-3.8Zm-4.4 8.2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm18 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" fillRule="evenodd" />
+  </svg>
+);

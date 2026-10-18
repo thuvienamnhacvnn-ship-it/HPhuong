@@ -5,7 +5,7 @@ import { getSettings } from "@/lib/catalog";
 import { schema } from "@/lib/db";
 import { Img } from "@/components/Img";
 import { Ornament } from "@/components/decor";
-import { IconChevronDown, IconClock, IconPhone, IconPin } from "@/components/icons";
+import { IconCar, IconChevronDown, IconClock, IconPhone, IconPin } from "@/components/icons";
 import { telHref, waHref } from "@/lib/contact";
 import { ContactForm } from "@/components/ContactForm";
 import { Frame } from "@/components/Frame";
@@ -148,6 +148,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
               {t.contact.parking[0]}
               <br />
               {t.contact.parking[1]}
+            <span className="parking__car"><IconCar /></span>
             </span>
           </p>
         </div>

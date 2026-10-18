@@ -5,7 +5,7 @@ import { getOffer, getSettings, listOffers } from "@/lib/catalog";
 import { formatPrice } from "@/lib/money";
 import { Img } from "@/components/Img";
 import { Ornament } from "@/components/decor";
-import { IconArrow, IconFlower, IconGift, IconHeart, IconLeaf, IconStones } from "@/components/icons";
+import { IconArrow, IconCar, IconFlower, IconGift, IconHeart, IconLeaf, IconStones } from "@/components/icons";
 import { VoucherQuickPick } from "@/components/VoucherQuickPick";
 import { Frame } from "@/components/Frame";
 
@@ -72,6 +72,7 @@ export default async function OffersPage({ params }: { params: Promise<{ locale:
                   {t.contact.parking[0]}
                   <br />
                   {t.contact.parking[1]}
+                <span className="parking__car"><IconCar /></span>
                 </span>
               </p>
               <div className="brand-logos" aria-label={t.contact.partners}>
