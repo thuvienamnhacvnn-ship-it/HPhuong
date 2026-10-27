@@ -1707,7 +1707,7 @@ body {
     z-index: 1;
     pointer-events: none;
     background:
-      linear-gradient(to bottom, rgb(22 16 18 / 78%) 0%, rgb(22 16 18 / 52%) 22%, rgb(22 16 18 / 0%) 46%),
+      linear-gradient(to bottom, rgb(22 16 18 / 84%) 0%, rgb(22 16 18 / 68%) 22%, rgb(22 16 18 / 0%) 48%),
       linear-gradient(to top, rgb(22 16 18 / 70%) 0%, rgb(22 16 18 / 0%) 24%);
   }
   .m-home--full .m-home__brand {

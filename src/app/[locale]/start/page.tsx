@@ -25,11 +25,10 @@ const STRIP = [
 
 /** Phone slide show: portrait-friendly pictures first, `pos` = focal point of each. */
 const MOBILE_SLIDES = [
-  { id: "home-space-mobile", pos: "50% 60%" },
+  { id: "spa-woman-tall", pos: "50% 50%" },
   { id: "hero-tall", pos: "58% 50%" },
-  { id: "studio-tall", pos: "50% 50%" },
+  { id: "spa-man-tall", pos: "50% 50%" },
   { id: "service-ayurveda", pos: "50% 42%" },
-  { id: "service-facial-massage", pos: "50% 36%" },
 ];
 
 export default async function StartPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -126,12 +125,11 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
           <div className="home__visual" data-mo="visual" style={{ ["--i" as string]: 8 }}>
             {/* Banner photo = its own layer. Swap it: overwrite assets/images/hero-desktop.png (+ hero-mobile.png),
                 then `npm run assets`. Any size; the box is near-square, so a landscape photo is cropped at the sides. Focal point = --hero-pos in decor.css. */}
-            <ArchFrame imageId="home-space" alt={t.meta.title} priority sizes="(max-width: 900px) 100vw, max(42vw, calc(112vh - 145px))" mobile={{ id: "home-space-mobile", sizes: "100vw" }}
+            <ArchFrame imageId="spa-woman-wide" alt={t.meta.title} priority sizes="(max-width: 900px) 100vw, max(42vw, calc(112vh - 145px))" mobile={{ id: "spa-woman-tall", sizes: "100vw" }}
               slides={[
                 { id: "hero-desktop", pos: "28% 50%" },
-                { id: "studio-interior", pos: "55% 50%" },
                 { id: "service-ayurveda", pos: "50% 42%" },
-                { id: "banner-contact", pos: "82% 50%" },
+                { id: "spa-man-wide", pos: "56% 50%" },
                 { id: "service-facial-massage", pos: "50% 36%" },
               ]}
             >
