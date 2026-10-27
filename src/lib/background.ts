@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { and, eq, lt, sql } from "drizzle-orm";
 import { getDb, schema } from "./db";
 import { expirePendingAppointments } from "./scheduling";
@@ -27,5 +28,11 @@ export async function tick(now = new Date()) {
 
 /** Fire-and-forget nudge after an API call enqueued something. */
 export function kick() {
-  void tick().catch((e) => console.error("[worker]", (e as Error).message));
+  const run = () => tick().catch((e) => console.error("[worker]", (e as Error).message));
+  // On serverless hosting the instance is frozen once the response is out; after() keeps it alive until the job is sent.
+  try {
+    after(run);
+  } catch {
+    void run();
+  }
 }
