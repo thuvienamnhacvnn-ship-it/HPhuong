@@ -76,11 +76,23 @@ export async function sendWhatsapp(
 
 /**
  * Message to the owner's own WhatsApp when a booking comes in. Order:
+ *  0. HP_WA_RELAY_URL + HP_WA_RELAY_TOKEN: the studio assistant (WhatsApp gateway on the VPS) sends it from the business number.
  *  1. CALLMEBOT_APIKEY (+ OWNER_WHATSAPP_PHONE): free CallMeBot gateway, owner activates once.
  *  2. Official Cloud API (same env as customer messages) with WHATSAPP_TEMPLATE_OWNER_NEW.
  *  3. Nothing configured: written to the dev outbox, status dev_outbox (never "sent").
  */
 export async function sendOwnerWhatsapp(db: DbOrTx, settings: { whatsappEnabled: boolean }, jobId: string, to: string, message: Rendered): Promise<DeliveryResult> {
+  const relay = process.env.HP_WA_RELAY_URL;
+  if (relay && process.env.HP_WA_RELAY_TOKEN) {
+    const response = await fetch(`${relay.replace(/\/$/, "")}/gui`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${process.env.HP_WA_RELAY_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ to: to.replace(/[^0-9]/g, ""), text: message.text }),
+      signal: AbortSignal.timeout(35_000),
+    });
+    if (!response.ok) throw new Error(`wa_relay_http_${response.status}`);
+    return { status: "sent" };
+  }
   const key = process.env.CALLMEBOT_APIKEY;
   if (key) {
     const base = process.env.CALLMEBOT_URL ?? "https://api.callmebot.com/whatsapp.php";
