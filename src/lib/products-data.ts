@@ -25,13 +25,6 @@ export const PRODUCTS: Product[] = [
     text: { de: "Zellschutz aus der Kraft der Natur – Serum, Creme und Pflege für Augen und Lippen.", en: "Cell protection from the power of nature – serum, cream and care for eyes and lips." },
   },
   {
-    id: "cell-protect-cream",
-    image: "produkt-cell-protect-cream",
-    name: "Authentique Cell Protect Cream",
-    group: "gesicht",
-    text: { de: "Gesichtscreme aus der Serie Authentique.", en: "Face cream from the Authentique series." },
-  },
-  {
     id: "hydro-hyaluron-serum",
     image: "produkt-hydro-hyaluron-serum",
     name: "Hydro³ Hyaluron Serum",

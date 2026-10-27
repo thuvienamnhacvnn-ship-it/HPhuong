@@ -726,8 +726,10 @@ h3,
 }
 .header__nav {
   display: flex;
-  gap: clamp(12px, 3.2vw, 56px);
-  margin-left: clamp(0px, 4vw, 60px);
+  gap: clamp(10px, 2.2vw, 44px);
+  margin-left: clamp(0px, 2.4vw, 48px);
+  flex-shrink: 1;
+  min-width: 0;
 }
 .header__link {
   position: relative;
@@ -3161,6 +3163,21 @@ p.row > svg {
   align-content: center;
   padding: 24px 8px;
 }
+.produkte__intro .eyebrow {
+  white-space: nowrap;
+  letter-spacing: 0.14em;
+}
+.produkte__intro .studio__partner {
+  flex-direction: column;
+  text-align: center;
+  gap: 8px;
+}
+.product-card__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .produkte__lead {
   margin: 0;
   max-width: 520px;
@@ -3244,6 +3261,12 @@ p.row > svg {
   }
   .product-card {
     min-height: 0;
+  }
+  /* soft fade at the bottom edge: tells the guest the list scrolls on */
+  .produkte__grid {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+    padding-bottom: 36px;
   }
 }
 @media (min-width: 1200px) {
