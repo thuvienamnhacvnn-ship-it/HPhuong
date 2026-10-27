@@ -108,7 +108,9 @@ ${d2.when}
 ${d2.price}${a.customerNote ? `
 Notiz: ${a.customerNote}` : ""}
 
-${appUrl()}/admin/anfragen`,
+${appUrl()}/admin/anfragen
+
+— Dương Quá, HPHUONG Assistent`,
         smsText: `HPHUONG neue Buchung (${a.status === "confirmed" ? "bestätigt" : "Anfrage"}): ${c.name}${c.phone ? ` ${c.phone}` : ""}, ${d2.names}, ${d2.when}`,
         whatsappTemplate: process.env.WHATSAPP_TEMPLATE_OWNER_NEW,
         whatsappParams: [c.name, d2.names, d2.when],
