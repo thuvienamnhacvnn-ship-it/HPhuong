@@ -726,7 +726,7 @@ h3,
 }
 .header__nav {
   display: flex;
-  gap: clamp(10px, 2.2vw, 44px);
+  gap: clamp(10px, 1.9vw, 44px);
   margin-left: clamp(0px, 2.4vw, 48px);
   flex-shrink: 1;
   min-width: 0;
@@ -761,6 +761,7 @@ h3,
 }
 .header__tools {
   margin-left: auto;
+  padding-left: clamp(16px, 2vw, 32px);
   display: flex;
   align-items: center;
   gap: 14px;
