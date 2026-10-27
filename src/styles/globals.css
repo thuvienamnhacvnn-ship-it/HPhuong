@@ -3144,3 +3144,116 @@ p.row > svg {
 :root[data-theme="dark"] .offer-extras .brand-logos img {
   padding: 3px 8px;
 }
+
+/* ------------------------------------------------------------ products page */
+.produkte {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px var(--gutter, 16px) 48px;
+}
+.produkte__intro {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  text-align: center;
+  align-content: center;
+  padding: 24px 8px;
+}
+.produkte__lead {
+  margin: 0;
+  max-width: 520px;
+  font-size: 1.05rem;
+}
+.produkte__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.produkte__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-content: start;
+  padding: 4px;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.product-card__img {
+  aspect-ratio: 1 / 1;
+  background: var(--media-bg);
+}
+.product-card__img .pic,
+.product-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-card__body {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px 16px;
+  align-content: start;
+}
+.product-card__name {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+.product-card__also {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  font-size: 0.8rem;
+  color: var(--tx-sm);
+}
+.product-card__text {
+  margin: 0;
+  font-size: 0.88rem;
+}
+.product-card__tag {
+  justify-self: start;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rose-text);
+}
+@media (min-width: 901px) {
+  .produkte {
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 2fr);
+    gap: clamp(20px, 3vw, 48px);
+    padding: clamp(10px, 2vh, 28px) clamp(20px, 4vw, 64px);
+  }
+  .produkte {
+    grid-template-columns: minmax(260px, 0.7fr) minmax(0, 2.4fr);
+  }
+  .produkte__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: max-content;
+    gap: 14px;
+  }
+  .product-card {
+    min-height: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .produkte__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .product-card__body {
+    padding: 10px 12px 14px;
+  }
+  .product-card__name {
+    font-size: 1rem;
+  }
+}

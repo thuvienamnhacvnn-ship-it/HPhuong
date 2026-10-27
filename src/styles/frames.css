@@ -1047,3 +1047,21 @@
     gap: 6px;
   }
 }
+
+/* ------------------------------------------------------------ products (desktop) */
+@media (min-width: 901px) and (min-height: 560px) {
+  .frame--produkte .produkte {
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .frame--produkte .produkte__intro {
+    min-height: 0;
+  }
+  .frame--produkte .produkte__grid {
+    min-height: 0;
+    height: 100%;
+  }
+  .frame--produkte .display--md {
+    font-size: clamp(2rem, 5.6vh, 3.8rem);
+  }
+}

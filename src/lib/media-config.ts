@@ -90,6 +90,17 @@ export const MEDIA = {
   "flyer-birthday-1": { file: "assets/images/flyer-birthday-1.png", width: 1536, height: 2048, widths: [480, 800, 1024] },
   "flyer-party-b": { file: "assets/images/flyer-party-b.png", width: 2048, height: 1366, widths: [640, 1024, 2048] },
   "flyer-birthday-2": { file: "assets/images/flyer-birthday-2.png", width: 1200, height: 1600, widths: [480, 800, 1024] },
+  // Product packshots made in ChatGPT from the owner's sample photos (2026-10-27), shown on /produkte.
+  "produkt-aloe-vera-packung": { file: "assets/images/produkt-aloe-vera-packung.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-authentique": { file: "assets/images/produkt-authentique.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-cell-protect-cream": { file: "assets/images/produkt-cell-protect-cream.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-ceramid-ampulle": { file: "assets/images/produkt-ceramid-ampulle.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-exquisit-set": { file: "assets/images/produkt-exquisit-set.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-hydro-hyaluron-serum": { file: "assets/images/produkt-hydro-hyaluron-serum.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-isoflavon": { file: "assets/images/produkt-isoflavon.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-kennenlern-sets": { file: "assets/images/produkt-kennenlern-sets.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-lippenpflege": { file: "assets/images/produkt-lippenpflege.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  "produkt-men-xo": { file: "assets/images/produkt-men-xo.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
 } as const;
 
 export type MediaId = keyof typeof MEDIA;

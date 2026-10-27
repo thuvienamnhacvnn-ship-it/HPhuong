@@ -67,6 +67,7 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
     { key: "start", href: `/${locale}/start`, label: t.nav.start, match: ["start"] },
     { key: "behandlungen", href: `/${locale}/behandlungen`, label: t.nav.behandlungen, match: ["behandlungen"] },
     { key: "angebote", href: `/${locale}/angebote`, label: t.nav.angebote, match: ["angebote", "gutschein", "checkout", "bestellung"] },
+    { key: "produkte", href: `/${locale}/produkte`, label: t.nav.produkte, match: ["produkte"] },
     { key: "studio", href: `/${locale}/studio`, label: t.nav.studio, match: ["studio"] },
     { key: "kontakt", href: `/${locale}/kontakt`, label: t.nav.kontakt, match: ["kontakt"] },
   ];
