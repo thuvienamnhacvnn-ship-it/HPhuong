@@ -80,6 +80,16 @@ export const MEDIA = {
   "spa-man-wide": { file: "assets/images/spa-man-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "spa-woman-tall": { file: "assets/images/spa-woman-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
   "spa-man-tall": { file: "assets/images/spa-man-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
+  // Photos supplied by the owner (nen-flyer folder), added to the home slide show 2026-10-27.
+  "flyer-heidelberg": { file: "assets/images/flyer-heidelberg.png", width: 1600, height: 1066, widths: [640, 1024, 1600] },
+  "flyer-party-a": { file: "assets/images/flyer-party-a.png", width: 2048, height: 1365, widths: [640, 1024, 2048] },
+  "flyer-shop-1": { file: "assets/images/flyer-shop-1.png", width: 1200, height: 1600, widths: [480, 800, 1024] },
+  "flyer-shop-2": { file: "assets/images/flyer-shop-2.png", width: 1182, height: 1600, widths: [480, 800, 1024] },
+  "flyer-shop-3": { file: "assets/images/flyer-shop-3.png", width: 1536, height: 2048, widths: [480, 800, 1024] },
+  "flyer-shop-4": { file: "assets/images/flyer-shop-4.png", width: 1536, height: 2048, widths: [480, 800, 1024] },
+  "flyer-birthday-1": { file: "assets/images/flyer-birthday-1.png", width: 1536, height: 2048, widths: [480, 800, 1024] },
+  "flyer-party-b": { file: "assets/images/flyer-party-b.png", width: 2048, height: 1366, widths: [640, 1024, 2048] },
+  "flyer-birthday-2": { file: "assets/images/flyer-birthday-2.png", width: 1200, height: 1600, widths: [480, 800, 1024] },
 } as const;
 
 export type MediaId = keyof typeof MEDIA;

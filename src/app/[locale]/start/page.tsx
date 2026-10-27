@@ -26,9 +26,15 @@ const STRIP = [
 /** Phone slide show: portrait-friendly pictures first, `pos` = focal point of each. */
 const MOBILE_SLIDES = [
   { id: "spa-woman-tall", pos: "50% 50%" },
+  { id: "flyer-shop-1", pos: "50% 50%" },
   { id: "hero-tall", pos: "58% 50%" },
+  { id: "flyer-shop-2", pos: "50% 50%" },
   { id: "spa-man-tall", pos: "50% 50%" },
+  { id: "flyer-birthday-2", pos: "50% 30%" },
   { id: "service-ayurveda", pos: "50% 42%" },
+  { id: "flyer-shop-3", pos: "50% 50%" },
+  { id: "flyer-birthday-1", pos: "50% 30%" },
+  { id: "flyer-shop-4", pos: "50% 50%" },
 ];
 
 export default async function StartPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -128,9 +134,18 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <ArchFrame imageId="spa-woman-wide" alt={t.meta.title} priority sizes="(max-width: 900px) 100vw, max(42vw, calc(112vh - 145px))" mobile={{ id: "spa-woman-tall", sizes: "100vw" }}
               slides={[
                 { id: "hero-desktop", pos: "28% 50%" },
+                { id: "flyer-shop-1", pos: "50% 50%" },
                 { id: "service-ayurveda", pos: "50% 42%" },
+                { id: "flyer-heidelberg", pos: "40% 50%" },
                 { id: "spa-man-wide", pos: "56% 50%" },
+                { id: "flyer-shop-2", pos: "50% 50%" },
                 { id: "service-facial-massage", pos: "50% 36%" },
+                { id: "flyer-party-a", pos: "50% 50%" },
+                { id: "flyer-shop-3", pos: "50% 50%" },
+                { id: "flyer-birthday-2", pos: "50% 30%" },
+                { id: "flyer-shop-4", pos: "50% 50%" },
+                { id: "flyer-party-b", pos: "50% 50%" },
+                { id: "flyer-birthday-1", pos: "50% 30%" },
               ]}
             >
               {featured && featuredVariant && (
