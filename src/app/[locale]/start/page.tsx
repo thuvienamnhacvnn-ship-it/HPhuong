@@ -140,7 +140,6 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
                 { id: "extra-7", pos: "50% 50%" },
                 { id: "service-facial-massage", pos: "50% 36%" },
                 { id: "extra-10", pos: "50% 50%" },
-                { id: "flyer-birthday-1", pos: "50% 30%" },
               ]}
             >
               {featured && featuredVariant && (
