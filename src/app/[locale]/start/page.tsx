@@ -26,6 +26,7 @@ const STRIP = [
 /** Phone slide show: portrait-friendly pictures first, `pos` = focal point of each. */
 const MOBILE_SLIDES: { id: string; pos: string; fit?: "cover" | "contain" }[] = [
   { id: "spa-woman-tall", pos: "50% 50%" },
+  { id: "men-facial-tall", pos: "55% 40%" },
   { id: "extra-6", pos: "50% 50%" },
   { id: "hero-tall", pos: "58% 50%" },
   { id: "extra-7", pos: "50% 50%" },
@@ -133,6 +134,7 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
               slides={[
                 { id: "hero-desktop", pos: "28% 50%" },
                 { id: "extra-1", pos: "50% 25%" },
+                { id: "men-facial-wide", pos: "88% 40%" },
                 { id: "extra-6", pos: "50% 50%" },
                 { id: "service-ayurveda", pos: "50% 42%" },
                 { id: "extra-9", pos: "50% 25%" },

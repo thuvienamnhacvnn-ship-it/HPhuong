@@ -77,6 +77,8 @@ export const MEDIA = {
   "studio-interior": { file: "assets/images/studio-interior.png", width: 1660, height: 948, widths: [640, 1024, 1660] },
   // Generated 2026-10-26 in the studio's ChatGPT account: guests in treatment (replaces the empty-bed pictures in the home slide show).
   "spa-woman-wide": { file: "assets/images/spa-woman-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  "men-facial-wide": { file: "assets/images/men-facial-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  "men-facial-tall": { file: "assets/images/men-facial-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
   "spa-man-wide": { file: "assets/images/spa-man-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "spa-woman-tall": { file: "assets/images/spa-woman-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
   "spa-man-tall": { file: "assets/images/spa-man-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
