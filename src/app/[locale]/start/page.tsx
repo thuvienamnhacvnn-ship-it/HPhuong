@@ -33,6 +33,13 @@ const MOBILE_SLIDES: { id: string; pos: string; fit?: "cover" | "contain" }[] = 
   { id: "spa-man-tall", pos: "50% 50%" },
   { id: "service-ayurveda", pos: "50% 42%" },
   { id: "extra-10", pos: "50% 50%" },
+  { id: "new-party-c", pos: "50% 45%" },
+  { id: "new-gg-lake", pos: "50% 50%", fit: "contain" },
+  { id: "new-gg-set", pos: "50% 50%" },
+  { id: "new-party-d", pos: "50% 45%" },
+  { id: "new-gg-authentique", pos: "50% 50%", fit: "contain" },
+  { id: "new-gg-men", pos: "50% 50%" },
+  { id: "new-gg-story", pos: "50% 50%", fit: "contain" },
 ];
 
 export default async function StartPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -142,6 +149,10 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
                 { id: "extra-7", pos: "50% 50%" },
                 { id: "service-facial-massage", pos: "50% 36%" },
                 { id: "extra-10", pos: "50% 50%" },
+                { id: "new-party-c", pos: "50% 40%" },
+                { id: "new-gg-set", pos: "50% 55%" },
+                { id: "new-party-d", pos: "50% 40%" },
+                { id: "new-gg-men", pos: "50% 50%" },
               ]}
             >
               {featured && featuredVariant && (

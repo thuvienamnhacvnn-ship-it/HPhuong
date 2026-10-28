@@ -77,6 +77,13 @@ export const MEDIA = {
   "studio-interior": { file: "assets/images/studio-interior.png", width: 1660, height: 948, widths: [640, 1024, 1660] },
   // Generated 2026-10-26 in the studio's ChatGPT account: guests in treatment (replaces the empty-bed pictures in the home slide show).
   "spa-woman-wide": { file: "assets/images/spa-woman-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
+  "new-party-c": { file: "assets/images/new-party-c.jpg", width: 1536, height: 2048, widths: [480, 800, 1024] },
+  "new-party-d": { file: "assets/images/new-party-d.jpg", width: 1396, height: 1812, widths: [480, 800, 1024] },
+  "new-gg-lake": { file: "assets/images/new-gg-lake.jpg", width: 1124, height: 1387, widths: [480, 800, 1024] },
+  "new-gg-set": { file: "assets/images/new-gg-set.jpg", width: 1125, height: 1393, widths: [480, 800, 1024] },
+  "new-gg-story": { file: "assets/images/new-gg-story.jpg", width: 1125, height: 1384, widths: [480, 800, 1024] },
+  "new-gg-authentique": { file: "assets/images/new-gg-authentique.jpg", width: 1125, height: 1384, widths: [480, 800, 1024] },
+  "new-gg-men": { file: "assets/images/new-gg-men.jpg", width: 1124, height: 1401, widths: [480, 800, 1024] },
   "men-facial-wide": { file: "assets/images/men-facial-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "men-facial-tall": { file: "assets/images/men-facial-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
   "spa-man-wide": { file: "assets/images/spa-man-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
