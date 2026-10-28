@@ -1751,8 +1751,19 @@ body {
     color: #ecd3a2;
     -webkit-text-fill-color: #ecd3a2;
   }
-  .m-home--full .brand-word__arc text {
-    fill: #e2c590;
+  /* HPHUONG smaller, the descriptor bigger and bright gold (dark outline for contrast, no glow) */
+  .m-home--full .brand-word__name {
+    left: 17%;
+    width: 66%;
+  }
+  :root:root .m-home--full .brand-word__arc text {
+    fill: #ffd978;
+    font-size: 94px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    stroke: rgb(52 30 18 / 70%);
+    stroke-width: 5px;
+    paint-order: stroke fill;
   }
   .m-home--full .m-home__word img {
     filter: brightness(1.55) saturate(1.05);
