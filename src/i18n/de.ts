@@ -58,6 +58,7 @@ const de = {
     priceNote: "Alle Preise inkl. MwSt. · Änderungen und individuelle Anpassungen nach Beratung möglich.",
   },
   home: {
+    slider: { prev: "Vorheriges Bild", next: "Nächstes Bild", pause: "Diashow anhalten", play: "Diashow starten" },
     eyebrow: ["Schönheit", "Entspannung", "Neue Energie"],
     title1: "Zeit",
     title2: "für Sie.",

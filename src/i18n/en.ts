@@ -59,6 +59,7 @@ const en: Dict = {
     priceNote: "All prices incl. VAT · Changes and individual adjustments possible after consultation.",
   },
   home: {
+    slider: { prev: "Previous picture", next: "Next picture", pause: "Pause slide show", play: "Play slide show" },
     eyebrow: ["Beauty", "Relaxation", "New energy"],
     title1: "Time",
     title2: "for you.",

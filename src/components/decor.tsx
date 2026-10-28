@@ -1,6 +1,6 @@
 import { IconStar } from "./icons";
 import { Img } from "./Img";
-import { ArchSlides } from "./ArchSlides";
+import { ArchSlides, type SlideLabels } from "./ArchSlides";
 
 /** `i` = place in the home entrance sequence (motion.css); other pages leave it out. */
 export function Ornament({ className = "", i }: { className?: string; i?: number }) {
@@ -101,6 +101,7 @@ export function ArchFrame({
   sizes,
   mobile,
   slides,
+  slideLabels,
   uid = "arch",
   children,
 }: {
@@ -111,6 +112,8 @@ export function ArchFrame({
   mobile?: { id: string; sizes: string };
   /** More pictures for the slide show (ArchSlides); `pos` = their focal point. */
   slides?: { id: string; pos?: string }[];
+  /** Texts of the previous / pause / next buttons under the picture. */
+  slideLabels?: SlideLabels;
   /** Prefix of the SVG gradient ids — a second arch on the page (phone home) needs its own. */
   uid?: string;
   children?: React.ReactNode;
@@ -142,7 +145,7 @@ export function ArchFrame({
         {slides?.map((s) => (
           <Img key={s.id} id={s.id} alt="" sizes={sizes} imgStyle={s.pos ? { objectPosition: s.pos } : undefined} />
         ))}
-        {slides && slides.length > 0 && <ArchSlides />}
+        {slides && slides.length > 0 && slideLabels && <ArchSlides labels={slideLabels} />}
       </div>
       <svg className="arch__line" data-mo-depth="8" data-mo-depth-y="4" data-mo-one="" viewBox="0 0 703 734" preserveAspectRatio="none" aria-hidden focusable={false}>
         <path className="arch__edge" d={ARCH_LINE} />

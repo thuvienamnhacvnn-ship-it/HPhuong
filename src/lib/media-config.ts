@@ -101,6 +101,17 @@ export const MEDIA = {
   "produkt-kennenlern-sets": { file: "assets/images/produkt-kennenlern-sets.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
   "produkt-lippenpflege": { file: "assets/images/produkt-lippenpflege.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
   "produkt-men-xo": { file: "assets/images/produkt-men-xo.png", width: 1254, height: 1254, widths: [320, 640, 1024] },
+  // More photos from the owner (nen-flyer/Thêm, 2026-10-28), added to the home slide show.
+  "extra-1": { file: "assets/images/extra-1.png", width: 1086, height: 1448, widths: [480, 800, 1024] },
+  "extra-2": { file: "assets/images/extra-2.png", width: 1124, height: 1394, widths: [480, 800, 1024] },
+  "extra-3": { file: "assets/images/extra-3.png", width: 1124, height: 1387, widths: [480, 800, 1024] },
+  "extra-4": { file: "assets/images/extra-4.png", width: 1125, height: 1403, widths: [480, 800, 1024] },
+  "extra-5": { file: "assets/images/extra-5.png", width: 1125, height: 1384, widths: [480, 800, 1024] },
+  "extra-6": { file: "assets/images/extra-6.png", width: 1125, height: 1393, widths: [480, 800, 1024] },
+  "extra-7": { file: "assets/images/extra-7.png", width: 1125, height: 1405, widths: [480, 800, 1024] },
+  "extra-8": { file: "assets/images/extra-8.png", width: 1125, height: 1384, widths: [480, 800, 1024] },
+  "extra-9": { file: "assets/images/extra-9.png", width: 1086, height: 1448, widths: [480, 800, 1024] },
+  "extra-10": { file: "assets/images/extra-10.png", width: 1125, height: 1377, widths: [480, 800, 1024] },
 } as const;
 
 export type MediaId = keyof typeof MEDIA;
