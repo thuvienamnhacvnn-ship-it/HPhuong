@@ -26,19 +26,12 @@ const STRIP = [
 /** Phone slide show: portrait-friendly pictures first, `pos` = focal point of each. */
 const MOBILE_SLIDES: { id: string; pos: string; fit?: "cover" | "contain" }[] = [
   { id: "spa-woman-tall", pos: "50% 50%" },
-  { id: "flyer-shop-1", pos: "50% 50%" },
-  { id: "flyer-heidelberg", pos: "50% 72%", fit: "contain" },
   { id: "extra-6", pos: "50% 50%" },
   { id: "hero-tall", pos: "58% 50%" },
-  { id: "flyer-party-a", pos: "50% 72%", fit: "contain" },
-  { id: "flyer-shop-2", pos: "50% 50%" },
   { id: "extra-7", pos: "50% 50%" },
   { id: "spa-man-tall", pos: "50% 50%" },
-  { id: "flyer-party-b", pos: "50% 72%", fit: "contain" },
   { id: "service-ayurveda", pos: "50% 42%" },
   { id: "extra-10", pos: "50% 50%" },
-  { id: "flyer-shop-3", pos: "50% 50%" },
-  { id: "flyer-shop-4", pos: "50% 50%" },
 ];
 
 export default async function StartPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -140,21 +133,13 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
               slides={[
                 { id: "hero-desktop", pos: "28% 50%" },
                 { id: "extra-1", pos: "50% 25%" },
-                { id: "flyer-shop-1", pos: "50% 50%" },
                 { id: "extra-6", pos: "50% 50%" },
                 { id: "service-ayurveda", pos: "50% 42%" },
-                { id: "flyer-heidelberg", fit: "contain", pos: "40% 50%" },
                 { id: "extra-9", pos: "50% 25%" },
                 { id: "spa-man-wide", pos: "56% 50%" },
-                { id: "flyer-shop-2", pos: "50% 50%" },
                 { id: "extra-7", pos: "50% 50%" },
                 { id: "service-facial-massage", pos: "50% 36%" },
-                { id: "flyer-party-a", fit: "contain", pos: "50% 50%" },
-                { id: "flyer-shop-3", pos: "50% 50%" },
                 { id: "extra-10", pos: "50% 50%" },
-                { id: "flyer-birthday-2", pos: "50% 30%" },
-                { id: "flyer-shop-4", pos: "50% 50%" },
-                { id: "flyer-party-b", fit: "contain", pos: "50% 50%" },
                 { id: "flyer-birthday-1", pos: "50% 30%" },
               ]}
             >
