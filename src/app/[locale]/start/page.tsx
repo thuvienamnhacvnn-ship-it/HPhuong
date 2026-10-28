@@ -39,6 +39,8 @@ const MOBILE_SLIDES: { id: string; pos: string; fit?: "cover" | "contain" }[] = 
   { id: "new-party-d", pos: "50% 45%" },
   { id: "new-gg-authentique", pos: "50% 50%", fit: "contain" },
   { id: "new-gg-men", pos: "50% 50%" },
+  { id: "new-shop-a", pos: "50% 50%" },
+  { id: "new-shop-b", pos: "50% 50%" },
   { id: "new-gg-story", pos: "50% 50%", fit: "contain" },
 ];
 
@@ -153,6 +155,8 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
                 { id: "new-gg-set", pos: "50% 55%" },
                 { id: "new-party-d", pos: "50% 40%" },
                 { id: "new-gg-men", pos: "50% 50%" },
+                { id: "new-shop-a", pos: "50% 60%" },
+                { id: "new-shop-b", pos: "50% 55%" },
               ]}
             >
               {featured && featuredVariant && (

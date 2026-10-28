@@ -84,6 +84,8 @@ export const MEDIA = {
   "new-gg-story": { file: "assets/images/new-gg-story.jpg", width: 1125, height: 1384, widths: [480, 800, 1024] },
   "new-gg-authentique": { file: "assets/images/new-gg-authentique.jpg", width: 1125, height: 1384, widths: [480, 800, 1024] },
   "new-gg-men": { file: "assets/images/new-gg-men.jpg", width: 1124, height: 1401, widths: [480, 800, 1024] },
+  "new-shop-a": { file: "assets/images/new-shop-a.jpg", width: 1200, height: 1600, widths: [480, 800, 1024] },
+  "new-shop-b": { file: "assets/images/new-shop-b.jpg", width: 1200, height: 1600, widths: [480, 800, 1024] },
   "men-facial-wide": { file: "assets/images/men-facial-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
   "men-facial-tall": { file: "assets/images/men-facial-tall.png", width: 1024, height: 1536, widths: [480, 800, 1024] },
   "spa-man-wide": { file: "assets/images/spa-man-wide.png", width: 1536, height: 1024, widths: [640, 1024, 1536] },
