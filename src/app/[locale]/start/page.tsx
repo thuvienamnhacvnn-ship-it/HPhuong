@@ -12,6 +12,7 @@ import { Frame } from "@/components/Frame";
 import { SpinLogo } from "@/components/SpinLogo";
 import { BrandWord } from "@/components/BrandWord";
 import { ArchSlides } from "@/components/ArchSlides";
+import { PetalTitle } from "@/components/PetalTitle";
 
 export const metadata: Metadata = { title: { absolute: "HPHUONG Beauty - Cosmetic" } };
 
@@ -75,10 +76,8 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <SpinLogo className="logo-spin__video" />
           </div>
           <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" descriptor={t.brand.descriptor} />
-          <p className="m-home__title">
-            <span>{t.home.title1}</span> <em>{t.home.title2}</em>
-          </p>
         </div>
+        <PetalTitle className="m-home__title" title1={t.home.title1} title2={t.home.title2} />
         <div className="m-home__flora" aria-hidden>
           <Img id="home-flora" alt="" sizes="70vw" />
         </div>

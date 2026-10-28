@@ -1606,7 +1606,7 @@ body {
   }
   .m-home--flow .m-home__title {
     margin: clamp(0px, 0.6dvh, 6px) 0 0;
-    font-size: clamp(1.8rem, 4.8dvh, 2.5rem);
+    font-size: clamp(2.3rem, 6.2dvh, 3.2rem);
     text-shadow: none;
   }
   /* headline in the desktop's flowing colour */
@@ -1717,6 +1717,7 @@ body {
     pointer-events: none;
     background:
       linear-gradient(to bottom, rgb(22 16 18 / 84%) 0%, rgb(22 16 18 / 68%) 22%, rgb(22 16 18 / 0%) 48%),
+      radial-gradient(ellipse 72% 9% at 50% 50%, rgb(22 16 18 / 34%), rgb(22 16 18 / 0%)),
       linear-gradient(to top, rgb(22 16 18 / 70%) 0%, rgb(22 16 18 / 0%) 24%);
   }
   .m-home--full .m-home__brand {
@@ -1735,9 +1736,35 @@ body {
     width: clamp(160px, 24dvh, 212px);
     margin-top: 0;
   }
+  /* the headline floats in the middle of the screen; the petal canvas reaches above and below it */
+  .m-home--full .petal-title {
+    font-size: clamp(2.3rem, 6.2dvh, 3.2rem);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 3;
+    transform: translateY(-50%);
+    text-align: center;
+    pointer-events: none;
+  }
+  .petal-title__text {
+    display: inline-block;
+    opacity: var(--pt, 1);
+    paint-order: stroke fill;
+    -webkit-text-stroke: 3px rgb(40 22 16 / 55%);
+  }
+  .petal-title__cv {
+    position: absolute;
+    left: 0;
+    top: -150px;
+    width: 100%;
+    height: calc(100% + 380px);
+    pointer-events: none;
+  }
   .m-home--full .m-home__title {
-    margin: clamp(0px, 0.6dvh, 6px) 0 0;
-    font-size: clamp(1.8rem, 4.8dvh, 2.5rem);
+    margin: 0;
+    font-size: clamp(2.3rem, 6.2dvh, 3.2rem);
     text-shadow: none;
   }
   .m-home--full .m-home__title span,
