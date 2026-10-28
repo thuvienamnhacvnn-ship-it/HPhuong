@@ -1879,5 +1879,18 @@ body {
 @media (max-width: 900px) {
   .m-full__photo .slide-ctl {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 118px);
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    gap: 14px;
+  }
+  /* no white bar behind the buttons: previous/next are white arrows, pause/play keeps its rose disc */
+  .m-full__photo .slide-ctl__btn:not(.slide-ctl__btn--main) {
+    color: #fff;
+    filter: drop-shadow(0 1px 2px rgb(22 16 18 / 60%));
+  }
+  .m-full__photo .slide-ctl__btn--main {
+    box-shadow: 0 2px 8px rgb(22 16 18 / 35%);
   }
 }
