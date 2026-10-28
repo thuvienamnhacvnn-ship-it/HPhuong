@@ -9,8 +9,8 @@ export type { Theme };
 
 const NEXT: Record<ThemeChoice, ThemeChoice> = { auto: "light", light: "dark", dark: "auto" };
 const LABEL: Record<Locale, Record<ThemeChoice, string>> = {
-  de: { auto: "Automatisch (Nacht nach Berliner Zeit)", light: "Helles Design", dark: "Dunkles Design" },
-  en: { auto: "Automatic (night by Berlin time)", light: "Light theme", dark: "Dark theme" },
+  de: { auto: "Automatisch (18–6 Uhr dunkel, Berliner Zeit)", light: "Helles Design", dark: "Dunkles Design" },
+  en: { auto: "Automatic (dark 6 pm–6 am, Berlin time)", light: "Light theme", dark: "Dark theme" },
 };
 const EVENT = "hp-theme-change";
 
