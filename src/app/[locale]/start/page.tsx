@@ -24,16 +24,19 @@ const STRIP = [
 ] as const;
 
 /** Phone slide show: portrait-friendly pictures first, `pos` = focal point of each. */
-const MOBILE_SLIDES = [
+const MOBILE_SLIDES: { id: string; pos: string; fit?: "cover" | "contain" }[] = [
   { id: "spa-woman-tall", pos: "50% 50%" },
   { id: "extra-2", pos: "50% 50%" },
   { id: "flyer-shop-1", pos: "50% 50%" },
+  { id: "flyer-heidelberg", pos: "50% 50%", fit: "contain" },
   { id: "extra-6", pos: "50% 50%" },
   { id: "hero-tall", pos: "58% 50%" },
   { id: "extra-4", pos: "50% 50%" },
+  { id: "flyer-party-a", pos: "50% 50%", fit: "contain" },
   { id: "flyer-shop-2", pos: "50% 50%" },
   { id: "extra-7", pos: "50% 50%" },
   { id: "spa-man-tall", pos: "50% 50%" },
+  { id: "flyer-party-b", pos: "50% 50%", fit: "contain" },
   { id: "service-ayurveda", pos: "50% 42%" },
   { id: "extra-10", pos: "50% 50%" },
   { id: "flyer-shop-3", pos: "50% 50%" },
@@ -59,7 +62,7 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             them readable); the lily cluster rests on its lower right corner above the dock. */}
         <div className="arch__photo m-full__photo">
           {MOBILE_SLIDES.map((sl, i) => (
-            <Img key={sl.id} id={sl.id} alt={i === 0 ? t.meta.title : ""} priority={i === 0} sizes="100vw" imgStyle={{ objectPosition: sl.pos }} />
+            <Img key={sl.id} id={sl.id} alt={i === 0 ? t.meta.title : ""} priority={i === 0} sizes="100vw" imgStyle={{ objectPosition: sl.pos, objectFit: sl.fit }} />
           ))}
           <ArchSlides labels={t.home.slider} />
         </div>
