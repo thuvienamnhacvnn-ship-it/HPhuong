@@ -111,7 +111,7 @@ export function ArchFrame({
   sizes?: string;
   mobile?: { id: string; sizes: string };
   /** More pictures for the slide show (ArchSlides); `pos` = their focal point. */
-  slides?: { id: string; pos?: string }[];
+  slides?: { id: string; pos?: string; fit?: "cover" | "contain" }[];
   /** Texts of the previous / pause / next buttons under the picture. */
   slideLabels?: SlideLabels;
   /** Prefix of the SVG gradient ids — a second arch on the page (phone home) needs its own. */
@@ -143,7 +143,7 @@ export function ArchFrame({
       <div className="arch__photo" data-mo-depth="8" data-mo-depth-y="4" data-mo-one="">
         <Img id={imageId} alt={alt} priority={priority} sizes={sizes} mobile={mobile} />
         {slides?.map((s) => (
-          <Img key={s.id} id={s.id} alt="" sizes={sizes} imgStyle={s.pos ? { objectPosition: s.pos } : undefined} />
+          <Img key={s.id} id={s.id} alt="" sizes={sizes} imgStyle={s.pos || s.fit ? { objectPosition: s.pos, objectFit: s.fit } : undefined} />
         ))}
         {slides && slides.length > 0 && slideLabels && <ArchSlides labels={slideLabels} />}
       </div>

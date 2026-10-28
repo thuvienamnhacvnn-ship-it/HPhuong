@@ -1819,10 +1819,14 @@ body {
 /* desktop: bottom left of the arch, clear of the treatment card on the right */
 @media (min-width: 901px) {
   .home__visual .slide-ctl {
-    left: 17%;
-    bottom: 12px;
+    left: 6%;
+    bottom: 26px;
     transform: none;
   }
+}
+/* wide photos shown whole (fit "contain") sit on the arch's tint instead of being cropped */
+.arch__photo > .pic {
+  background: var(--media-bg, #f4e1da);
 }
 /* phone: centred above the dock */
 @media (max-width: 900px) {
