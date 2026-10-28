@@ -92,6 +92,7 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
   }, []);
 
 
+  const instagram = /^https:\/\//.test(socialLinks.instagram ?? "") ? socialLinks.instagram : "";
   const socials = Object.entries(socialLinks).filter(([k, v]) => SOCIAL_ICONS[k] && /^https:\/\//.test(v));
   const onAssistantPage = is("beratung");
 
@@ -139,6 +140,12 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                 <IconUser />
                 <span className="sr-only">{t.nav.account}</span>
               </Link>
+              {instagram && (
+                <a className="icon-btn" href={instagram} target="_blank" rel="noopener noreferrer" title="Instagram">
+                  <IconInstagram />
+                  <span className="sr-only">Instagram</span>
+                </a>
+              )}
               {!onAssistantPage && (
                 <button type="button" className="ai-pill" onClick={() => open(setAssistantOpen)} aria-haspopup="dialog">
                   <IconLotus /> <span>{t.nav.assistantShort}</span>
@@ -163,6 +170,18 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                 <IconDots />
                 <span className="sr-only">{t.nav.menu}</span>
               </button>
+              {!onAssistantPage && (
+                <button type="button" className="m-menu-btn m-round m-round--1" onClick={() => open(setAssistantOpen)} aria-haspopup="dialog">
+                  <IconLotus />
+                  <span className="sr-only">{t.nav.assistant}</span>
+                </button>
+              )}
+              {instagram && (
+                <a className="m-menu-btn m-round m-round--2" href={instagram} target="_blank" rel="noopener noreferrer">
+                  <IconInstagram />
+                  <span className="sr-only">Instagram</span>
+                </a>
+              )}
             </header>
           ) : (
             <header className="m-header">

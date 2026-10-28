@@ -1137,6 +1137,15 @@ body {
     width: 24px;
     height: 24px;
   }
+  .m-round--1 {
+    right: 68px;
+  }
+  .m-round--2 {
+    right: 122px;
+  }
+  .m-round {
+    color: var(--rose-text);
+  }
 
   /* ---- dock: two links · the booking button · two links ---- */
   .dock {
