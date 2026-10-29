@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Locale } from "@/i18n";
-import { msUntilSwitch, resolveTheme, type Theme, type ThemeChoice } from "@/lib/theme-auto";
+import { msUntilSwitch, resolveTheme, secondsToBoundary, THEME_COOKIE, type Theme, type ThemeChoice } from "@/lib/theme-auto";
 import { IconAuto, IconMoon, IconSun } from "./icons";
 
 export type { Theme };
@@ -56,7 +56,7 @@ export function ThemeToggle({ choice: initial, locale, withLabel = false }: { ch
       title={label}
       onClick={() => {
         const next = NEXT[choice];
-        document.cookie = `hp-theme=${next}; path=/; max-age=31536000; samesite=lax`;
+        document.cookie = next === "auto" ? `${THEME_COOKIE}=; path=/; max-age=0; samesite=lax` : `${THEME_COOKIE}=${next}; path=/; max-age=${secondsToBoundary()}; samesite=lax`;
         setChoice(next);
         window.dispatchEvent(new CustomEvent(EVENT, { detail: next }));
       }}

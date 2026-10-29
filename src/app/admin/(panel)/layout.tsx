@@ -1,4 +1,4 @@
-import { parseChoice } from "@/lib/theme-auto";
+import { parseChoice, THEME_COOKIE } from "@/lib/theme-auto";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { currentStaff } from "@/lib/auth";
@@ -10,7 +10,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   if (!user) redirect("/admin/login");
   return (
     <div className="shell admin">
-      <AdminNav role={user.role} name={user.name} choice={parseChoice((await cookies()).get("hp-theme")?.value)} />
+      <AdminNav role={user.role} name={user.name} choice={parseChoice((await cookies()).get(THEME_COOKIE)?.value)} />
       <div className="main">
         <main id="inhalt" className="content admin-content">{children}</main>
       </div>

@@ -1,4 +1,4 @@
-import { resolveTheme, parseChoice } from "@/lib/theme-auto";
+import { resolveTheme, parseChoice, THEME_COOKIE } from "@/lib/theme-auto";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "@/styles/globals.css";
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminRootLayout({ children }: { children: React.ReactNode }) {
-  const theme = resolveTheme(parseChoice((await cookies()).get("hp-theme")?.value));
+  const theme = resolveTheme(parseChoice((await cookies()).get(THEME_COOKIE)?.value));
   return (
     <html lang="de" data-theme={theme} className={`${cormorant.variable} ${inter.variable}`}>
       <body>{children}</body>

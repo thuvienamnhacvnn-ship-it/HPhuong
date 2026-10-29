@@ -33,7 +33,19 @@ export function resolveTheme(choice: ThemeChoice, now: Date = new Date()): Theme
   return choice === "auto" ? (isNight(now) ? "dark" : "light") : choice;
 }
 
-/** Cookie `hp-theme`: "light" | "dark" | "auto"; no cookie = auto. */
+/** Cookie holding a manual choice. New name: the old `hp-theme` cookie lasted a year and froze many visitors on one theme. */
+export const THEME_COOKIE = "hp-theme-m";
+
+/** Seconds until the next 06:00/18:00 Berlin switch: a manual choice expires then and the site is automatic again. */
+export function secondsToBoundary(now: Date = new Date()): number {
+  const { h, m, s } = berlinClock(now);
+  const into = h * 3600 + m * 60 + s;
+  const targets = [NIGHT_TO * 3600, NIGHT_FROM * 3600, 24 * 3600 + NIGHT_TO * 3600];
+  const next = targets.find((t) => t > into) ?? targets[2];
+  return Math.max(60, next - into);
+}
+
+/** Cookie `hp-theme-m`: "light" | "dark" = manual until the next switch; none = auto. */
 export function parseChoice(value: string | undefined): ThemeChoice {
   return value === "light" || value === "dark" ? value : "auto";
 }

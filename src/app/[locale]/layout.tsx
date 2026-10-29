@@ -18,7 +18,7 @@ import { PetalDefs } from "@/components/decor";
 import { getDb } from "@/lib/db";
 import { getSettings } from "@/lib/catalog";
 import { currentCustomer } from "@/lib/auth";
-import { parseChoice, resolveTheme } from "@/lib/theme-auto";
+import { parseChoice, resolveTheme, THEME_COOKIE } from "@/lib/theme-auto";
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin", "latin-ext", "vietnamese"], weight: ["500", "600", "700"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
 const inter = Inter({ subsets: ["latin", "latin-ext", "vietnamese"], variable: "--font-inter", display: "swap" });
@@ -53,7 +53,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const db = await getDb();
   const settings = await getSettings(db);
   const customer = await currentCustomer();
-  const choice = parseChoice((await cookies()).get("hp-theme")?.value);
+  const choice = parseChoice((await cookies()).get(THEME_COOKIE)?.value);
   const theme = resolveTheme(choice);
   return (
     <html lang={locale} data-theme={theme} className={`${cormorant.variable} ${inter.variable} ${playfair.variable}`}>
