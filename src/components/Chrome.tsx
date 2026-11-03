@@ -25,6 +25,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import type { Theme, ThemeChoice } from "@/lib/theme-auto";
 import { MotionRoot } from "./Motion";
 import { SpinLogo } from "./SpinLogo";
+import { Img } from "./Img";
 
 type Props = {
   locale: Locale;
@@ -113,9 +114,9 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                   <SpinLogo className="logo-spin__video" />
                 </span>
               )}
-              <span>
-                <span className="brand__name">{t.brand.line1.toUpperCase()}</span>
-                <span className="brand__descriptor">{t.brand.line2}</span>
+              <span className="brand__word">
+                <Img id="logo-header" alt={t.brand.name} priority sizes="230px" className="brand__word-img brand__word-img--light" />
+                <Img id="logo-header-dark" alt="" priority sizes="230px" className="brand__word-img brand__word-img--dark" />
               </span>
             </Link>
             <nav className="header__nav" aria-label={t.nav.mainNav}>
@@ -190,9 +191,9 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                   <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
                   <SpinLogo className="logo-spin__video" />
                 </span>
-                <span>
-                  <span className="m-header__name">{t.brand.line1.toUpperCase()}</span>
-                  <span className="m-header__descriptor">{t.brand.line2}</span>
+                <span className="brand__word brand__word--m">
+                  <Img id="logo-header" alt={t.brand.name} priority sizes="200px" className="brand__word-img brand__word-img--light" />
+                  <Img id="logo-header-dark" alt="" priority sizes="200px" className="brand__word-img brand__word-img--dark" />
                 </span>
               </Link>
               <div className="m-header__tools">

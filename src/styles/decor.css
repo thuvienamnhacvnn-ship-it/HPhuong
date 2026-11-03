@@ -1930,3 +1930,47 @@ body {
     box-shadow: 0 2px 8px rgb(22 16 18 / 35%);
   }
 }
+
+/* ---- BEAUTY COSMETIC HOÀNG lettering = pictures (copper bevel like the old artwork); light/dark pair ---- */
+.brand-word .brand-word__img,
+.brand-word .brand-word__img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: none;
+}
+.brand-word__img--dark,
+.brand__word-img--dark {
+  display: none !important;
+}
+:root[data-theme="dark"] .brand-word__img--dark,
+:root[data-theme="dark"] .brand__word-img--dark,
+.m-home--full .brand-word__img--dark {
+  display: block !important;
+}
+:root[data-theme="dark"] .brand-word__img--light,
+:root[data-theme="dark"] .brand__word-img--light,
+.m-home--full .brand-word__img--light {
+  display: none !important;
+}
+.brand__word {
+  display: block;
+  width: clamp(150px, 12.5vw, 200px);
+  aspect-ratio: 1000 / 190;
+}
+.brand__word .brand__word-img,
+.brand__word .brand__word-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.brand__word--m {
+  width: min(200px, 100%);
+}
+@media (max-width: 1180px) {
+  .brand__word {
+    width: clamp(150px, 20vw, 200px);
+  }
+}

@@ -24,6 +24,11 @@ export const MEDIA = {
   "logo-3d-still": { file: "assets/brand/logo-3d-still.png", width: 720, height: 720, widths: [240, 480, 720] },
   // "HPHUONG" + leaf ornament only (rows 0–262 of logo-wordmark, the arched descriptor removed): the descriptor is live text now (BrandWord).
   "logo-name": { file: "assets/brand/logo-name.png", width: 1119, height: 262, widths: [240, 480, 800, 1119] },
+  // BEAUTY COSMETIC HOÀNG lettering (copper bevel like the HPHUONG artwork; made by scratchpad wm.py): lockup with the leaf ornament + arched HOÀNG, and the compact header version. -dark = lighter HOÀNG for graphite.
+  "logo-lockup": { file: "assets/brand/logo-lockup.png", width: 1119, height: 413, widths: [240, 480, 800, 1119] },
+  "logo-lockup-dark": { file: "assets/brand/logo-lockup-dark.png", width: 1119, height: 413, widths: [240, 480, 800, 1119] },
+  "logo-header": { file: "assets/brand/logo-header.png", width: 1000, height: 190, widths: [240, 480, 1000] },
+  "logo-header-dark": { file: "assets/brand/logo-header-dark.png", width: 1000, height: 190, widths: [240, 480, 1000] },
   "logo-wordmark": { file: "assets/brand/logo-wordmark.png", width: 1119, height: 413, widths: [240, 480, 800, 1119] },
   "logo-medallion": { file: "assets/brand/logo-medallion.png", width: 1254, height: 1254, widths: [96, 192, 320, 640] },
   "decor-lily": { file: "assets/images/decor-lily.png", width: 1254, height: 1254, widths: [320, 640, 960] },
