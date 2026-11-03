@@ -571,8 +571,8 @@
     padding-block: clamp(12px, 2.4vh, 36px);
     gap: clamp(8px, 1.6vh, 18px);
   }
-  .frame--studio .studio__body img[alt="HPHUONG"] {
-    width: clamp(70px, 11vh, 150px);
+  .frame--studio .studio__body .studio__logo {
+    width: clamp(80px, 13vh, 170px);
     height: auto;
   }
   .frame--studio .display--md {
@@ -864,8 +864,8 @@
   .frame--studio .tile .pic {
     height: 14vh;
   }
-  .frame--studio .studio__body img[alt="HPHUONG"] {
-    width: 70px;
+  .frame--studio .studio__body .studio__logo {
+    width: 90px;
   }
   .frame--contact .faq summary {
     min-height: 40px;

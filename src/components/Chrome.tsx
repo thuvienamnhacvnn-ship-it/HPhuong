@@ -105,7 +105,7 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
           <header className="header">
             <Link prefetch href={`/${locale}/start`} className="brand" aria-label={`${t.brand.name} — ${t.nav.home}`}>
               {section === "start" ? (
-                <img className="brand__emblem" src="/media/logo-mark-120.webp" srcSet="/media/logo-mark-120.webp 1x, /media/logo-mark-240.webp 2x" width={46} height={48} alt="" />
+                <img className="brand__emblem" src="/media/logo-3d-still-240.webp" srcSet="/media/logo-3d-still-240.webp 1x, /media/logo-3d-still-480.webp 2x" width={48} height={48} alt="" />
               ) : (
                 // Every page but the home page (its banner already has the large one): the turning 3D monogram.
                 <span className="brand__emblem logo-spin">

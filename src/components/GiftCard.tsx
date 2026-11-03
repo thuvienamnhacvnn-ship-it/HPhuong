@@ -10,7 +10,7 @@ export function GiftCard({ locale, amountCents, recipient }: { locale: Locale; a
       <Img id="gift-card-blank" alt="" sizes="(max-width: 1000px) 90vw, 480px" />
       <div className="gift__overlay" aria-hidden>
         <div className="gift__logo">
-          <img src="/media/logo-mark-240.webp" alt="" width={115} height={120} style={{ objectFit: "contain" }} />
+          <img src="/media/logo-3d-still-240.webp" alt="" width={120} height={120} style={{ objectFit: "contain" }} />
           <span>{t.brand.line1.toUpperCase()}</span>
           <small>{t.brand.line2}</small>
         </div>

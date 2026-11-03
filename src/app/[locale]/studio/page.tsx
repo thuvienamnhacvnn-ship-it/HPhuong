@@ -36,7 +36,7 @@ export default async function StudioPage({ params }: { params: Promise<{ locale:
       <section className="studio__body">
         <Lily position="tr-sm" />
         <div className="above-decor stack" style={{ justifyItems: "center", textAlign: "center", width: "100%" }}>
-          <img src="/media/logo-emblem-240.webp" srcSet="/media/logo-emblem-240.webp 1x, /media/logo-emblem-480.webp 2x" alt="Beauty Cosmetic Hoàng" width={111} height={150} style={{ objectFit: "contain" }} />
+          <img className="studio__logo" src="/media/logo-3d-still-240.webp" srcSet="/media/logo-3d-still-240.webp 1x, /media/logo-3d-still-480.webp 2x" alt="Beauty Cosmetic Hoàng" width={150} height={150} style={{ objectFit: "contain" }} />
           <p className="eyebrow">{t.brand.name}</p>
           <Ornament className="ornament--center" />
         </div>
