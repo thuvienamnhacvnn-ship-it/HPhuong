@@ -16,10 +16,11 @@ import type { Db, DbOrTx } from "./db";
 import { schema } from "./db";
 import { hashPassword } from "./ids";
 import { FLYER_SCHEDULING_DEFAULTS, FLYER_SERVICES, FLYER_STUDIO, ROOM_TYPES } from "./flyer-data";
+import { DATENSCHUTZ, IMPRESSUM } from "./legal-pages";
 
 const ASSETS: (typeof schema.assets.$inferInsert)[] = [
-  { id: "logo-medallion", source: "assets/brand/logo-medallion.png", width: 1254, height: 1254, alt: { de: "HPHUONG Logo", en: "HPHUONG logo" }, isConcept: false },
-  { id: "logo-original", source: "assets/brand/logo-original.png", width: 1254, height: 1254, alt: { de: "HPHUONG Logo", en: "HPHUONG logo" }, isConcept: false },
+  { id: "logo-medallion", source: "assets/brand/logo-medallion.png", width: 1254, height: 1254, alt: { de: "Beauty Cosmetic Hoàng Logo", en: "Beauty Cosmetic Hoàng logo" }, isConcept: false },
+  { id: "logo-original", source: "assets/brand/logo-original.png", width: 1254, height: 1254, alt: { de: "Beauty Cosmetic Hoàng Logo", en: "Beauty Cosmetic Hoàng logo" }, isConcept: false },
   { id: "decor-lily", source: "assets/images/decor-lily.png", width: 1254, height: 1254, alt: { de: "", en: "" } },
   { id: "gift-card-blank", source: "assets/images/gift-card-blank.png", width: 1536, height: 1024, alt: { de: "Gutscheinkarte", en: "Gift card" } },
   { id: "hero-desktop", source: "assets/images/hero-desktop.png", width: 1448, height: 1086, alt: { de: "Entspannende Gesichtsbehandlung", en: "Relaxing facial treatment" } },
@@ -78,6 +79,19 @@ export async function applyFlyer(db: DbOrTx): Promise<FlyerSyncResult> {
   const used = new Set(FLYER_SERVICES.map((s) => s.image).filter((x): x is string => !!x));
   for (const asset of ASSETS.filter((a) => used.has(a.id))) {
     await db.insert(schema.assets).values(asset).onConflictDoUpdate({ target: schema.assets.id, set: { alt: asset.alt } });
+  }
+
+  /* Impressum / Datenschutz: replace the empty placeholder text (never an edited or approved page) */
+  const legal = [
+    ["impressum", { de: "Impressum", en: "Legal notice" }, IMPRESSUM],
+    ["datenschutz", { de: "Datenschutz", en: "Privacy" }, DATENSCHUTZ],
+  ] as const;
+  for (const [id, title, body] of legal) {
+    const [row] = await db.select().from(schema.contentPages).where(eq(schema.contentPages.id, id));
+    if (!row) await db.insert(schema.contentPages).values({ id, title, body, approved: false });
+    else if (!row.approved && /wird vom Studio bereitgestellt/.test(row.body.de)) {
+      await db.update(schema.contentPages).set({ title, body }).where(eq(schema.contentPages.id, id));
+    }
   }
 
   /* services + price rows */
@@ -200,21 +214,6 @@ export async function seedDemo(db: Db, opts: { passwords?: Partial<Record<"owner
   ]);
 
   await applyFlyer(db);
-
-  await db.insert(schema.contentPages).values([
-    {
-      id: "impressum",
-      title: { de: "Impressum", en: "Legal notice" },
-      body: { de: "Das Impressum wird vom Studio bereitgestellt und vor dem Livegang geprüft.", en: "The legal notice will be provided by the studio and reviewed before launch." },
-      approved: false,
-    },
-    {
-      id: "datenschutz",
-      title: { de: "Datenschutz", en: "Privacy" },
-      body: { de: "Die Datenschutzerklärung wird vom Studio bereitgestellt und vor dem Livegang geprüft.", en: "The privacy policy will be provided by the studio and reviewed before launch." },
-      approved: false,
-    },
-  ]);
 
   const credentials: SeedResult["credentials"] = [];
   const random = () => Buffer.from(crypto.getRandomValues(new Uint8Array(12))).toString("base64url");

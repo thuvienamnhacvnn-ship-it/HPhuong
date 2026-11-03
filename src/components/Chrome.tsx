@@ -103,7 +103,7 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
       <div className="shell" inert={assistantOpen || menuOpen ? true : undefined}>
         <div className="main">
           <header className="header">
-            <Link prefetch href={`/${locale}/start`} className="brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
+            <Link prefetch href={`/${locale}/start`} className="brand" aria-label={`${t.brand.name} — ${t.nav.home}`}>
               {section === "start" ? (
                 <img className="brand__emblem" src="/media/logo-mark-120.webp" srcSet="/media/logo-mark-120.webp 1x, /media/logo-mark-240.webp 2x" width={46} height={48} alt="" />
               ) : (
@@ -114,8 +114,8 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                 </span>
               )}
               <span>
-                <span className="brand__name">HPHUONG</span>
-                <span className="brand__descriptor">{t.brand.descriptor}</span>
+                <span className="brand__name">{t.brand.line1.toUpperCase()}</span>
+                <span className="brand__descriptor">{t.brand.line2}</span>
               </span>
             </Link>
             <nav className="header__nav" aria-label={t.nav.mainNav}>
@@ -185,14 +185,14 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
             </header>
           ) : (
             <header className="m-header">
-              <Link prefetch href={`/${locale}/start`} className="m-header__brand" aria-label={`HPHUONG ${t.brand.descriptor} — ${t.nav.home}`}>
+              <Link prefetch href={`/${locale}/start`} className="m-header__brand" aria-label={`${t.brand.name} — ${t.nav.home}`}>
                 <span className="logo-spin">
                   <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
                   <SpinLogo className="logo-spin__video" />
                 </span>
                 <span>
-                  <span className="m-header__name">HPHUONG</span>
-                  <span className="m-header__descriptor">{t.brand.descriptor}</span>
+                  <span className="m-header__name">{t.brand.line1.toUpperCase()}</span>
+                  <span className="m-header__descriptor">{t.brand.line2}</span>
                 </span>
               </Link>
               <div className="m-header__tools">

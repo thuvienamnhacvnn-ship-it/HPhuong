@@ -38,7 +38,7 @@ export function redact(text: string) {
 
 function systemPrompt(locale: "de" | "en", contact: { phone: string | null; mobilePhone: string | null }) {
   const reach = [contact.phone ? `phone ${contact.phone}` : null, contact.mobilePhone ? `mobile / WhatsApp ${contact.mobilePhone}` : null].filter(Boolean).join(", ");
-  return `You are the booking helper of HPHUONG Beauty - Cosmetic, a cosmetics and wellness studio in Berlin.
+  return `You are the booking helper of Beauty Cosmetic Hoàng, a cosmetics and wellness studio in Berlin.
 Reply in ${locale === "de" ? "German, always the formal \"Sie\" (Sie/Ihnen/Ihr, never \"du\", even if the guest writes informally)" : "English"}, warm and brief (max ~80 words), no markdown headings.
 
 Your job: understand what the guest wants (face, body, relaxation, massage, hands, feet, nails, lashes, brows), how much time they have and their budget, then recommend at most 3 treatments from the studio's data.

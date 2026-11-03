@@ -20,7 +20,7 @@ export default async function ProductsPage({ params }: { params: Promise<{ local
       <div className="produkte frame__fill">
         <section className="produkte__intro">
           <div className="above-decor stack" style={{ justifyItems: "center", textAlign: "center" }}>
-            <p className="eyebrow">HPHUONG · {t.brand.descriptor}</p>
+            <p className="eyebrow">{t.brand.name}</p>
             <Ornament className="ornament--center" />
           </div>
           <h1 className="display display--md above-decor">

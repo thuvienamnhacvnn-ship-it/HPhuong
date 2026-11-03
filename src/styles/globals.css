@@ -918,16 +918,17 @@ h3,
   }
   .m-header__name {
     font-family: var(--font-heading);
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     line-height: 1;
     color: var(--tx-lg);
   }
   .m-header__descriptor {
     display: block;
-    font-size: 0.62rem;
-    letter-spacing: 0.24em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--brand-slogan);
     margin-top: 4px;
@@ -2101,7 +2102,7 @@ h3,
 }
 .gift__logo span {
   font-family: var(--font-heading);
-  font-size: 2.6cqw;
+  font-size: 1.9cqw;
   font-weight: 600;
   letter-spacing: 0.18em;
 }

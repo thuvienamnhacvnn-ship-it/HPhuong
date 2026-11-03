@@ -14,7 +14,7 @@ import { BrandWord } from "@/components/BrandWord";
 import { ArchSlides } from "@/components/ArchSlides";
 import { PetalTitle } from "@/components/PetalTitle";
 
-export const metadata: Metadata = { title: { absolute: "HPHUONG Beauty - Cosmetic" } };
+export const metadata: Metadata = { title: { absolute: "Beauty Cosmetic Hoàng" } };
 
 /** The four discs under the banner: same four icons as before, pointing at the studio's real treatment groups. */
 const STRIP = [
@@ -72,10 +72,10 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
         <div className="m-home__brand">
           <div className="m-home__logo logo-spin">
             {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
-            <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="HPHUONG Beauty - Cosmetic" />
+            <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="Beauty Cosmetic Hoàng" />
             <SpinLogo className="logo-spin__video" />
           </div>
-          <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" descriptor={t.brand.descriptor} />
+          <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" name={t.brand.line1} descriptor={t.brand.line2} />
         </div>
         <PetalTitle className="m-home__title" title1={t.home.title1} title2={t.home.title2} />
         <div className="m-home__flora" aria-hidden>
@@ -128,9 +128,9 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             {/* Turning 3D monogram over its own still frame; the lettering below it stands still.
                 Same box as the old one-piece logo (logo-full), so nothing around it moves. */}
             <div className="pic home__logo3d">
-              <Img id="logo-3d-still" alt="HPHUONG Beauty - Cosmetic" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
+              <Img id="logo-3d-still" alt="Beauty Cosmetic Hoàng" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
               <SpinLogo />
-              <BrandWord id="bw-arc" className="home__logo3d-word" sizes="(max-width: 900px) 46vw, 30vw" descriptor={t.brand.descriptor} />
+              <BrandWord id="bw-arc" className="home__logo3d-word" sizes="(max-width: 900px) 46vw, 30vw" name={t.brand.line1} descriptor={t.brand.line2} />
             </div>
           </div>
 

@@ -125,7 +125,7 @@ export async function sendSms(to: string, message: Rendered): Promise<DeliveryRe
   const key = process.env.SMS_API_KEY;
   if (!key) return { status: "skipped", reason: "sms_not_configured" };
   const base = process.env.SMS_URL ?? "https://gateway.seven.io/api/sms";
-  const body = new URLSearchParams({ to: to.replace(/[^0-9]/g, ""), text, from: process.env.SMS_FROM ?? "HPHUONG", json: "1" });
+  const body = new URLSearchParams({ to: to.replace(/[^0-9]/g, ""), text, from: process.env.SMS_FROM ?? "Hoang", json: "1" });
   const response = await fetch(base, { method: "POST", headers: { "X-Api-Key": key, Accept: "application/json" }, body, signal: AbortSignal.timeout(15_000) });
   if (!response.ok) throw new Error(`sms_http_${response.status}`);
   const data = (await response.json().catch(() => ({}))) as { success?: string | boolean };

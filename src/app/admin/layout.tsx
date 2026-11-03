@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter",
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: { default: "Studio Verwaltung", template: "%s · HPHUONG Verwaltung" },
+  title: { default: "Studio Verwaltung", template: "%s · Beauty Cosmetic Hoàng Verwaltung" },
   robots: { index: false, follow: false },
   icons: { icon: "/favicon.png" },
 };

@@ -71,17 +71,18 @@
 .brand__name {
   display: block;
   font-family: var(--font-heading);
-  font-size: 1.3rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   line-height: 1;
   color: var(--tx-lg);
 }
 .brand__descriptor {
   display: block;
   margin-top: 3px;
-  font-size: 0.62rem;
-  letter-spacing: 0.24em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--brand-slogan);
 }
@@ -1219,6 +1220,7 @@ body {
 .brand-word {
   position: relative;
   aspect-ratio: 1119 / 413;
+  container-type: inline-size;
 }
 .brand-word .brand-word__name {
   position: absolute;
@@ -1227,10 +1229,45 @@ body {
   width: 100%;
   height: 63.44%;
 }
-.brand-word .brand-word__name img {
+/* "BEAUTY COSMETIC": live text in the artwork's rose-gold */
+.brand-word__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2%;
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--font-playfair), "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 8.6cqw;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  background: linear-gradient(180deg, #f6d2ab 0%, #d9965a 38%, #9c5a2a 66%, #e9b682 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* the leaf ornament = the lower part of the artwork's name picture */
+.brand-word__orn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 43%;
+  overflow: hidden;
+}
+.brand-word__orn .brand-word__orn-img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 232.6%;
+}
+.brand-word__orn .brand-word__orn-img img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: fill;
 }
 .brand-word__arc {
   position: absolute;
@@ -1242,9 +1279,9 @@ body {
 }
 .brand-word__arc text {
   font-family: var(--font-playfair), "Times New Roman", serif;
-  font-size: 84px;
+  font-size: 128px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   fill: var(--brand-slogan);
 }
 :root[data-theme="dark"] .brand-word__arc text {
@@ -1778,14 +1815,13 @@ body {
     color: #ecd3a2;
     -webkit-text-fill-color: #ecd3a2;
   }
-  /* HPHUONG smaller, the descriptor bigger and bright gold (dark outline for contrast, no glow) */
-  .m-home--full .brand-word__name {
-    left: 17%;
-    width: 66%;
+  /* "BEAUTY COSMETIC" and "HOÀNG" bright (dark outline for contrast, no glow) */
+  .m-home--full .brand-word__text {
+    filter: brightness(1.35) saturate(1.05);
   }
   :root:root .m-home--full .brand-word__arc text {
     fill: #ffd978;
-    font-size: 94px;
+    font-size: 136px;
     font-weight: 800;
     letter-spacing: 0.07em;
     stroke: rgb(52 30 18 / 70%);

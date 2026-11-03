@@ -42,11 +42,11 @@ export type FlyerService = {
 };
 
 export const FLYER_STUDIO = {
-  brand: "HPHUONG Beauty - Cosmetic",
+  brand: "Beauty Cosmetic Hoàng",
   address: "Kolonnenstraße 33, 10829 Berlin",
   phone: "030 78 71 29 51",
   mobilePhone: "0174 905 05 19",
-  email: "hphuong.kosmetik.spa@gmail.com",
+  email: "beauty.cosmetic.hoang@gmail.com",
   // A plain Google Maps search for the printed address — no coordinates, no place id.
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Kolonnenstra%C3%9Fe+33%2C+10829+Berlin",
   /** Montag–Freitag: 9:30–18:30 Uhr */
@@ -487,9 +487,10 @@ export const FLYER_SERVICES: FlyerService[] = [
     ],
   },
 
-  /* --------------------------------------------- B1 Wimpernverlängerung (7 rows) */
-  // The flyer prints the four rows directly under the group title, then the sub-headings
-  // "Augenbrauenkorrektur" (one row) and "Wimpernlifting" (two rows). Kept exactly like that.
+  /* --------------------------------------------- B1 Wimpernverlängerung (7 rows: 6 under the extensions, 1 lash lift) */
+  // Corrected by the studio (03.11.2026): the two removal rows belong to the extensions;
+  // Wimpernlifting is one row, ab 22 €; the "Augenbrauen- und Wimpernfärben 22 €" row is dropped
+  // (the right price, 20 €, is already under Augenkosmetik).
   {
     id: "wimpernverlaengerung",
     category: "wimpernverlaengerung",
@@ -500,21 +501,6 @@ export const FLYER_SERVICES: FlyerService[] = [
       { id: "auffuellen-classic", label: AUFFUELLEN, minutes: null, priceCents: 3000 },
       { id: "neuanlage-volume", label: S("Neuanlage Volume", "New set Volume"), minutes: null, priceCents: 9000 },
       { id: "auffuellen-volume", label: AUFFUELLEN, minutes: null, priceCents: 6900 },
-    ],
-  },
-  {
-    id: "wimpern-augenbrauenkorrektur",
-    category: "wimpernverlaengerung",
-    name: S("Augenbrauenkorrektur", "Eyebrow Shaping"),
-    room: "cosmetic",
-    variants: [{ id: "augenbrauen-wimpernfaerben", label: S("Augenbrauen- und Wimpernfärben", "Eyebrow and eyelash tinting"), minutes: null, priceCents: 2200, from: true }],
-  },
-  {
-    id: "wimpernlifting",
-    category: "wimpernverlaengerung",
-    name: S("Wimpernlifting", "Lash Lift"),
-    room: "cosmetic",
-    variants: [
       {
         id: "entfernen-bei-neuanlage",
         label: S("Entfernen alter Wimpernextensions bei Neuanlage", "Removal of old eyelash extensions with a new set"),
@@ -523,6 +509,13 @@ export const FLYER_SERVICES: FlyerService[] = [
       },
       { id: "entfernen", label: S("Entfernen von Wimpernextensions", "Removal of eyelash extensions"), minutes: null, priceCents: 1500 },
     ],
+  },
+  {
+    id: "wimpernlifting",
+    category: "wimpernverlaengerung",
+    name: S("Wimpernlifting", "Lash Lift"),
+    room: "cosmetic",
+    variants: [{ id: "wimpernlifting", label: S("Wimpernlifting", "Lash lift"), minutes: null, priceCents: 2200, from: true }],
   },
 
   /* --------------------------------------------------- B4 Augenkosmetik (5 rows) */

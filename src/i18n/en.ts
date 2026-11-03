@@ -2,10 +2,10 @@ import type { Dict } from "./de";
 
 const en: Dict = {
   meta: {
-    title: "HPHUONG Beauty - Cosmetic",
+    title: "Beauty Cosmetic Hoàng",
     description: "Facial treatments, massage & wellness, manicure, pedicure, nail design and eyelash extensions in Berlin — request your appointment online.",
   },
-  brand: { descriptor: "Beauty - Cosmetic", tagline: "Beauty begins with you." },
+  brand: { name: "Beauty Cosmetic Hoàng", line1: "Beauty Cosmetic", line2: "Hoàng", tagline: "Beauty begins with you." },
   nav: {
     start: "Home",
     behandlungen: "Treatments",
@@ -181,8 +181,8 @@ const en: Dict = {
     banner: { eyebrow: "Offer", percent: "20%", word: "discount", who: "for pupils and students" },
     title1: "Give",
     title2: "time.",
-    lead: "Wellbeing. Beauty. Attention. With a voucher from HPHUONG.",
-    voucherTitle: "HPHUONG voucher",
+    lead: "Wellbeing. Beauty. Attention. With a voucher from Beauty Cosmetic Hoàng.",
+    voucherTitle: "Beauty Cosmetic Hoàng voucher",
     voucherLead: "Gift voucher – for special people.",
     voucherCta: "Choose voucher",
     packageCta: "View package",

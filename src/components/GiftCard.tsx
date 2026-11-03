@@ -11,8 +11,8 @@ export function GiftCard({ locale, amountCents, recipient }: { locale: Locale; a
       <div className="gift__overlay" aria-hidden>
         <div className="gift__logo">
           <img src="/media/logo-mark-240.webp" alt="" width={115} height={120} style={{ objectFit: "contain" }} />
-          <span>HPHUONG</span>
-          <small>{t.brand.descriptor}</small>
+          <span>{t.brand.line1.toUpperCase()}</span>
+          <small>{t.brand.line2}</small>
         </div>
         <span className="gift__sep" />
         <div className="gift__value">

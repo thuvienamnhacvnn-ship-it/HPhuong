@@ -154,11 +154,11 @@ test("opening hours: Mo–Fr 9:30–18:30, no online slots on Saturday or Sunday
 test("studio contact data from the flyer, with working tel:/WhatsApp links", async () => {
   const db = await flyerDb();
   const s = await getSettings(db);
-  assert.equal(s.brand, "HPHUONG Beauty - Cosmetic");
+  assert.equal(s.brand, "Beauty Cosmetic Hoàng");
   assert.equal(s.address, "Kolonnenstraße 33, 10829 Berlin");
   assert.equal(s.phone, "030 78 71 29 51");
   assert.equal(s.mobilePhone, "0174 905 05 19");
-  assert.equal(s.email, "hphuong.kosmetik.spa@gmail.com");
+  assert.equal(s.email, "beauty.cosmetic.hoang@gmail.com");
   assert.ok(s.mapUrl?.startsWith("https://www.google.com/maps/search/"));
   assert.equal(decodeURIComponent(new URL(s.mapUrl!).searchParams.get("query")!), "Kolonnenstraße 33, 10829 Berlin");
   assert.equal(telHref(s.phone!), "tel:+493078712951");
@@ -227,14 +227,14 @@ test("catalog:sync on a database with the old demo data: flyer catalog in, demo 
   await seedKitFixture(db);
   const before = await db.select().from(schema.services);
   const first = await applyFlyer(db);
-  assert.deepEqual([first.services, first.variants, first.bookableVariants], [43, 67, 25]);
+  assert.deepEqual([first.services, first.variants, first.bookableVariants], [42, 67, 25]);
   assert.deepEqual(first.hiddenServices.sort(), ["aroma-massage", "gesichtspflege", "head-spa", "wellness-fusspflege"]);
   assert.deepEqual(first.deactivatedOffers, ["pflege-ruhe"]);
   const second = await applyFlyer(db); // idempotent
-  assert.deepEqual([second.services, second.variants], [43, 67]);
+  assert.deepEqual([second.services, second.variants], [42, 67]);
 
   const all = await db.select().from(schema.services);
-  assert.equal(all.length, before.length + 43, "old rows are kept (appointments point at them)");
+  assert.equal(all.length, before.length + 42, "old rows are kept (appointments point at them)");
   const visible = await listServices(db);
   assert.equal(visible.flatMap((s) => s.variants).length, 67);
   assert.ok(!visible.some((s) => before.some((b) => b.id === s.id)));

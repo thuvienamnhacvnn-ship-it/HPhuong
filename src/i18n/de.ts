@@ -1,9 +1,9 @@
 const de = {
   meta: {
-    title: "HPHUONG Beauty - Cosmetic",
+    title: "Beauty Cosmetic Hoàng",
     description: "Gesichtsbehandlungen, Massage & Wellness, Maniküre, Pediküre, Nageldesign und Wimpernverlängerung in Berlin — Termin online anfragen.",
   },
-  brand: { descriptor: "Beauty - Cosmetic", tagline: "Schönheit beginnt bei Ihnen." },
+  brand: { name: "Beauty Cosmetic Hoàng", line1: "Beauty Cosmetic", line2: "Hoàng", tagline: "Schönheit beginnt bei Ihnen." },
   nav: {
     start: "Start",
     behandlungen: "Behandlungen",
@@ -189,8 +189,8 @@ const de = {
     banner: { eyebrow: "Angebot", percent: "20 %", word: "Rabatt", who: "für Schüler und Studierende" },
     title1: "Zeit",
     title2: "schenken.",
-    lead: "Wohlbefinden. Schönheit. Aufmerksamkeit. Mit einem Gutschein von HPHUONG.",
-    voucherTitle: "HPHUONG Gutschein",
+    lead: "Wohlbefinden. Schönheit. Aufmerksamkeit. Mit einem Gutschein von Beauty Cosmetic Hoàng.",
+    voucherTitle: "Beauty Cosmetic Hoàng Gutschein",
     voucherLead: "Wertgutschein – für besondere Menschen.",
     voucherCta: "Gutschein auswählen",
     packageCta: "Paket ansehen",

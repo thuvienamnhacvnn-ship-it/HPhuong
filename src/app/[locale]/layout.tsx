@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const db = await getDb();
   const settings = await getSettings(db);
   return {
-    title: { default: t.meta.title, template: `%s · HPHUONG` },
+    title: { default: t.meta.title, template: `%s · Beauty Cosmetic Hoàng` },
     description: t.meta.description,
     icons: { icon: "/favicon.png", apple: "/apple-touch-icon.png" },
     robots: settings.publicLaunchEnabled ? undefined : { index: false, follow: false },
