@@ -1,15 +1,26 @@
-import { Img } from "./Img";
+"use client";
 
-/**
- * The lettering under the monogram: "BEAUTY COSMETIC" in the same copper bevel as the old HPHUONG artwork,
- * the leaf ornament, and "HOÀNG" on the arch. One picture per theme (the arched line is brown on cream,
- * pale rose on graphite); CSS shows the one that matches.
- */
-export function BrandWord({ className = "", sizes, name = "Beauty Cosmetic Hoàng" }: { id?: string; className?: string; sizes: string; name?: string; descriptor?: string }) {
+import { useId } from "react";
+
+/** Shared live lettering, also rendered by scripts/brand-share.tsx for the share card. */
+export function BrandWord({ className = "" }: { className?: string }) {
+  const id = useId();
   return (
-    <div className={`brand-word ${className}`}>
-      <Img id="logo-lockup" alt={name} priority sizes={sizes} className="brand-word__img brand-word__img--light" />
-      <Img id="logo-lockup-dark" alt="" priority sizes={sizes} className="brand-word__img brand-word__img--dark" />
-    </div>
+    <svg className={`brand-word ${className}`} viewBox="0 0 600 220" role="img" aria-label="Beauty Cosmetic Hoàng">
+      <defs>
+        <linearGradient id={`${id}-gold`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#fff0b2" />
+          <stop offset="0.32" stopColor="#d9b653" />
+          <stop offset="0.5" stopColor="#a87925" />
+          <stop offset="0.56" stopColor="#f8df8c" />
+          <stop offset="1" stopColor="#bd8d32" />
+        </linearGradient>
+        <path id={`${id}-arc`} d="M 75,145 Q 300,245 525,145" />
+      </defs>
+      <text className="brand-word__hoang" x="300" y="117" textAnchor="middle" fill={`url(#${id}-gold)`}>HOÀNG</text>
+      <text className="brand-word__descriptor" fill={`url(#${id}-gold)`}>
+        <textPath href={`#${id}-arc`} startOffset="50%" textAnchor="middle">Beauty - Cosmetic</textPath>
+      </text>
+    </svg>
   );
 }

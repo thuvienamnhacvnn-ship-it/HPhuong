@@ -3,9 +3,9 @@ import type { Dict } from "./de";
 const en: Dict = {
   meta: {
     title: "Beauty Cosmetic Hoàng",
-    description: "Facial treatments, massage & wellness, manicure, pedicure, nail design and eyelash extensions in Berlin — request your appointment online.",
+    description: "Beauty Cosmetic Hoàng — Facial treatments, massage & wellness, manicure, pedicure, nail design and eyelash extensions in Berlin — request your appointment online.",
   },
-  brand: { name: "Beauty Cosmetic Hoàng", line1: "Beauty Cosmetic", line2: "Hoàng", tagline: "Beauty begins with you." },
+  brand: { name: "Beauty Cosmetic Hoàng", line1: "HOÀNG", line2: "Beauty - Cosmetic", tagline: "Beauty begins with you." },
   nav: {
     start: "Home",
     behandlungen: "Treatments",

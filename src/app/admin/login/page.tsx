@@ -1,3 +1,4 @@
+import { BrandWord } from "@/components/BrandWord";
 import { redirect } from "next/navigation";
 import { currentStaff } from "@/lib/auth";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
@@ -12,6 +13,7 @@ export default async function AdminLogin() {
       <div className="card card--pad stack" style={{ width: "min(100%, 420px)" }}>
         <div className="stack-sm" style={{ justifyItems: "center", textAlign: "center" }}>
           <img src="/media/logo-3d-still-240.webp" srcSet="/media/logo-3d-still-240.webp 1x, /media/logo-3d-still-480.webp 2x" alt="Beauty Cosmetic Hoàng" width={110} height={110} style={{ objectFit: "contain" }} />
+          <BrandWord className="brand-word--compact" />
           <p className="eyebrow">Studio Verwaltung</p>
           <h1 className="h2">Anmelden</h1>
           <Ornament className="ornament--sm ornament--center" />

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import "@/styles/globals.css";
+import "@/styles/brand.css";
 import "@/styles/theme.css";
 import "@/styles/decor.css";
 import "@/styles/frames.css";
@@ -39,7 +40,22 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: { default: t.meta.title, template: `%s · Beauty Cosmetic Hoàng` },
     description: t.meta.description,
-    icons: { icon: "/favicon.png", apple: "/apple-touch-icon.png" },
+    metadataBase: new URL("https://beauty-cosmetic-hoang.de"),
+    openGraph: {
+      type: "website",
+      title: t.meta.title,
+      description: t.meta.description,
+      siteName: "Beauty Cosmetic Hoàng",
+      locale: locale === "en" ? "en_GB" : "de_DE",
+      images: [{ url: "https://beauty-cosmetic-hoang.de/og-image.png?v=2", width: 1200, height: 630, alt: "Beauty Cosmetic Hoàng" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.meta.title,
+      description: t.meta.description,
+      images: ["https://beauty-cosmetic-hoang.de/og-image.png?v=2"],
+    },
+    icons: { icon: "/favicon.png?v=2", apple: "/apple-touch-icon.png?v=2" },
     robots: settings.publicLaunchEnabled ? undefined : { index: false, follow: false },
     alternates: { languages: { de: "/de/start", en: "/en/start" } },
   };

@@ -25,7 +25,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import type { Theme, ThemeChoice } from "@/lib/theme-auto";
 import { MotionRoot } from "./Motion";
 import { SpinLogo } from "./SpinLogo";
-import { Img } from "./Img";
+import { BrandWord } from "./BrandWord";
 
 type Props = {
   locale: Locale;
@@ -114,10 +114,7 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                   <SpinLogo className="logo-spin__video" />
                 </span>
               )}
-              <span className="brand__word">
-                <Img id="logo-header" alt={t.brand.name} priority sizes="230px" className="brand__word-img brand__word-img--light" />
-                <Img id="logo-header-dark" alt="" priority sizes="230px" className="brand__word-img brand__word-img--dark" />
-              </span>
+              <BrandWord className="brand__word" />
             </Link>
             <nav className="header__nav" aria-label={t.nav.mainNav}>
               {nav.map((n) => (
@@ -191,10 +188,7 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
                   <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
                   <SpinLogo className="logo-spin__video" />
                 </span>
-                <span className="brand__word brand__word--m">
-                  <Img id="logo-header" alt={t.brand.name} priority sizes="200px" className="brand__word-img brand__word-img--light" />
-                  <Img id="logo-header-dark" alt="" priority sizes="200px" className="brand__word-img brand__word-img--dark" />
-                </span>
+                <BrandWord className="brand__word brand__word--m" />
               </Link>
               <div className="m-header__tools">
                 <Link className="icon-btn" onClick={keepQuery(otherLocale)} href={switchHref(otherLocale)} hrefLang={otherLocale} title={t.nav.language}>

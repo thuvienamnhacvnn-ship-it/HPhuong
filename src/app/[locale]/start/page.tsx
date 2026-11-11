@@ -58,22 +58,20 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
           desktop banner below is hidden there; the dock carries the navigation. */}
       <div className="m-home m-home--full">
         {/* Full-screen slide show: the photo runs edge to edge behind the header buttons and the dock.
-            The turning logo, the lettering and the headline sit on its upper part (a soft shade keeps
-            them readable); the lily cluster rests on its lower right corner above the dock. */}
+            The turning logo, the lettering and the headline sit on its upper part; the lily cluster rests on its lower right corner above the dock. */}
         <div className="arch__photo m-full__photo">
           {MOBILE_SLIDES.map((sl, i) => (
             <Img key={sl.id} id={sl.id} alt={i === 0 ? t.meta.title : ""} priority={i === 0} sizes="100vw" imgStyle={{ objectPosition: sl.pos, objectFit: sl.fit }} />
           ))}
           <ArchSlides labels={t.home.slider} />
         </div>
-        <div className="m-full__shade" aria-hidden />
         <div className="m-home__brand">
           <div className="m-home__logo logo-spin">
             {/* eslint-disable-next-line @next/next/no-img-element -- still frame under the video, from the media pipeline */}
             <img src="/media/logo-3d-still-480.webp" width={480} height={480} alt="Beauty Cosmetic Hoàng" />
             <SpinLogo className="logo-spin__video" />
           </div>
-          <BrandWord id="bw-arc-m" className="m-home__word" sizes="60vw" name={t.brand.line1} descriptor={t.brand.line2} />
+          <BrandWord className="m-home__word" />
         </div>
         <PetalTitle className="m-home__title" title1={t.home.title1} title2={t.home.title2} />
         <div className="m-home__flora" aria-hidden>
@@ -128,7 +126,7 @@ export default async function StartPage({ params }: { params: Promise<{ locale: 
             <div className="pic home__logo3d">
               <Img id="logo-3d-still" alt="Beauty Cosmetic Hoàng" priority sizes="(max-width: 900px) 46vw, 30vw" className="home__logo3d-still" />
               <SpinLogo />
-              <BrandWord id="bw-arc" className="home__logo3d-word" sizes="(max-width: 900px) 46vw, 30vw" name={t.brand.line1} descriptor={t.brand.line2} />
+              <BrandWord className="home__logo3d-word" />
             </div>
           </div>
 

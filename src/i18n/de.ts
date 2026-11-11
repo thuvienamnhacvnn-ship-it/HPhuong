@@ -1,9 +1,9 @@
 const de = {
   meta: {
     title: "Beauty Cosmetic Hoàng",
-    description: "Gesichtsbehandlungen, Massage & Wellness, Maniküre, Pediküre, Nageldesign und Wimpernverlängerung in Berlin — Termin online anfragen.",
+    description: "Beauty Cosmetic Hoàng — Gesichtsbehandlungen, Massage & Wellness, Maniküre, Pediküre, Nageldesign und Wimpernverlängerung in Berlin — Termin online anfragen.",
   },
-  brand: { name: "Beauty Cosmetic Hoàng", line1: "Beauty Cosmetic", line2: "Hoàng", tagline: "Schönheit beginnt bei Ihnen." },
+  brand: { name: "Beauty Cosmetic Hoàng", line1: "HOÀNG", line2: "Beauty - Cosmetic", tagline: "Schönheit beginnt bei Ihnen." },
   nav: {
     start: "Start",
     behandlungen: "Behandlungen",

@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandWord } from "../BrandWord";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCalendar, IconChat, IconFlower, IconGift, IconHome, IconHourglass, IconLotus, IconSettings, IconUsers } from "../icons";
@@ -28,8 +29,7 @@ export function AdminNav({ role, name, choice }: { role: string; name: string; c
     <aside className="rail admin-rail" aria-label="Verwaltung">
       <Link href="/admin" className="rail__brand">
         <img className="rail__logo" src="/media/logo-3d-still-240.webp" alt="" width={90} height={90} style={{ objectFit: "contain" }} />
-        <span className="rail__name">HOÀNG</span>
-        <span className="rail__descriptor">Beauty Cosmetic</span>
+        <BrandWord className="brand-word--compact" />
       </Link>
       <span className="rail__divider" aria-hidden />
       <nav className="admin-nav" aria-label="Bereiche">

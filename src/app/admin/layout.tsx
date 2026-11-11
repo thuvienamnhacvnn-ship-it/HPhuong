@@ -2,6 +2,7 @@ import { resolveTheme, parseChoice, THEME_COOKIE } from "@/lib/theme-auto";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "@/styles/globals.css";
+import "@/styles/brand.css";
 import "@/styles/theme.css";
 import "@/styles/admin.css";
 import { cookies } from "next/headers";
@@ -13,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: { default: "Studio Verwaltung", template: "%s · Beauty Cosmetic Hoàng Verwaltung" },
   robots: { index: false, follow: false },
-  icons: { icon: "/favicon.png" },
+  icons: { icon: "/favicon.png?v=2" },
 };
 
 export default async function AdminRootLayout({ children }: { children: React.ReactNode }) {
