@@ -1,6 +1,6 @@
 .brand-word { display: block; width: 100%; height: auto; flex-shrink: 0; }
-.brand-word.brand__word { width: 110px; }
-.brand-word.brand__word--m { width: 92px; }
+.brand-word.brand__word { width: 84px; }
+.m-header__brand .brand-word.brand__word--m { width: 66px; height: auto; object-fit: contain; }
 .brand-word.brand-word--compact { width: 170px; max-width: 100%; }
 .brand-full { display: block; height: auto; flex-shrink: 0; object-fit: contain; }
 .brand-full.brand__full { width: 64px; }
@@ -8,3 +8,5 @@
 .brand-full.brand-full--login { width: 190px; max-width: 70%; }
 .brand-full.brand-full--rail { width: 120px; max-width: 100%; }
 .gift__logo .brand-full { width: 150px; max-width: 100%; }
+/* Mobile hero sits straight on the photo: a hard, tight dark edge (no glow) keeps the lettering readable */
+.m-home .brand-word { filter: drop-shadow(0 1px 0 rgba(58, 36, 8, 0.85)) drop-shadow(0 0 1px rgba(58, 36, 8, 0.9)); }
