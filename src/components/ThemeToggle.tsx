@@ -30,7 +30,9 @@ export function ThemeToggle({ choice: initial, locale, withLabel = false }: { ch
 
   useEffect(() => {
     const apply = () => {
-      document.documentElement.dataset.theme = resolveTheme(choice);
+      const theme = resolveTheme(choice);
+      document.documentElement.dataset.theme = theme;
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#1e1a1f" : "#f8eee8");
     };
     apply();
     if (choice !== "auto") return;

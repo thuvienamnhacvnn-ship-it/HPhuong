@@ -61,7 +61,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export const viewport: Viewport = { themeColor: "#f8eee8", width: "device-width", initialScale: 1, viewportFit: "cover" };
+export async function generateViewport(): Promise<Viewport> {
+  // phone browser bar follows the same day/night rule (Berlin time) as the page
+  const theme = resolveTheme(parseChoice((await cookies()).get(THEME_COOKIE)?.value));
+  return { themeColor: theme === "dark" ? "#1e1a1f" : "#f8eee8", width: "device-width", initialScale: 1, viewportFit: "cover" };
+}
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
