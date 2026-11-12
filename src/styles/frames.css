@@ -743,8 +743,9 @@
   }
   .brand__emblem {
     width: 34px;
-    height: 40px;
+    height: 34px;
   }
+  .brand .brand-word.brand__word { width: 46px; }
   .header__link {
     font-size: 1.15rem;
   }

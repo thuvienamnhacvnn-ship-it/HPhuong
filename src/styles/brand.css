@@ -1,6 +1,6 @@
 .brand-word { display: block; width: 100%; height: auto; flex-shrink: 0; }
-.brand-word.brand__word { width: 84px; }
-.m-header__brand .brand-word.brand__word--m { width: 66px; height: auto; object-fit: contain; }
+.brand-word.brand__word { width: 60px; }
+.m-header__brand .brand-word.brand__word--m { width: 56px; height: auto; object-fit: contain; }
 .brand-word.brand-word--compact { width: 170px; max-width: 100%; }
 .brand-full { display: block; height: auto; flex-shrink: 0; object-fit: contain; }
 .brand-full.brand__full { width: 64px; }

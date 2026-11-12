@@ -20,8 +20,8 @@
   border-radius: 12px;
 }
 .brand__emblem {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
 }
 /* Header logo on every page but the home page: the turning 3D monogram. The box keeps the size of
@@ -33,8 +33,8 @@
   flex: none;
 }
 .m-header__brand .logo-spin {
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
 }
 .m-header__brand { flex-direction: column; gap: 0; }
 .logo-spin > img,
