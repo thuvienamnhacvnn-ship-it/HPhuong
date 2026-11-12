@@ -25,7 +25,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import type { Theme, ThemeChoice } from "@/lib/theme-auto";
 import { MotionRoot } from "./Motion";
 import { SpinLogo } from "./SpinLogo";
-import { BrandWord } from "./BrandWord";
+import { BrandFull, BrandWord } from "./BrandWord";
 
 type Props = {
   locale: Locale;
@@ -106,15 +106,18 @@ export function Chrome({ locale, socialLinks, signedIn, themeChoice, children }:
           <header className="header">
             <Link prefetch href={`/${locale}/start`} className="brand" aria-label={`${t.brand.name} — ${t.nav.home}`}>
               {section === "start" ? (
-                <img className="brand__emblem" src="/media/logo-3d-still-240.webp" srcSet="/media/logo-3d-still-240.webp 1x, /media/logo-3d-still-480.webp 2x" width={48} height={48} alt="" />
+                // Home page (its banner already has the turning logo): no video here, so the complete logo.
+                <BrandFull className="brand__full" />
               ) : (
-                // Every page but the home page (its banner already has the large one): the turning 3D monogram.
-                <span className="brand__emblem logo-spin">
-                  <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
-                  <SpinLogo className="logo-spin__video" />
-                </span>
+                <>
+                  {/* Every other page: the turning 3D monogram, with the new lettering beside it. */}
+                  <span className="brand__emblem logo-spin">
+                    <img src="/media/logo-3d-still-240.webp" width={240} height={240} alt="" />
+                    <SpinLogo className="logo-spin__video" />
+                  </span>
+                  <BrandWord className="brand__word" />
+                </>
               )}
-              <BrandWord className="brand__word" />
             </Link>
             <nav className="header__nav" aria-label={t.nav.mainNav}>
               {nav.map((n) => (

@@ -47,15 +47,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t.meta.description,
       siteName: "Beauty Cosmetic Hoàng",
       locale: locale === "en" ? "en_GB" : "de_DE",
-      images: [{ url: "https://beauty-cosmetic-hoang.de/og-image.png?v=2", width: 1200, height: 630, alt: "Beauty Cosmetic Hoàng" }],
+      images: [{ url: "https://beauty-cosmetic-hoang.de/og-image.png?v=3", width: 1200, height: 630, alt: "Beauty Cosmetic Hoàng" }],
     },
     twitter: {
       card: "summary_large_image",
       title: t.meta.title,
       description: t.meta.description,
-      images: ["https://beauty-cosmetic-hoang.de/og-image.png?v=2"],
+      images: ["https://beauty-cosmetic-hoang.de/og-image.png?v=3"],
     },
-    icons: { icon: "/favicon.png?v=2", apple: "/apple-touch-icon.png?v=2" },
+    icons: { icon: "/favicon.png?v=3", apple: "/apple-touch-icon.png?v=3" },
     robots: settings.publicLaunchEnabled ? undefined : { index: false, follow: false },
     alternates: { languages: { de: "/de/start", en: "/en/start" } },
   };

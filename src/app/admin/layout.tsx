@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: { default: "Studio Verwaltung", template: "%s · Beauty Cosmetic Hoàng Verwaltung" },
   robots: { index: false, follow: false },
-  icons: { icon: "/favicon.png?v=2" },
+  icons: { icon: "/favicon.png?v=3" },
 };
 
 export default async function AdminRootLayout({ children }: { children: React.ReactNode }) {

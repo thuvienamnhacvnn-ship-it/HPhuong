@@ -1,26 +1,31 @@
-"use client";
-
-import { useId } from "react";
-
-/** Shared live lettering, also rendered by scripts/brand-share.tsx for the share card. */
+/** The name under the turning monogram: HOÀNG + ornament + curved BEAUTY-COSMETIC (the owner's artwork). */
 export function BrandWord({ className = "" }: { className?: string }) {
-  const id = useId();
   return (
-    <svg className={`brand-word ${className}`} viewBox="0 0 600 220" role="img" aria-label="Beauty Cosmetic Hoàng">
-      <defs>
-        <linearGradient id={`${id}-gold`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fff0b2" />
-          <stop offset="0.32" stopColor="#d9b653" />
-          <stop offset="0.5" stopColor="#a87925" />
-          <stop offset="0.56" stopColor="#f8df8c" />
-          <stop offset="1" stopColor="#bd8d32" />
-        </linearGradient>
-        <path id={`${id}-arc`} d="M 75,145 Q 300,245 525,145" />
-      </defs>
-      <text className="brand-word__hoang" x="300" y="117" textAnchor="middle" fill={`url(#${id}-gold)`}>HOÀNG</text>
-      <text className="brand-word__descriptor" fill={`url(#${id}-gold)`}>
-        <textPath href={`#${id}-arc`} startOffset="50%" textAnchor="middle">Beauty - Cosmetic</textPath>
-      </text>
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element -- fixed brand artwork from /public/brand
+    <img
+      className={`brand-word ${className}`}
+      src="/brand/logo-lettering-998.webp"
+      srcSet="/brand/logo-lettering-500.webp 500w, /brand/logo-lettering-998.webp 998w"
+      sizes="(max-width: 900px) 60vw, 400px"
+      width={998}
+      height={380}
+      alt="Beauty Cosmetic Hoàng"
+    />
+  );
+}
+
+/** The complete logo (monogram + lettering) for places without the turning 3D video. */
+export function BrandFull({ className = "" }: { className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- fixed brand artwork from /public/brand
+    <img
+      className={`brand-full ${className}`}
+      src="/brand/logo-full-720.webp"
+      srcSet="/brand/logo-full-360.webp 360w, /brand/logo-full-720.webp 720w, /brand/logo-full-1247.webp 1247w"
+      sizes="160px"
+      width={1247}
+      height={1261}
+      alt="Beauty Cosmetic Hoàng"
+    />
   );
 }

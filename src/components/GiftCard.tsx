@@ -1,6 +1,6 @@
 import { formatPrice } from "@/lib/money";
 import { getDict, type Locale } from "@/i18n";
-import { BrandWord } from "./BrandWord";
+import { BrandFull } from "./BrandWord";
 import { Img } from "./Img";
 
 /** Blank card photo + HTML overlay. Value and texts are never rasterised into the image. */
@@ -11,8 +11,7 @@ export function GiftCard({ locale, amountCents, recipient }: { locale: Locale; a
       <Img id="gift-card-blank" alt="" sizes="(max-width: 1000px) 90vw, 480px" />
       <div className="gift__overlay" aria-hidden>
         <div className="gift__logo">
-          <img src="/media/logo-3d-still-240.webp" alt="" width={120} height={120} style={{ objectFit: "contain" }} />
-          <BrandWord />
+          <BrandFull />
         </div>
         <span className="gift__sep" />
         <div className="gift__value">

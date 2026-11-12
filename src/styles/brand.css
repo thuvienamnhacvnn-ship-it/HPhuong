@@ -1,33 +1,10 @@
-.brand-word {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 600 / 220;
-  overflow: visible;
-  flex-shrink: 0;
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-weight: 700;
-}
-.brand-word__hoang {
-  font-size: 128px;
-  letter-spacing: 7px;
-  text-shadow: 0 -1px 0 #fff0b2, 1px 1px 0 #72501e, 2px 2px 0 #4b3015;
-}
-.brand-word__descriptor {
-  font-size: 46px;
-  letter-spacing: 1px;
-  stroke: #5b3d12;
-  stroke-width: 1.1px;
-  paint-order: stroke fill;
-}
+.brand-word { display: block; width: 100%; height: auto; flex-shrink: 0; }
 .brand-word.brand__word { width: 110px; }
 .brand-word.brand__word--m { width: 92px; }
 .brand-word.brand-word--compact { width: 170px; max-width: 100%; }
-.gift__logo .brand-word { width: 150px; max-width: 100%; }
-/* Mobile hero sits straight on the photo (no scrim): keep the descriptor readable with a dark outline */
-.m-home .brand-word__descriptor {
-  fill: #f6dc8a;
-  stroke: #3d260a;
-  stroke-width: 2.4px;
-  paint-order: stroke fill;
-}
+.brand-full { display: block; height: auto; flex-shrink: 0; object-fit: contain; }
+.brand-full.brand__full { width: 64px; }
+.brand-full.brand-full--studio { width: 230px; max-width: 70%; }
+.brand-full.brand-full--login { width: 190px; max-width: 70%; }
+.brand-full.brand-full--rail { width: 120px; max-width: 100%; }
+.gift__logo .brand-full { width: 150px; max-width: 100%; }
