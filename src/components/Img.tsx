@@ -15,9 +15,13 @@ type Props = {
   data?: Record<`data-${string}`, string | number | undefined>;
 };
 
+/** Bump when a picture is replaced under the same name: media is cached for 30 days, the query busts it. */
+const REV: Record<string, number> = { "home-flora": 2 };
+const q = (id: string) => (REV[id] ? `?v=${REV[id]}` : "");
+
 const srcset = (id: string, ext: string) => {
   const m = MEDIA[id as keyof typeof MEDIA];
-  return m.widths.map((w) => `/media/${id}-${w}.${ext} ${w}w`).join(", ");
+  return m.widths.map((w) => `/media/${id}-${w}.${ext}${q(id)} ${w}w`).join(", ");
 };
 
 /**
@@ -27,7 +31,7 @@ const srcset = (id: string, ext: string) => {
 export function Img({ id, alt, sizes = "100vw", className, priority, style, imgStyle, imgClassName, mobile, data }: Props) {
   if (!isMediaId(id)) return null;
   const m = MEDIA[id];
-  const fallback = `/media/${id}-${m.widths[Math.min(1, m.widths.length - 1)]}.webp`;
+  const fallback = `/media/${id}-${m.widths[Math.min(1, m.widths.length - 1)]}.webp${q(id)}`;
   const mq = "(max-width: 900px)";
   return (
     <picture className={className ? `pic ${className}` : "pic"} style={style} {...data}>
